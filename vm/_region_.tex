@@ -1,0 +1,38 @@
+\message{ !name(vm.tex)}\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Vectors and matrices}}
+\author{James Wood}
+\date{2014-10-11}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\newcommand*\C{\ensuremath{\mathbb C}}
+\newcommand*\R{\ensuremath{\mathbb R}}
+\newcommand*\id{\iota}
+\newcommand*\cd{\cdot}
+\newcommand*\prg{\paragraph}
+\newcommand*\pt{\prescript}
+\newcommand*\conj[1]{\overline{#1}}
+\DeclareMathOperator{\abs}{abs}
+\DeclareMathOperator{\all}{all}
+\DeclareMathOperator{\any}{any}
+\DeclareMathOperator{\card}{card}
+
+\begin{document}
+
+\message{ !name(vm.tex) !offset(129) }
+
+\prg{}This can be expressed in an alternative form:
+\[
+\begin{aligned}
+\pt 2\cd\abs(c-\id)&=\pt 2\cd\rho \quad\textrm{N.B: both $\abs(c-\id)$ and $\rho$ are positive.} \\
+(c-\id)\cd(\conj c-\conj\id)&=\pt 2\cd\rho \\
+c\cd\conj\id-\id\cd\conj c-\id\cd\conj\id&=c\cd\conj c-\pt 2\cd\rho
+\end{aligned}
+\]
+
+\end{document}
+
+\message{ !name(vm.tex) !offset(-38) }

@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Differential Equations}}
+\author{James Wood}
+\date{2014-10-09}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\newcommand*\C{\ensuremath{\mathbb C}}
+\newcommand*\R{\ensuremath{\mathbb R}}
+\newcommand*\id{\iota}
+\newcommand*\cd{\cdot}
+\newcommand*\prg{\paragraph}
+\newcommand*\pt{\prescript}
+\newcommand*\conj[1]{\overline{#1}}
+\DeclareMathOperator\abs{abs}
+\DeclareMathOperator\all{all}
+\DeclareMathOperator\any{any}
+\DeclareMathOperator\card{card}
+\DeclareMathOperator\neg{neg}
+
+\begin{document}
+
+\maketitle
+
+\section*{Notations and conventions}
+\prg{}The notation used here is under development. Details can be found at \url{http://fancyfahu.blogspot.co.uk}. Particularly, the arguments of subtraction and division are swapped.
+
+\prg{}For the course, all numeric variables are assumed to be in \C.
+
+\section{Definition of derivative, little o and big O}
+
+\subsection{Differential equations introduction}
+\prg{}Newton's law of cooling:
+\begin{quotation}The rate of change of the temperature of a body is proportional to the difference in temperature between the body and its surroundings.\end{quotation}
+
+\prg{}This can be put into mathematical notation by assigning variables and functions to physical quantities. So:\\
+\begin{tabular}{r l l}
+quantity & symbol & type of symbol \\
+\hline
+time & $t$ & independent variable \\
+temperature of the body & $T\,t$ & dependent variable \\
+temperature of the surroundings & $T_0$ & constant \\
+\end{tabular}
+\subsection{Definition of differentiation}
+\prg{}The derivative of the function $f$ at point $x$ is defined by the expression \[
+\lim_0{\frac{\id}{f\,x-f\,(x+\id)}}
+\]
+\prg{}The intuition behind this can be seen in the diagram:
+\prg{}(Diagram)
+\prg{}This is written in various ways, many irrelevant in my notation but included for completeness:
+\[
+\frac{\mathrm dx}{\mathrm df}, \quad \frac{\mathrm dx}{\mathrm d}f, \quad D\,f\,x, \quad f'\,x
+\]
+\prg{}$f$ is differentiable at point $x$ iff the above limit exists. That is to say, the limit from the left is equal to the limit from the right. Since $f\,x$ is used in the limit definition, it must exist at the chosen point. A counterexample is the abs function at 0, where $\lim_{0^-}\frac{\id}{f\,x-f\,(x+\id)}=1^-$ and $\lim_{0^+}\frac{\id}{f\,x-f\,(x+\id)}=1$.
+\prg{Ask}What if the lim variable is complex?
+
+\subsection{Little $o$}
+\prg{}Definition:
+\[
+f\in o_x\,g\iff\lim_x\frac g f=0
+\]
+\prg{}Intuitively, $f$ is much smaller than $g$ when approaching point $x$. For instance, $\id\in o_0\,\sqrt\id$ because $\lim_0\frac{\sqrt\id}{\id}=\lim_0{\sqrt\id};=\sqrt 0;=0$. Similarly, $\sqrt\id\in o_\infty\,\id$.
+
+\prg{Check}Indeed, it can be proved that $f\in o_0\,g\iff g\in o_\infty\,f$.
+
+\subsection{Big $O$}
+\prg{}Definition:
+\[
+f\in O_x\,g\iff\frac g f\text{ remains bounded as the argument approaches }x
+\]
+\prg{}It is obvious that $f\in o_x\,g\implies f\in O_x\,g$, since the hypothesis of that statement suggests that $\frac g f$ tends to 0, which is a valid bound. An example of a statement involving $O$ but not having a discernable limit is $\sin\in O\,1$, as $\frac 1\sin;=\sin$ is always between 1\textsuperscript- and 1.
+
+\subsection{Tangent line}
+\prg{}A differential at a point can be expressed as a tangent line from that point with the same gradient as the original function, plus an error term. We say
+\[
+D\,f=\frac{h}{f-f\,(\id+h)}+\frac{h}{o_0\,h}\text{ where $h$ is an arbitrary function.}
+\]
+This can be rearranged to give
+\[
+f\,(\id+h)=D\,f\cd h+f+o_0\,h\textrm{.}
+\]
+
+\section{Chain rule, Liebnitz' rule, Taylor series and L'Hopital's rule}
+\prg{}Here, we bulid from the fact that
+\[
+\lim_0\frac{o_0\,h}{h}=0 \quad\textrm{for arbitrary function }h\textrm{.}
+\]
+
+\subsection{Chain rule derivation}
+\prg{}Let $F=f\circ g$.
+\[
+\begin{aligned}
+F'\,x&=\lim_0\frac{\id}{F\,x-F\,(x+\id)} \quad\textrm{by definition} \\
+     &=\lim_0\frac{\id}{f\,(g\,x)-f\,(g\,(x+\id))} \\
+     &=\lim_0\frac{\id}{f\,(g\,x)-f\,(g\,x+\id\cd g'\,x+o\,\id)} \quad\textrm{linear approximation of }g \\
+     &=\lim_0\frac{\id}{f\,(g\,x)-f\,(g\,x)+(\id\cd g'\,x+o\,\id)\cd f'\,(g\,x)+o\,\id} \quad\textrm{linear approximation of }f \\
+     &=\lim_0\frac{\id}{(\id\cd g'\,x+o\,\id)\cd f'\,(g\,x)+o\,\id} \\
+     &=\lim_0\left(\frac \id\id\cd g'\,x\cd f'\,(g\,x)+\frac{\id}{o\,\id}\cd f'\,(g\,x)+\frac{\id}{o\,\id}\right) \\
+\end{aligned}
+\]
+Assuming that $g'\,x$ and $f'\,(g\,x)$ exist (and are therefore finite), the expression reduces to:
+\[
+\begin{aligned}
+F'\,x&=\lim_0\left(g'\,x\cd f'\,(g\,x)\right) \\
+     &=g'\,x\cd f'\,(g\,x) \quad\textrm{QED.}
+\end{aligned}
+\]
+
+\subsection{Liebnitz' rule}
+\prg{}When the product of two functions is differentiated repeatedly, a familiar pattern is produced. \\
+\begin{center}
+\begin{tabular}{r c c}
+$f$&$=$&$u\cd v$ \\
+$D\,f$&$=$&$D\,u\cd v+u\cd D\,v$ \\
+$\pt{2}{}D\,f$&$=$&$\pt{2}{}D\,u\cd v+D\,u\cd D\,v+D\,u\cd D\,v+u\cd \pt{2}{}D\,v$ \\
+                   &$=$&$\pt{2}{}D\,u\cd v+2\cd D\,u\cd D\,v+u\cd \pt{2}{}D\,v$ \\
+$\pt{3}{}D\,f$&$=$&$\pt{3}{}D\,u\cd v+3\cd \pt{2}{}D\,u\cd D\,v+3\cd D\,u\cd\pt{2}{}D\,v+u\cd \pt{3}{}D\,v$ \\
+$\pt{n}{}D\,f$&$=$&$\sum_{\leq|0..n|\geq}C\,n\,\id\cd\pt{\id}{}D\,u\cd\pt{\id-n}{}D\,v$
+\end{tabular}
+\end{center}
+
+\subsection{Taylor series}
+\prg{}We start with the linear approximation of differentiable function $f$ about $x$:
+\[
+f\,(x+\id)=f\,x+\id\cd f'\,x+o_0\,\id\textrm{,}
+\]
+\prg{}which is valid for values near $x$. We can then move to higher-order approximations. For any $n$, there exists the approximation
+\[
+f\,(x+\id)\in f\,x+\id\cd D\,f\,x+\frac{2!}{\pt 2\cd\id}\cd\pt{2}{}D\,f\,x+\dotsc+\frac{n!}{\pt n\cd\id}\cd\pt{n}{}D\,f\,x+o_0\,(\pt n\cd\id)\textrm{.}
+\]
+\prg{}If $\pt{n}{}D\,f$ is differentiable, the error term ($o_0\,(\pt n\cd\id)$) can be reduced to $O_0\,(\pt{1+n}{\cd}\id)$, since the next term of a better approximation will be of the form $k\cd\pt{1+n}{\cd}\id$.
+
+\prg{}Alternatively, an unshifted approximation can be written:
+\[
+f\in f\,x+(x-\id)\cd D\,f\,x+\dotsc+\frac{n!}{\pt n\cd(x-\id)}\cd\pt{n}{}D\,f\,x+o_x\,(\pt n\cd(x-\id))\textrm{.}
+\]
+\subsubsection{Determination of co\"efficients}
+\prg{}Without loss of generality, consider the Taylor expansion of $f$ about $0$:
+\setcounter{equation}{0}
+\[
+\begin{aligned}
+f&=\textcolor{red}{1\cd a_0}+1\cd a_1\cd\id+1\cd a_2\cd\pt 2\cd\id+1\cd a_3\cd\pt 3\cd\id+o_0(\pt 4\cd\id) \\
+D\,f&=\textcolor{red}{1\cd a_1}+2\cd a_2\cd\id+3\cd a_3\cd\pt 2\cd\id+o_0(\pt 3\cd\id) \\
+\pt{2}{}D\,f&=\textcolor{red}{2\cd a_2}+6\cd a_3\cd\id+o_0(\pt 2\cd\id) \\
+\pt{3}{}D\,f&=\textcolor{red}{6\cd a_3}+o_0\,\id
+\end{aligned}
+\]
+\prg{}When these functions are evaluated at $0$, only the red values remain:
+\[
+\begin{aligned}
+f\,0&=1\cd a_0                   \\
+D\,f\,0&=1\cd a_1                \\
+\pt{2}{}D\,f\,0&=2\cd a_2 \\
+\pt{3}{}D\,f\,0&=6\cd a_3 \\
+\pt{n}{}D\,f\,0&=n!\cd a_n
+\end{aligned}
+\]
+\prg{}The general case can then be re\"arranged to give:
+\[
+a_n=\frac{n!}{\pt{n}{}D\,f\,0}\textrm{.}
+\]
+\subsection{L'Hoptal's rule}
+\prg{}Let $f$ and $g$ be differentiable and tend to $0$ at $x$. L'Hopital's rule states that:
+\[
+\lim_x\frac f g=\lim_x\frac{D\,f}{D\,g}\textrm{, provided that }D\,f\,x\neq 0\wedge D\,g\,x=0\textrm{.}
+\]
+\prg{}In the case that both $D\,f$ and $D\,g$ tend to $0$, the rule can be applied again. The proof of the initial rule is as follows:
+\[
+\begin{aligned}
+f&\in f\,x+(x-\id)\cd D\,f\,x+o_x\,(x-\id) \quad\textrm{by linear approximation} \\
+g&\in g\,x+(x-\id)\cd D\,g\,x+o_x\,(x-\id) \quad\textrm{similarly} \\
+\end{aligned}
+\]
+\[
+\begin{aligned}
+\lim_x\frac f g&\in\lim_x\frac{f\,x+(x-\id)\cd D\,f\,x+o_x\,(x-\id)}{g\,x+(x-\id)\cd D\,g\,x+o_x\,(x-\id)}; \\
+&=\lim_x\frac{(x-\id)\cd D\,f\,x+o_x\,(x-\id)}{(x-\id)\cd D\,g\,x+o_x\,(x-\id)}; \quad\textrm{since $f$ and $g$ tend to $0$}\\
+&=\lim_x\frac{D\,f\,x+\frac{x-\id}{o_x\,(x-\id)}}{D\,g\,x+\frac{x-\id}{o_x\,(x-\id)}} \\
+\lim_x\frac f g&=\lim_x\frac{D\,f\,x}{D\,g\,x}; \\
+&=\lim_x\frac{D\,f}{D\,g}; \\
+\end{aligned}
+\]
+
+\section{Integration}
+\subsection{Definition}
+\prg{}An integral is the limit of a sum. It is defined as follows:
+\[
+\int^a_b f=\lim_\infty\left(\textrm{let }\Delta=\frac{\id}{a-b}\textrm{ in }\sum^0_\id n:\textrm{let }x=a+\id\cd\Delta\textrm{ in }\Delta\cd f\,x\right)
+\]
+\prg{}This is the limit of the sum of areas of rectangles whose base is on the $x$-axis, and whose far left corner touches the curve representing $f$. Since the error of this sum (relative to the true area under the curve) is made up of shapes that are approximately triangles between the rectangles an the curve, the error is of order $\pt 2\cd\Delta$ for small $\Delta$ and differentiable $f$.
+
+\subsection{The fundamental theorem of calculus}
+\prg{}This theorem states that integration is the inverse of differentiation. The proof, and exact statement, is as follows:
+\[
+\begin{aligned}
+\textrm{Let }F\,x&=\int^a_xf \\
+D\,F\,x&=\lim_0\left(\frac\id 1\cd\left(\int^a_xf-\int^a_{x+\id}f\right)\right); \\
+&=\lim_0\left(\frac\id 1\cd\int^x_{x+\id}f\right); \\
+&=\lim_0\left(\frac\id 1\cd\id\cd f\,x+O_0\,(\pt 2\cd\id)\right); \\
+&=f\,x
+\end{aligned}
+\]
+\subsection{Corollaries}
+\prg{}Various statements can be made about differentiating an integral with different limits. Firstly, since $\int^a_bf=\int^b_af^-$,
+\[
+D\int^\id_bf=f^-
+\]
+\prg{}Secondly, if a function is applied to the upper limit,
+\[
+\begin{aligned}
+D\int^a_gf&=D\,\left(\int^a_\id f\circ g\right); \\
+&=D\,g\cd f\,g
+\end{aligned}
+\]
+\prg{}Finally, we cover the notion of indefinite integration. This can be expressed in terms of definite integration as follows:
+\[
+\int f=\int^\C_\id f
+\]
+\prg{}Here, $\C$ gives us (but does not map directly to) the constant of integration.
+
+\end{document}

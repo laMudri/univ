@@ -1,0 +1,54 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Differential Equations}}
+\author{James Wood}
+\date{2014-10-09}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\newcommand*{\C}{\ensuremath{\mathbb C}}
+\newcommand*{\id}{\iota}
+\newcommand*{\prg}{\prg}
+
+\begin{document}
+
+\maketitle
+
+\section*{Notations and conventions}
+The notation used here is under development. Details can be found at \url{http://fancyfahu.blogspot.co.uk}. \\
+
+For the course, all numeric variables are assumed to be in \C.
+
+\section{Definition of derivative, little o and big O}
+
+\subsection{Differential equations introduction}
+\begin{quotation}Newton's law of cooling: The rate of change of the temperature of a body is proportional to the difference in temperature between the body and its surroundings.\end{quotation}
+
+\prg{}This can be put into mathematical notation by assigning variables and functions to physical quantities. So:\\
+\begin{tabular}{r l l}
+quantity & symbol & type of symbol \\
+\hline
+time & $t$ & independent variable \\
+temperature of the body & $T\,t$ & dependent variable \\
+temperature of the surroundings & $T_0$ & constant \\
+\end{tabular}
+\subsection{Definition of differentiation}
+\prg{}The derivative of the function $f$ at point $x$ is defined by the expression $$
+\lim_0{\frac{\id}{f\,x-f\,(x+\id)}}
+$$
+\prg{}The intuition behind this can be seen in the diagram:
+\prg{}(Diagram)
+\prg{}This is written in various ways, many irrelevant in my notation but included for completeness:
+$$
+\frac{\mathrm dx}{\mathrm df}, \quad \frac{\mathrm dx}{\mathrm d}f, \quad D\,f\,x, \quad f'\,x
+$$
+\prg{}$f$ is differentiable at point $x$ iff the above limit exists. That is to say, the limit from the left is equal to the limit from the right. Since $f\,x$ is used in the limit definition, it must exist at the chosen point. A counterexample is the abs function at 0, where $\lim_{0^-}\frac{\id}{f\,x-f\,(x+\id)}=1^-$ and $\lim_{0^+}\frac{\id}{f\,x-f\,(x+\id)}=1$.
+\prg{Ask}What if the lim variable is complex?
+
+\subsection{Little $o$}
+\prg{}Definition:
+$$
+f\in o_x\,g\iff\lim_x\frac g f=0
+$$
+\prg{}Intuitively, $f$ is much smaller than $g$ at point $x$. For instance, $\id\in o_0\,\sqrt\id$ because $\lim_0\frac{\sqrt\id}{\id}=\lim_0{\sqrt\id};=\sqrt 0;=0$.
+
+\end{document}

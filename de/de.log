@@ -1,0 +1,2351 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Arch Linux) (preloaded format=prv_de 2014.10.15)  15 OCT 2014 16:13
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**&prv_de de.tex
+(./de.tex
+LaTeX2e <2014/05/01>
+Babel <3.9k> and hyphenation patterns for 79 languages loaded.
+CUSTOMISED FORMAT. Preloaded files:
+        .
+ article.cls    2007/10/19 v1.4h Standard LaTeX document class
+  size11.clo    2007/10/19 v1.4h Standard LaTeX file (size option)
+hyperref.sty    2012/11/06 v6.83m Hypertext links for LaTeX
+hobsub-hyperref.sty    2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
+hobsub-generic.sty    2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
+  hobsub.sty    2012/05/28 v1.13 Construct package bundles (HO)
+infwarerr.sty    2010/04/08 v1.3 Providing info/warning/error messages (HO)
+ ltxcmds.sty    2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+ifluatex.sty    2010/03/01 v1.3 Provides the ifluatex switch (HO)
+  ifvtex.sty    2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+ intcalc.sty    2007/09/27 v1.1 Expandable calculations with integers (HO)
+   ifpdf.sty    2011/01/30 v2.3 Provides the ifpdf switch (HO)
+etexcmds.sty    2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+kvsetkeys.sty    2012/04/25 v1.16 Key value parser (HO)
+kvdefinekeys.sty    2011/04/07 v1.3 Define keys (HO)
+pdftexcmds.sty    2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO)
+pdfescape.sty    2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
+bigintcalc.sty    2012/04/08 v1.3 Expandable calculations on big integers (HO)
+  bitset.sty    2011/01/30 v1.1 Handle bit-vector datatype (HO)
+uniquecounter.sty    2011/01/30 v1.2 Provide unlimited unique counter (HO)
+letltxmacro.sty    2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
+ hopatch.sty    2012/05/28 v1.2 Wrapper for package hooks (HO)
+xcolor-patch.sty    2011/01/30 xcolor patch
+atveryend.sty    2011/06/30 v1.8 Hooks at the very end of document (HO)
+atbegshi.sty    2011/10/05 v1.16 At begin shipout hook (HO)
+refcount.sty    2011/10/16 v3.4 Data extraction from label references (HO)
+ hycolor.sty    2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
+  keyval.sty    2014/05/08 v1.15 key=value parser (DPC)
+ ifxetex.sty    2010/09/12 v0.6 Provides ifxetex conditional
+ auxhook.sty    2011/03/04 v1.3 Hooks for auxiliary files (HO)
+kvoptions.sty    2011/06/30 v3.11 Key value format for package options (HO)
+  pd1enc.def    2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
+hyperref.cfg    2002/06/06 v1.2 hyperref configuration of TeXLive
+     url.sty    2013/09/16  ver 3.4  Verb mode for urls, etc.
+ hpdftex.def    2012/11/06 v6.83m Hyperref driver for pdfTeX
+rerunfilecheck.sty    2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+amsfonts.sty    2013/01/14 v3.01 Basic AMSFonts support
+ amsmath.sty    2013/01/14 v2.14 AMS math features
+ amstext.sty    2000/06/29 v2.01
+  amsgen.sty    1999/11/30 v2.0
+  amsbsy.sty    1999/11/29 v1.2d
+  amsopn.sty    1999/12/14 v2.01 operator names
+ amssymb.sty    2013/01/14 v3.01 AMS font symbols
+mathtools.sty    2014/07/16 v1.15 mathematical typesetting tools
+    calc.sty    2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
+ mhsetup.sty    2010/01/21 v1.2a programming setup (MH)
+    umsa.fd    2013/01/14 v3.01 AMS symbols A
+    umsb.fd    2013/01/14 v3.01 AMS symbols B
+        .
+(./de.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+
+(/mnt/sda9/home/james/.emacs.d/el-get/auctex/preview/latex/preview.sty
+Package: preview 2010/02/14 CVS-1.126 (AUCTeX/preview-latex)
+
+(/mnt/sda9/home/james/.emacs.d/el-get/auctex/preview/latex/prtightpage.def
+\PreviewBorder=\dimen125
+)
+(/mnt/sda9/home/james/.emacs.d/el-get/auctex/preview/latex/prauctex.def
+No auxiliary output files.
+
+
+\hbadness=\count113
+\hfuzz=\dimen126
+(/mnt/sda9/home/james/.emacs.d/el-get/auctex/preview/latex/prauctex.cfg))
+(/mnt/sda9/home/james/.emacs.d/el-get/auctex/preview/latex/prfootnotes.def)
+\pr@snippet=\count114
+\pr@box=\box28
+\pr@output=\toks21
+
+Preview: Fontsize 10.95pt
+Preview: PDFoutput 1
+)
+\AtBeginShipoutBox=\box29
+Package hyperref Info: Link coloring OFF on input line 23.
+ (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count115
+)
+LaTeX Info: Redefining \ref on input line 23.
+LaTeX Info: Redefining \pageref on input line 23.
+LaTeX Info: Redefining \nameref on input line 23.
+ (./de.out)
+(./de.out) (/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/04/25 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/share/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+\Gread@gobject=\count116
+
+(/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count117
+\scratchdimen=\dimen127
+\scratchbox=\box30
+\nofMPsegments=\count118
+\nofMParguments=\count119
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count120
+\MPscratchDim=\dimen128
+\MPnumerator=\count121
+\makeMPintoPDFobject=\count122
+\everyMPtoPDFconversion=\toks23
+))) (/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+\Gin@req@height=\dimen129
+\Gin@req@width=\dimen130
+)
+! Preview: Snippet 1 started.
+<-><->
+      
+l.27 \section
+             *{Notations and conventions}
+Not a real error.
+
+Preview: Tightpage -32891 -32891 32891 32891
+! Preview: Snippet 1 ended.(655359+0x23592960).
+<-><->
+      
+l.27 \section*{Notations and conventions}
+                                         
+Not a real error.
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+! Preview: Snippet 2 started.
+<-><->
+      
+l.28 \prg
+         {}The notation used here is under development. Details can be found...
+
+Not a real error.
+
+! Preview: Snippet 2 ended.(0+0x0).
+<-><->
+      
+l.28 \prg{}
+           The notation used here is under development. Details can be found...
+
+Not a real error.
+
+[2
+
+]
+! Preview: Snippet 3 started.
+<-><->
+      
+l.30 \prg
+         {}For the course, all numeric variables are assumed to be in \C.
+Not a real error.
+
+! Preview: Snippet 3 ended.(0+0x0).
+<-><->
+      
+l.30 \prg{}
+           For the course, all numeric variables are assumed to be in \C.
+Not a real error.
+
+[3
+
+]
+! Preview: Snippet 4 started.
+<-><->
+      
+l.32 \section
+             {Definition of derivative, little o and big O}
+Not a real error.
+
+! Preview: Snippet 4 ended.(655359+183500x23592960).
+<-><->
+      
+l.32 ...inition of derivative, little o and big O}
+                                                  
+Not a real error.
+
+[4
+
+]
+! Preview: Snippet 5 started.
+<-><->
+      
+l.34 \subsection
+                {Differential equations introduction}
+Not a real error.
+
+! Preview: Snippet 5 ended.(546132+152916x23592960).
+<-><->
+      
+l.34 ...ction{Differential equations introduction}
+                                                  
+Not a real error.
+
+[5
+
+]
+! Preview: Snippet 6 started.
+<-><->
+      
+l.35 \prg
+         {}Newton's law of cooling:
+Not a real error.
+
+! Preview: Snippet 6 ended.(0+0x0).
+<-><->
+      
+l.35 \prg{}
+           Newton's law of cooling:
+Not a real error.
+
+[6
+
+]
+! Preview: Snippet 7 started.
+<-><->
+      
+l.38 \prg
+         {}This can be put into mathematical notation by assigning variables...
+
+Not a real error.
+
+! Preview: Snippet 7 ended.(0+0x0).
+<-><->
+      
+l.38 \prg{}
+           This can be put into mathematical notation by assigning variables...
+
+Not a real error.
+
+[7
+
+]
+! Preview: Snippet 8 started.
+<-><->
+      
+l.42 time & $
+             t$ & independent variable \\
+Not a real error.
+
+! Preview: Snippet 8 ended.(441393+0x259141).
+<-><->
+      
+l.42 time & $t$
+                & independent variable \\
+Not a real error.
+
+[8]
+! Preview: Snippet 9 started.
+<-><->
+      
+l.43 temperature of the body & $
+                                T\,t$ & dependent variable \\
+Not a real error.
+
+! Preview: Snippet 9 ended.(490372+0x897771).
+<-><->
+      
+l.43 temperature of the body & $T\,t$
+                                      & dependent variable \\
+Not a real error.
+
+[9]
+! Preview: Snippet 10 started.
+<-><->
+      
+l.44 temperature of the surroundings & $
+                                        T_0$ & constant \\
+Not a real error.
+
+! Preview: Snippet 10 ended.(490372+107642x730659).
+<-><->
+      
+l.44 temperature of the surroundings & $T_0$
+                                             & constant \\
+Not a real error.
+
+[10]
+! Preview: Snippet 11 started.
+<-><->
+      
+l.46 \subsection
+                {Definition of differentiation}
+Not a real error.
+
+! Preview: Snippet 11 ended.(546132+0x23592960).
+<-><->
+      
+l.46 \subsection{Definition of differentiation}
+                                               
+Not a real error.
+
+[11
+
+]
+! Preview: Snippet 12 started.
+<-><->
+      
+l.47 \prg
+         {}The derivative of the function $f$ at point $x$ is defined by the...
+
+Not a real error.
+
+! Preview: Snippet 12 ended.(0+0x0).
+<-><->
+      
+l.47 \prg{}
+           The derivative of the function $f$ at point $x$ is defined by the...
+
+Not a real error.
+
+[12
+
+]
+! Preview: Snippet 13 started.
+<-><->
+      
+l.47 \prg{}The derivative of the function $
+                                           f$ at point $x$ is defined by the...
+
+Not a real error.
+
+! Preview: Snippet 13 ended.(498346+139537x428580).
+<-><->
+      
+l.47 \prg{}The derivative of the function $f$
+                                              at point $x$ is defined by the...
+
+Not a real error.
+
+[13]
+! Preview: Snippet 14 started.
+<-><->
+      
+l.47 ... derivative of the function $f$ at point $
+                                                  x$ is defined by the expre...
+
+Not a real error.
+
+! Preview: Snippet 14 ended.(308974+0x410139).
+<-><->
+      
+l.47 ...erivative of the function $f$ at point $x$
+                                                   is defined by the express...
+
+Not a real error.
+
+[14]
+! Preview: Snippet 15 started.
+<-><->
+      
+l.47 ... point $x$ is defined by the expression \[
+                                                  
+Not a real error.
+
+! Preview: Snippet 15 ended.(1466103+0x14674748).
+<-><->
+      
+l.49 \]
+       
+Not a real error.
+
+[15]
+! Preview: Snippet 16 started.
+<-><->
+      
+l.50 \prg
+         {}The intuition behind this can be seen in the diagram:
+Not a real error.
+
+! Preview: Snippet 16 ended.(0+0x0).
+<-><->
+      
+l.50 \prg{}
+           The intuition behind this can be seen in the diagram:
+Not a real error.
+
+[16
+
+]
+! Preview: Snippet 17 started.
+<-><->
+      
+l.51 \prg
+         {}(Diagram)
+Not a real error.
+
+! Preview: Snippet 17 ended.(0+0x0).
+<-><->
+      
+l.51 \prg{}
+           (Diagram)
+Not a real error.
+
+[17
+
+]
+! Preview: Snippet 18 started.
+<-><->
+      
+l.52 \prg
+         {}This is written in various ways, many irrelevant in my notation b...
+
+Not a real error.
+
+! Preview: Snippet 18 ended.(0+0x0).
+<-><->
+      
+l.52 \prg{}
+           This is written in various ways, many irrelevant in my notation b...
+
+Not a real error.
+
+[18
+
+]
+! Preview: Snippet 19 started.
+<-><->
+      
+l.53 \[
+       
+Not a real error.
+
+! Preview: Snippet 19 ended.(1615608+0x15938086).
+<-><->
+      
+l.55 \]
+       
+Not a real error.
+
+[19]
+! Preview: Snippet 20 started.
+<-><->
+      
+l.56 \prg
+         {}$f$ is differentiable at point $x$ iff the above limit exists. Th...
+
+Not a real error.
+
+! Preview: Snippet 20 ended.(0+0x0).
+<-><->
+      
+l.56 \prg{}
+           $f$ is differentiable at point $x$ iff the above limit exists. Th...
+
+Not a real error.
+
+[20
+
+]
+! Preview: Snippet 21 started.
+<-><->
+      
+l.56 \prg{}$
+            f$ is differentiable at point $x$ iff the above limit exists. Th...
+
+Not a real error.
+
+! Preview: Snippet 21 ended.(498346+139537x428580).
+<-><->
+      
+l.56 \prg{}$f$
+               is differentiable at point $x$ iff the above limit exists. Th...
+
+Not a real error.
+
+[21]
+! Preview: Snippet 22 started.
+<-><->
+      
+l.56 \prg{}$f$ is differentiable at point $
+                                           x$ iff the above limit exists. Th...
+
+Not a real error.
+
+! Preview: Snippet 22 ended.(308974+0x410139).
+<-><->
+      
+l.56 \prg{}$f$ is differentiable at point $x$
+                                              iff the above limit exists. Th...
+
+Not a real error.
+
+[22]
+! Preview: Snippet 23 started.
+<-><->
+      
+l.56 ...equal to the limit from the right. Since $
+                                                  f\,x$ is used in the limit...
+
+Not a real error.
+
+! Preview: Snippet 23 ended.(498346+139537x958320).
+<-><->
+      
+l.56 ... to the limit from the right. Since $f\,x$
+                                                   is used in the limit defi...
+
+Not a real error.
+
+[23]
+! Preview: Snippet 24 started.
+<-><->
+      
+l.56 ...rexample is the abs function at 0, where $
+                                                  \lim_{0^-}\frac{\id}{f\,x-...
+
+Not a real error.
+
+! Preview: Snippet 24 ended.(577178+387940x6738654).
+<-><->
+      
+l.56 ...\lim_{0^-}\frac{\id}{f\,x-f\,(x+\id)}=1^-$
+                                                   and $\lim_{0^+}\frac{\id}...
+
+Not a real error.
+
+[24]
+! Preview: Snippet 25 started.
+<-><->
+      
+l.56 ...0^-}\frac{\id}{f\,x-f\,(x+\id)}=1^-$ and $
+                                                  \lim_{0^+}\frac{\id}{f\,x-...
+
+Not a real error.
+
+! Preview: Snippet 25 ended.(508284+387940x6261691).
+<-><->
+      
+l.56 ... $\lim_{0^+}\frac{\id}{f\,x-f\,(x+\id)}=1$
+                                                  .
+Not a real error.
+
+[25]
+! Preview: Snippet 26 started.
+<-><->
+      
+l.57 \prg
+         {Ask}What if the lim variable is complex?
+Not a real error.
+
+! Preview: Snippet 26 ended.(498346+0x1384996).
+<-><->
+      
+l.57 \prg{Ask}
+              What if the lim variable is complex?
+Not a real error.
+
+[26
+
+]
+! Preview: Snippet 27 started.
+<-><->
+      
+l.59 \subsection
+                {Little $o$}
+Not a real error.
+
+! Preview: Snippet 27 ended.(546132+0x23592960).
+<-><->
+      
+l.59 \subsection{Little $o$}
+                            
+Not a real error.
+
+[27
+
+]
+! Preview: Snippet 28 started.
+<-><->
+      
+l.60 \prg
+         {}Definition:
+Not a real error.
+
+! Preview: Snippet 28 ended.(0+0x0).
+<-><->
+      
+l.60 \prg{}
+           Definition:
+Not a real error.
+
+[28
+
+]
+! Preview: Snippet 29 started.
+<-><->
+      
+l.61 \[
+       
+Not a real error.
+
+! Preview: Snippet 29 ended.(1426236+0x15605608).
+<-><->
+      
+l.63 \]
+       
+Not a real error.
+
+[29]
+! Preview: Snippet 30 started.
+<-><->
+      
+l.64 \prg
+         {}Intuitively, $f$ is much smaller than $g$ when approaching point ...
+
+Not a real error.
+
+! Preview: Snippet 30 ended.(0+0x0).
+<-><->
+      
+l.64 \prg{}
+           Intuitively, $f$ is much smaller than $g$ when approaching point ...
+
+Not a real error.
+
+[30
+
+]
+! Preview: Snippet 31 started.
+<-><->
+      
+l.64 \prg{}Intuitively, $
+                         f$ is much smaller than $g$ when approaching point ...
+
+Not a real error.
+
+! Preview: Snippet 31 ended.(498346+139537x428580).
+<-><->
+      
+l.64 \prg{}Intuitively, $f$
+                            is much smaller than $g$ when approaching point ...
+
+Not a real error.
+
+[31]
+! Preview: Snippet 32 started.
+<-><->
+      
+l.64 \prg{}Intuitively, $f$ is much smaller than $
+                                                  g$ when approaching point ...
+
+Not a real error.
+
+! Preview: Snippet 32 ended.(308974+139537x368028).
+<-><->
+      
+l.64 ...}Intuitively, $f$ is much smaller than $g$
+                                                   when approaching point $x...
+
+Not a real error.
+
+[32]
+! Preview: Snippet 33 started.
+<-><->
+      
+l.64 ... smaller than $g$ when approaching point $
+                                                  x$. For instance, $\id\in ...
+
+Not a real error.
+
+! Preview: Snippet 33 ended.(308974+0x410139).
+<-><->
+      
+l.64 ...maller than $g$ when approaching point $x$
+                                                  . For instance, $\id\in o_...
+
+Not a real error.
+
+[33]
+! Preview: Snippet 34 started.
+<-><->
+      
+l.64 ...hen approaching point $x$. For instance, $
+                                                  \id\in o_0\,\sqrt\id$ beca...
+
+Not a real error.
+
+! Preview: Snippet 34 ended.(574292+172030x2761832).
+<-><->
+      
+l.64 ... $x$. For instance, $\id\in o_0\,\sqrt\id$
+                                                   because $\lim_0\frac{\sqr...
+
+Not a real error.
+
+[34]
+! Preview: Snippet 35 started.
+<-><->
+      
+l.64 ...instance, $\id\in o_0\,\sqrt\id$ because $
+                                                  \lim_0\frac{\sqrt\id}{\id}...
+
+Not a real error.
+
+! Preview: Snippet 35 ended.(770341+247464x8951231).
+<-><->
+      
+l.64 ...qrt\id}{\id}=\lim_0{\sqrt\id};=\sqrt 0;=0$
+                                                  . Similarly, $\sqrt\id\in ...
+
+Not a real error.
+
+[35]
+! Preview: Snippet 36 started.
+<-><->
+      
+l.64 ...lim_0{\sqrt\id};=\sqrt 0;=0$. Similarly, $
+                                                  \sqrt\id\in o_\infty\,\id$.
+Not a real error.
+
+! Preview: Snippet 36 ended.(574292+172030x3040364).
+<-><->
+      
+l.64 ...0$. Similarly, $\sqrt\id\in o_\infty\,\id$
+                                                  .
+Not a real error.
+
+[36]
+! Preview: Snippet 37 started.
+<-><->
+      
+l.66 \prg
+         {Check}Indeed, it can be proved that $f\in o_0\,g\iff g\in o_\infty...
+
+Not a real error.
+
+! Preview: Snippet 37 ended.(498346+0x2212147).
+<-><->
+      
+l.66 \prg{Check}
+                Indeed, it can be proved that $f\in o_0\,g\iff g\in o_\infty...
+
+Not a real error.
+
+[37
+
+]
+! Preview: Snippet 38 started.
+<-><->
+      
+l.66 \prg{Check}Indeed, it can be proved that $
+                                               f\in o_0\,g\iff g\in o_\infty...
+
+Not a real error.
+
+! Preview: Snippet 38 ended.(498346+139537x7296391).
+<-><->
+      
+l.66 ...ed that $f\in o_0\,g\iff g\in o_\infty\,f$
+                                                  .
+Not a real error.
+
+[38]
+! Preview: Snippet 39 started.
+<-><->
+      
+l.68 \subsection
+                {Big $O$}
+Not a real error.
+
+! Preview: Snippet 39 ended.(546132+152916x23592960).
+<-><->
+      
+l.68 \subsection{Big $O$}
+                         
+Not a real error.
+
+[39
+
+]
+! Preview: Snippet 40 started.
+<-><->
+      
+l.69 \prg
+         {}Definition:
+Not a real error.
+
+! Preview: Snippet 40 ended.(0+0x0).
+<-><->
+      
+l.69 \prg{}
+           Definition:
+Not a real error.
+
+[40
+
+]
+! Preview: Snippet 41 started.
+<-><->
+      
+l.70 \[
+       
+Not a real error.
+
+! Preview: Snippet 41 ended.(1426236+0x22128824).
+<-><->
+      
+l.72 \]
+       
+Not a real error.
+
+[41]
+! Preview: Snippet 42 started.
+<-><->
+      
+l.73 \prg
+         {}It is obvious that $f\in o_x\,g\implies f\in O_x\,g$, since the h...
+
+Not a real error.
+
+! Preview: Snippet 42 ended.(0+0x0).
+<-><->
+      
+l.73 \prg{}
+           It is obvious that $f\in o_x\,g\implies f\in O_x\,g$, since the h...
+
+Not a real error.
+
+[42
+
+]
+! Preview: Snippet 43 started.
+<-><->
+      
+l.73 \prg{}It is obvious that $
+                               f\in o_x\,g\implies f\in O_x\,g$, since the h...
+
+Not a real error.
+
+! Preview: Snippet 43 ended.(498346+139537x7128010).
+<-><->
+      
+l.73 ...ous that $f\in o_x\,g\implies f\in O_x\,g$
+                                                  , since the hypothesis of ...
+
+Not a real error.
+
+[43]
+! Preview: Snippet 44 started.
+<-><->
+      
+l.73 ...pothesis of that statement suggests that $
+                                                  \frac g f$ tends to 0, whi...
+
+Not a real error.
+
+! Preview: Snippet 44 ended.(550140+349409x482693).
+<-><->
+      
+l.73 ...f that statement suggests that $\frac g f$
+                                                   tends to 0, which is a va...
+
+Not a real error.
+
+[44]
+! Preview: Snippet 45 started.
+<-><->
+      
+l.73 ...und. An example of a statement involving $
+                                                  O$ but not having a discer...
+
+Not a real error.
+
+! Preview: Snippet 45 ended.(490372+0x567316).
+<-><->
+      
+l.73 ...d. An example of a statement involving $O$
+                                                   but not having a discerna...
+
+Not a real error.
+
+[45]
+! Preview: Snippet 46 started.
+<-><->
+      
+l.73 ...O$ but not having a discernable limit is $
+                                                  \sin\in O\,1$, as $\frac 1...
+
+Not a real error.
+
+! Preview: Snippet 46 ended.(490372+28057x2803889).
+<-><->
+      
+l.73 ...ving a discernable limit is $\sin\in O\,1$
+                                                  , as $\frac 1\sin;=\sin$ i...
+
+Not a real error.
+
+[46]
+! Preview: Snippet 47 started.
+<-><->
+      
+l.73 ... discernable limit is $\sin\in O\,1$, as $
+                                                  \frac 1\sin;=\sin$ is alwa...
+
+Not a real error.
+
+! Preview: Snippet 47 ended.(620424+247464x2798740).
+<-><->
+      
+l.73 ... is $\sin\in O\,1$, as $\frac 1\sin;=\sin$
+                                                   is always between 1\texts...
+
+Not a real error.
+
+[47]
+! Preview: Snippet 48 started.
+<-><->
+      
+l.75 \subsection
+                {Tangent line}
+Not a real error.
+
+! Preview: Snippet 48 ended.(546132+152916x23592960).
+<-><->
+      
+l.75 \subsection{Tangent line}
+                              
+Not a real error.
+
+[48
+
+]
+! Preview: Snippet 49 started.
+<-><->
+      
+l.76 \prg
+         {}A differential at a point can be expressed as a tangent line from...
+
+Not a real error.
+
+! Preview: Snippet 49 ended.(0+0x0).
+<-><->
+      
+l.76 \prg{}
+           A differential at a point can be expressed as a tangent line from...
+
+Not a real error.
+
+[49
+
+]
+! Preview: Snippet 50 started.
+<-><->
+      
+l.77 \[
+       
+Not a real error.
+
+! Preview: Snippet 50 ended.(1655475+0x21282199).
+<-><->
+      
+l.79 \]
+       
+Not a real error.
+
+[50]
+! Preview: Snippet 51 started.
+<-><->
+      
+l.81 \[
+       
+Not a real error.
+
+! Preview: Snippet 51 ended.(717618+0x16434466).
+<-><->
+      
+l.83 \]
+       
+Not a real error.
+
+[51]
+! Preview: Snippet 52 started.
+<-><->
+      
+l.85 \section
+             {Chain rule, Liebnitz' rule, Taylor series and L'Hopital's rule}
+Not a real error.
+
+! Preview: Snippet 52 ended.(1835007+183500x23592960).
+<-><->
+      
+l.85 ... rule, Taylor series and L'Hopital's rule}
+                                                  
+Not a real error.
+
+[52
+
+]
+! Preview: Snippet 53 started.
+<-><->
+      
+l.86 \prg
+         {}Here, we bulid from the fact that
+Not a real error.
+
+! Preview: Snippet 53 ended.(0+0x0).
+<-><->
+      
+l.86 \prg{}
+           Here, we bulid from the fact that
+Not a real error.
+
+[53
+
+]
+! Preview: Snippet 54 started.
+<-><->
+      
+l.87 \[
+       
+Not a real error.
+
+! Preview: Snippet 54 ended.(1513060+0x17834853).
+<-><->
+      
+l.89 \]
+       
+Not a real error.
+
+[54]
+! Preview: Snippet 55 started.
+<-><->
+      
+l.91 \subsection
+                {Chain rule derivation}
+Not a real error.
+
+! Preview: Snippet 55 ended.(546132+0x23592960).
+<-><->
+      
+l.91 \subsection{Chain rule derivation}
+                                       
+Not a real error.
+
+[55
+
+]
+! Preview: Snippet 56 started.
+<-><->
+      
+l.92 \prg
+         {}Let $F=f\circ g$.
+Not a real error.
+
+! Preview: Snippet 56 ended.(0+0x0).
+<-><->
+      
+l.92 \prg{}
+           Let $F=f\circ g$.
+Not a real error.
+
+[56
+
+]
+! Preview: Snippet 57 started.
+<-><->
+      
+l.92 \prg{}Let $
+                F=f\circ g$.
+Not a real error.
+
+! Preview: Snippet 57 ended.(498346+139537x2992313).
+<-><->
+      
+l.92 \prg{}Let $F=f\circ g$
+                           .
+Not a real error.
+
+[57]
+! Preview: Snippet 58 started.
+<-><->
+      
+l.93 \[
+       
+Not a real error.
+
+! Preview: Snippet 58 ended.(9995742+0x23592960).
+<-><->
+      
+l.102 \]
+        
+Not a real error.
+
+[58]
+! Preview: Snippet 59 started.
+<-><->
+      
+l.103 Assuming that $
+                     g'\,x$ and $f'\,(g\,x)$ exist (and are therefore finite...
+
+Not a real error.
+
+! Preview: Snippet 59 ended.(551690+139537x1081633).
+<-><->
+      
+l.103 Assuming that $g'\,x$
+                            and $f'\,(g\,x)$ exist (and are therefore finite...
+
+Not a real error.
+
+[59]
+! Preview: Snippet 60 started.
+<-><->
+      
+l.103 Assuming that $g'\,x$ and $
+                                 f'\,(g\,x)$ exist (and are therefore finite...
+
+Not a real error.
+
+! Preview: Snippet 60 ended.(551690+179404x2187964).
+<-><->
+      
+l.103 Assuming that $g'\,x$ and $f'\,(g\,x)$
+                                             exist (and are therefore finite...
+
+Not a real error.
+
+[60]
+! Preview: Snippet 61 started.
+<-><->
+      
+l.104 \[
+        
+Not a real error.
+
+! Preview: Snippet 61 ended.(2306573+0x16121835).
+<-><->
+      
+l.109 \]
+        
+Not a real error.
+
+[61]
+! Preview: Snippet 62 started.
+<-><->
+      
+l.111 \subsection
+                 {Liebnitz' rule}
+Not a real error.
+
+! Preview: Snippet 62 ended.(546132+0x23592960).
+<-><->
+      
+l.111 \subsection{Liebnitz' rule}
+                                 
+Not a real error.
+
+[62
+
+]
+! Preview: Snippet 63 started.
+<-><->
+      
+l.112 \prg
+          {}When the product of two functions is differentiated repeatedly, ...
+
+Not a real error.
+
+! Preview: Snippet 63 ended.(0+0x0).
+<-><->
+      
+l.112 \prg{}
+            When the product of two functions is differentiated repeatedly, ...
+
+Not a real error.
+
+[63
+
+]
+! Preview: Snippet 64 started.
+<-><->
+      
+l.115 $
+       f$&$=$&$u\cd v$ \\
+Not a real error.
+
+! Preview: Snippet 64 ended.(498346+139537x428580).
+<-><->
+      
+l.115 $f$
+         &$=$&$u\cd v$ \\
+Not a real error.
+
+[64]
+! Preview: Snippet 65 started.
+<-><->
+      
+l.115 $f$&$
+           =$&$u\cd v$ \\
+Not a real error.
+
+! Preview: Snippet 65 ended.(263276+0x558150).
+<-><->
+      
+l.115 $f$&$=$
+             &$u\cd v$ \\
+Not a real error.
+
+[65]
+! Preview: Snippet 66 started.
+<-><->
+      
+l.115 $f$&$=$&$
+               u\cd v$ \\
+Not a real error.
+
+! Preview: Snippet 66 ended.(318942+0x1302675).
+<-><->
+      
+l.115 $f$&$=$&$u\cd v$
+                       \\
+Not a real error.
+
+[66]
+! Preview: Snippet 67 started.
+<-><->
+      
+l.116 $
+       D\,f$&$=$&$D\,u\cd v+u\cd D\,v$ \\
+Not a real error.
+
+! Preview: Snippet 67 ended.(498346+139537x1162244).
+<-><->
+      
+l.116 $D\,f$
+            &$=$&$D\,u\cd v+u\cd D\,v$ \\
+Not a real error.
+
+[67]
+! Preview: Snippet 68 started.
+<-><->
+      
+l.116 $D\,f$&$
+              =$&$D\,u\cd v+u\cd D\,v$ \\
+Not a real error.
+
+! Preview: Snippet 68 ended.(263276+0x558150).
+<-><->
+      
+l.116 $D\,f$&$=$
+                &$D\,u\cd v+u\cd D\,v$ \\
+Not a real error.
+
+[68]
+! Preview: Snippet 69 started.
+<-><->
+      
+l.116 $D\,f$&$=$&$
+                  D\,u\cd v+u\cd D\,v$ \\
+Not a real error.
+
+! Preview: Snippet 69 ended.(490372+59802x4949764).
+<-><->
+      
+l.116 $D\,f$&$=$&$D\,u\cd v+u\cd D\,v$
+                                       \\
+Not a real error.
+
+[69]
+! Preview: Snippet 70 started.
+<-><->
+      
+l.117 $
+       \pt{2}{}D\,f$&$=$&$\pt{2}{}D\,u\cd v+D\,u\cd D\,v+D\,u\cd D\,v+u\cd \...
+
+Not a real error.
+
+! Preview: Snippet 70 ended.(620716+177407x1473544).
+<-><->
+      
+l.117 $\pt{2}{}D\,f$
+                    &$=$&$\pt{2}{}D\,u\cd v+D\,u\cd D\,v+D\,u\cd D\,v+u\cd \...
+
+Not a real error.
+
+[70]
+! Preview: Snippet 71 started.
+<-><->
+      
+l.117 $\pt{2}{}D\,f$&$
+                      =$&$\pt{2}{}D\,u\cd v+D\,u\cd D\,v+D\,u\cd D\,v+u\cd \...
+
+Not a real error.
+
+! Preview: Snippet 71 ended.(263276+0x558150).
+<-><->
+      
+l.117 $\pt{2}{}D\,f$&$=$
+                        &$\pt{2}{}D\,u\cd v+D\,u\cd D\,v+D\,u\cd D\,v+u\cd \...
+
+Not a real error.
+
+[71]
+! Preview: Snippet 72 started.
+<-><->
+      
+l.117 $\pt{2}{}D\,f$&$=$&$
+                          \pt{2}{}D\,u\cd v+D\,u\cd D\,v+D\,u\cd D\,v+u\cd \...
+
+Not a real error.
+
+! Preview: Snippet 72 ended.(620716+177407x12866542).
+<-><->
+      
+l.117 ...u\cd D\,v+D\,u\cd D\,v+u\cd \pt{2}{}D\,v$
+                                                   \\
+Not a real error.
+
+[72]
+! Preview: Snippet 73 started.
+<-><->
+      
+l.118                    &$
+                           =$&$\pt{2}{}D\,u\cd v+2\cd D\,u\cd D\,v+u\cd \pt{...
+
+Not a real error.
+
+! Preview: Snippet 73 ended.(263276+0x558150).
+<-><->
+      
+l.118                    &$=$
+                             &$\pt{2}{}D\,u\cd v+2\cd D\,u\cd D\,v+u\cd \pt{...
+
+Not a real error.
+
+[73]
+! Preview: Snippet 74 started.
+<-><->
+      
+l.118                    &$=$&$
+                               \pt{2}{}D\,u\cd v+2\cd D\,u\cd D\,v+u\cd \pt{...
+
+Not a real error.
+
+! Preview: Snippet 74 ended.(620716+177407x10096538).
+<-><->
+      
+l.118 ...cd v+2\cd D\,u\cd D\,v+u\cd \pt{2}{}D\,v$
+                                                   \\
+Not a real error.
+
+[74]
+! Preview: Snippet 75 started.
+<-><->
+      
+l.119 $
+       \pt{3}{}D\,f$&$=$&$\pt{3}{}D\,u\cd v+3\cd \pt{2}{}D\,u\cd D\,v+3\cd D...
+
+Not a real error.
+
+! Preview: Snippet 75 ended.(620716+177407x1473544).
+<-><->
+      
+l.119 $\pt{3}{}D\,f$
+                    &$=$&$\pt{3}{}D\,u\cd v+3\cd \pt{2}{}D\,u\cd D\,v+3\cd D...
+
+Not a real error.
+
+[75]
+! Preview: Snippet 76 started.
+<-><->
+      
+l.119 $\pt{3}{}D\,f$&$
+                      =$&$\pt{3}{}D\,u\cd v+3\cd \pt{2}{}D\,u\cd D\,v+3\cd D...
+
+Not a real error.
+
+! Preview: Snippet 76 ended.(263276+0x558150).
+<-><->
+      
+l.119 $\pt{3}{}D\,f$&$=$
+                        &$\pt{3}{}D\,u\cd v+3\cd \pt{2}{}D\,u\cd D\,v+3\cd D...
+
+Not a real error.
+
+[76]
+! Preview: Snippet 77 started.
+<-><->
+      
+l.119 $\pt{3}{}D\,f$&$=$&$
+                          \pt{3}{}D\,u\cd v+3\cd \pt{2}{}D\,u\cd D\,v+3\cd D...
+
+Not a real error.
+
+! Preview: Snippet 77 ended.(620716+177407x15243312).
+<-><->
+      
+l.119 ...cd D\,u\cd\pt{2}{}D\,v+u\cd \pt{3}{}D\,v$
+                                                   \\
+Not a real error.
+
+[77]
+! Preview: Snippet 78 started.
+<-><->
+      
+l.120 $
+       \pt{n}{}D\,f$&$=$&$\sum_{\leq|0..n|\geq}C\,n\,\id\cd\pt{\id}{}D\,u\cd...
+
+Not a real error.
+
+! Preview: Snippet 78 ended.(508576+177407x1533012).
+<-><->
+      
+l.120 $\pt{n}{}D\,f$
+                    &$=$&$\sum_{\leq|0..n|\geq}C\,n\,\id\cd\pt{\id}{}D\,u\cd...
+
+Not a real error.
+
+[78]
+! Preview: Snippet 79 started.
+<-><->
+      
+l.120 $\pt{n}{}D\,f$&$
+                      =$&$\sum_{\leq|0..n|\geq}C\,n\,\id\cd\pt{\id}{}D\,u\cd...
+
+Not a real error.
+
+! Preview: Snippet 79 ended.(263276+0x558150).
+<-><->
+      
+l.120 $\pt{n}{}D\,f$&$=$
+                        &$\sum_{\leq|0..n|\geq}C\,n\,\id\cd\pt{\id}{}D\,u\cd...
+
+Not a real error.
+
+[79]
+! Preview: Snippet 80 started.
+<-><->
+      
+l.120 $\pt{n}{}D\,f$&$=$&$
+                          \sum_{\leq|0..n|\geq}C\,n\,\id\cd\pt{\id}{}D\,u\cd...
+
+Not a real error.
+
+! Preview: Snippet 80 ended.(599601+343250x9019574).
+<-><->
+      
+l.120 ...,\id\cd\pt{\id}{}D\,u\cd\pt{\id-n}{}D\,v$
+                                                  
+Not a real error.
+
+[80]
+! Preview: Snippet 81 started.
+<-><->
+      
+l.124 \subsection
+                 {Taylor series}
+Not a real error.
+
+! Preview: Snippet 81 ended.(546132+152916x23592960).
+<-><->
+      
+l.124 \subsection{Taylor series}
+                                
+Not a real error.
+
+[81
+
+]
+! Preview: Snippet 82 started.
+<-><->
+      
+l.125 \prg
+          {}We start with the linear approximation of differentiable functio...
+
+Not a real error.
+
+! Preview: Snippet 82 ended.(0+0x0).
+<-><->
+      
+l.125 \prg{}
+            We start with the linear approximation of differentiable functio...
+
+Not a real error.
+
+[82
+
+]
+! Preview: Snippet 83 started.
+<-><->
+      
+l.125 ...pproximation of differentiable function $
+                                                  f$ about $x$:
+Not a real error.
+
+! Preview: Snippet 83 ended.(498346+139537x428580).
+<-><->
+      
+l.125 ...roximation of differentiable function $f$
+                                                   about $x$:
+Not a real error.
+
+[83]
+! Preview: Snippet 84 started.
+<-><->
+      
+l.125 ...on of differentiable function $f$ about $
+                                                  x$:
+Not a real error.
+
+! Preview: Snippet 84 ended.(308974+0x410139).
+<-><->
+      
+l.125 ... of differentiable function $f$ about $x$
+                                                  :
+Not a real error.
+
+[84]
+! Preview: Snippet 85 started.
+<-><->
+      
+l.126 \[
+        
+Not a real error.
+
+! Preview: Snippet 85 ended.(766975+0x16528175).
+<-><->
+      
+l.128 \]
+        
+Not a real error.
+
+[85]
+! Preview: Snippet 86 started.
+<-><->
+      
+l.129 \prg
+          {}which is valid for values near $x$. We can then move to higher-o...
+
+Not a real error.
+
+! Preview: Snippet 86 ended.(0+0x0).
+<-><->
+      
+l.129 \prg{}
+            which is valid for values near $x$. We can then move to higher-o...
+
+Not a real error.
+
+[86
+
+]
+! Preview: Snippet 87 started.
+<-><->
+      
+l.129 \prg{}which is valid for values near $
+                                            x$. We can then move to higher-o...
+
+Not a real error.
+
+! Preview: Snippet 87 ended.(308974+0x410139).
+<-><->
+      
+l.129 \prg{}which is valid for values near $x$
+                                              . We can then move to higher-o...
+
+Not a real error.
+
+[87]
+! Preview: Snippet 88 started.
+<-><->
+      
+l.129 ...to higher-order approximations. For any $
+                                                  n$, there exists the appro...
+
+Not a real error.
+
+! Preview: Snippet 88 ended.(308974+0x430740).
+<-><->
+      
+l.129 ... higher-order approximations. For any $n$
+                                                  , there exists the approxi...
+
+Not a real error.
+
+[88]
+! Preview: Snippet 89 started.
+<-><->
+      
+l.130 \[
+        
+Not a real error.
+
+! Preview: Snippet 89 ended.(1653478+0x22268169).
+<-><->
+      
+l.132 \]
+        
+Not a real error.
+
+[89]
+! Preview: Snippet 90 started.
+<-><->
+      
+l.133 \prg
+          {}If $\pt{n}{}D\,f$ is differentiable, the error term ($o_0\,(\pt ...
+
+Not a real error.
+
+! Preview: Snippet 90 ended.(0+0x0).
+<-><->
+      
+l.133 \prg{}
+            If $\pt{n}{}D\,f$ is differentiable, the error term ($o_0\,(\pt ...
+
+Not a real error.
+
+[90
+
+]
+! Preview: Snippet 91 started.
+<-><->
+      
+l.133 \prg{}If $
+                \pt{n}{}D\,f$ is differentiable, the error term ($o_0\,(\pt ...
+
+Not a real error.
+
+! Preview: Snippet 91 ended.(508576+177407x1533012).
+<-><->
+      
+l.133 \prg{}If $\pt{n}{}D\,f$
+                              is differentiable, the error term ($o_0\,(\pt ...
+
+Not a real error.
+
+[91]
+! Preview: Snippet 92 started.
+<-><->
+      
+l.133 ...\,f$ is differentiable, the error term ($
+                                                  o_0\,(\pt n\cd\id)$) can b...
+
+Not a real error.
+
+! Preview: Snippet 92 ended.(538214+179404x1961657).
+<-><->
+      
+l.133 ...ble, the error term ($o_0\,(\pt n\cd\id)$
+                                                  ) can be reduced to $O_0\,...
+
+Not a real error.
+
+[92]
+! Preview: Snippet 93 started.
+<-><->
+      
+l.133 ...$o_0\,(\pt n\cd\id)$) can be reduced to $
+                                                  O_0\,(\pt{1+n}{\cd}\id)$, ...
+
+Not a real error.
+
+! Preview: Snippet 93 ended.(598293+179404x2872997).
+<-><->
+      
+l.133 ...n be reduced to $O_0\,(\pt{1+n}{\cd}\id)$
+                                                  , since the next term of a...
+
+Not a real error.
+
+[93]
+! Preview: Snippet 94 started.
+<-><->
+      
+l.133 ...etter approximation will be of the form $
+                                                  k\cd\pt{1+n}{\cd}\id$.
+Not a real error.
+
+! Preview: Snippet 94 ended.(598293+177407x2251025).
+<-><->
+      
+l.133 ...ill be of the form $k\cd\pt{1+n}{\cd}\id$
+                                                  .
+Not a real error.
+
+[94]
+! Preview: Snippet 95 started.
+<-><->
+      
+l.135 \prg
+          {}Alternatively, an unshifted approximation can be written:
+Not a real error.
+
+! Preview: Snippet 95 ended.(0+0x0).
+<-><->
+      
+l.135 \prg{}
+            Alternatively, an unshifted approximation can be written:
+Not a real error.
+
+[95
+
+]
+! Preview: Snippet 96 started.
+<-><->
+      
+l.136 \[
+        
+Not a real error.
+
+! Preview: Snippet 96 ended.(1688243+0x21880998).
+<-><->
+      
+l.138 \]
+        
+Not a real error.
+
+[96]
+! Preview: Snippet 97 started.
+<-><->
+      
+l.139 \subsubsection
+                    {Determination of co\"efficients}
+Not a real error.
+
+! Preview: Snippet 97 ended.(498346+0x23592960).
+<-><->
+      
+l.139 ...bsection{Determination of co\"efficients}
+                                                  
+Not a real error.
+
+[97
+
+]
+! Preview: Snippet 98 started.
+<-><->
+      
+l.140 \prg
+          {}Without loss of generality, consider the Taylor expansion of $f$...
+
+Not a real error.
+
+! Preview: Snippet 98 ended.(0+0x0).
+<-><->
+      
+l.140 \prg{}
+            Without loss of generality, consider the Taylor expansion of $f$...
+
+Not a real error.
+
+[98
+
+]
+! Preview: Snippet 99 started.
+<-><->
+      
+l.140 ...ality, consider the Taylor expansion of $
+                                                  f$ about $0$:
+Not a real error.
+
+! Preview: Snippet 99 ended.(498346+139537x428580).
+<-><->
+      
+l.140 ...ity, consider the Taylor expansion of $f$
+                                                   about $0$:
+Not a real error.
+
+[99]
+! Preview: Snippet 100 started.
+<-><->
+      
+l.140 ...sider the Taylor expansion of $f$ about $
+                                                  0$:
+Not a real error.
+
+! Preview: Snippet 100 ended.(462465+0x358810).
+<-><->
+      
+l.140 ...der the Taylor expansion of $f$ about $0$
+                                                  :
+Not a real error.
+
+[100]
+! Preview: Snippet 101 started.
+<-><->
+      
+l.142 \[
+        
+Not a real error.
+
+! Undefined control sequence.
+\textcolor ...@protect@domacro {}{}\pr@\textcolor 
+                                                  
+l.144 f&=\textcolor
+                   {red}{1\cd a_0}+1\cd a_1\cd\id+1\cd a_2\cd\pt 2\cd\id+1\c...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\textcolor ...@protect@domacro {}{}\pr@\textcolor 
+                                                  
+l.145 D\,f&=\textcolor
+                      {red}{1\cd a_1}+2\cd a_2\cd\id+3\cd a_3\cd\pt 2\cd\id+...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\textcolor ...@protect@domacro {}{}\pr@\textcolor 
+                                                  
+l.146 \pt{2}{}D\,f&=\textcolor
+                              {red}{2\cd a_2}+6\cd a_3\cd\id+o_0(\pt 2\cd\id...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\textcolor ...@protect@domacro {}{}\pr@\textcolor 
+                                                  
+l.147 \pt{3}{}D\,f&=\textcolor
+                              {red}{6\cd a_3}+o_0\,\id
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Preview: Snippet 101 ended.(4392684+0x20847725).
+<-><->
+      
+l.149 \]
+        
+Not a real error.
+
+[101]
+! Preview: Snippet 102 started.
+<-><->
+      
+l.150 \prg
+          {}When these functions are evaluated at $0$, only the red values r...
+
+Not a real error.
+
+! Preview: Snippet 102 ended.(0+0x0).
+<-><->
+      
+l.150 \prg{}
+            When these functions are evaluated at $0$, only the red values r...
+
+Not a real error.
+
+[102
+
+]
+! Preview: Snippet 103 started.
+<-><->
+      
+l.150 ...{}When these functions are evaluated at $
+                                                  0$, only the red values re...
+
+Not a real error.
+
+! Preview: Snippet 103 ended.(462465+0x358810).
+<-><->
+      
+l.150 ...When these functions are evaluated at $0$
+                                                  , only the red values remain:
+
+Not a real error.
+
+[103]
+! Preview: Snippet 104 started.
+<-><->
+      
+l.151 \[
+        
+Not a real error.
+
+! Preview: Snippet 104 ended.(5394499+0x14289626).
+<-><->
+      
+l.159 \]
+        
+Not a real error.
+
+[104]
+! Preview: Snippet 105 started.
+<-><->
+      
+l.160 \prg
+          {}The general case can then be re\"arranged to give:
+Not a real error.
+
+! Preview: Snippet 105 ended.(0+0x0).
+<-><->
+      
+l.160 \prg{}
+            The general case can then be re\"arranged to give:
+Not a real error.
+
+[105
+
+]
+! Preview: Snippet 106 started.
+<-><->
+      
+l.161 \[
+        
+Not a real error.
+
+! Preview: Snippet 106 ended.(1653478+0x13833961).
+<-><->
+      
+l.163 \]
+        
+Not a real error.
+
+[106]
+! Preview: Snippet 107 started.
+<-><->
+      
+l.164 \subsection
+                 {L'Hoptal's rule}
+Not a real error.
+
+! Preview: Snippet 107 ended.(546132+152916x23592960).
+<-><->
+      
+l.164 \subsection{L'Hoptal's rule}
+                                  
+Not a real error.
+
+[107
+
+]
+! Preview: Snippet 108 started.
+<-><->
+      
+l.165 \prg
+          {}Let $f$ and $g$ be differentiable and tend to $0$ at $x$. L'Hopi...
+
+Not a real error.
+
+! Preview: Snippet 108 ended.(0+0x0).
+<-><->
+      
+l.165 \prg{}
+            Let $f$ and $g$ be differentiable and tend to $0$ at $x$. L'Hopi...
+
+Not a real error.
+
+[108
+
+]
+! Preview: Snippet 109 started.
+<-><->
+      
+l.165 \prg{}Let $
+                 f$ and $g$ be differentiable and tend to $0$ at $x$. L'Hopi...
+
+Not a real error.
+
+! Preview: Snippet 109 ended.(498346+139537x428580).
+<-><->
+      
+l.165 \prg{}Let $f$
+                    and $g$ be differentiable and tend to $0$ at $x$. L'Hopi...
+
+Not a real error.
+
+[109]
+! Preview: Snippet 110 started.
+<-><->
+      
+l.165 \prg{}Let $f$ and $
+                         g$ be differentiable and tend to $0$ at $x$. L'Hopi...
+
+Not a real error.
+
+! Preview: Snippet 110 ended.(308974+139537x368028).
+<-><->
+      
+l.165 \prg{}Let $f$ and $g$
+                            be differentiable and tend to $0$ at $x$. L'Hopi...
+
+Not a real error.
+
+[110]
+! Preview: Snippet 111 started.
+<-><->
+      
+l.165 ...$ and $g$ be differentiable and tend to $
+                                                  0$ at $x$. L'Hopital's rul...
+
+Not a real error.
+
+! Preview: Snippet 111 ended.(462465+0x358810).
+<-><->
+      
+l.165 ...and $g$ be differentiable and tend to $0$
+                                                   at $x$. L'Hopital's rule ...
+
+Not a real error.
+
+[111]
+! Preview: Snippet 112 started.
+<-><->
+      
+l.165 ...g$ be differentiable and tend to $0$ at $
+                                                  x$. L'Hopital's rule state...
+
+Not a real error.
+
+! Preview: Snippet 112 ended.(308974+0x410139).
+<-><->
+      
+l.165 ... be differentiable and tend to $0$ at $x$
+                                                  . L'Hopital's rule states ...
+
+Not a real error.
+
+[112]
+! Preview: Snippet 113 started.
+<-><->
+      
+l.166 \[
+        
+Not a real error.
+
+! Preview: Snippet 113 ended.(1615608+0x20292366).
+<-><->
+      
+l.168 \]
+        
+Not a real error.
+
+[113]
+! Preview: Snippet 114 started.
+<-><->
+      
+l.169 \prg
+          {}In the case that both $D\,f$ and $D\,g$ tend to $0$, the rule ca...
+
+Not a real error.
+
+! Preview: Snippet 114 ended.(0+0x0).
+<-><->
+      
+l.169 \prg{}
+            In the case that both $D\,f$ and $D\,g$ tend to $0$, the rule ca...
+
+Not a real error.
+
+[114
+
+]
+! Preview: Snippet 115 started.
+<-><->
+      
+l.169 \prg{}In the case that both $
+                                   D\,f$ and $D\,g$ tend to $0$, the rule ca...
+
+Not a real error.
+
+! Preview: Snippet 115 ended.(498346+139537x1162244).
+<-><->
+      
+l.169 \prg{}In the case that both $D\,f$
+                                         and $D\,g$ tend to $0$, the rule ca...
+
+Not a real error.
+
+[115]
+! Preview: Snippet 116 started.
+<-><->
+      
+l.169 \prg{}In the case that both $D\,f$ and $
+                                              D\,g$ tend to $0$, the rule ca...
+
+Not a real error.
+
+! Preview: Snippet 116 ended.(490372+139537x1101692).
+<-><->
+      
+l.169 ...{}In the case that both $D\,f$ and $D\,g$
+                                                   tend to $0$, the rule can...
+
+Not a real error.
+
+[116]
+! Preview: Snippet 117 started.
+<-><->
+      
+l.169 ...ase that both $D\,f$ and $D\,g$ tend to $
+                                                  0$, the rule can be applie...
+
+Not a real error.
+
+! Preview: Snippet 117 ended.(462465+0x358810).
+<-><->
+      
+l.169 ...e that both $D\,f$ and $D\,g$ tend to $0$
+                                                  , the rule can be applied ...
+
+Not a real error.
+
+[117]
+! Preview: Snippet 118 started.
+<-><->
+      
+l.170 \[
+        
+Not a real error.
+
+! Preview: Snippet 118 ended.(1979187+0x21605060).
+<-><->
+      
+l.175 \]
+        
+Not a real error.
+
+[118]
+! Preview: Snippet 119 started.
+<-><->
+      
+l.176 \[
+        
+Not a real error.
+
+! Preview: Snippet 119 ended.(9845904+0x22040298).
+<-><->
+      
+l.184 \]
+        
+Not a real error.
+
+[119]
+! Preview: Snippet 120 started.
+<-><->
+      
+l.186 \section
+              {Integration}
+Not a real error.
+
+! Preview: Snippet 120 ended.(655359+183500x23592960).
+<-><->
+      
+l.186 \section{Integration}
+                           
+Not a real error.
+
+[120
+
+]
+! Preview: Snippet 121 started.
+<-><->
+      
+l.187 \subsection
+                 {Definition}
+Not a real error.
+
+! Preview: Snippet 121 ended.(546132+0x23592960).
+<-><->
+      
+l.187 \subsection{Definition}
+                             
+Not a real error.
+
+[121
+
+]
+! Preview: Snippet 122 started.
+<-><->
+      
+l.188 \prg
+          {}An integral is the limit of a sum. It is defined as follows:
+Not a real error.
+
+! Preview: Snippet 122 ended.(0+0x0).
+<-><->
+      
+l.188 \prg{}
+            An integral is the limit of a sum. It is defined as follows:
+Not a real error.
+
+[122
+
+]
+! Preview: Snippet 123 started.
+<-><->
+      
+l.189 \[
+        
+Not a real error.
+
+! Preview: Snippet 123 ended.(2203698+0x22136021).
+<-><->
+      
+l.191 \]
+        
+Not a real error.
+
+[123]
+! Preview: Snippet 124 started.
+<-><->
+      
+l.192 \prg
+          {}This is the limit of the sum of areas of rectangles whose base i...
+
+Not a real error.
+
+! Preview: Snippet 124 ended.(0+0x0).
+<-><->
+      
+l.192 \prg{}
+            This is the limit of the sum of areas of rectangles whose base i...
+
+Not a real error.
+
+[124
+
+]
+! Preview: Snippet 125 started.
+<-><->
+      
+l.192 ...reas of rectangles whose base is on the $
+                                                  x$-axis, and whose far lef...
+
+Not a real error.
+
+! Preview: Snippet 125 ended.(308974+0x410139).
+<-><->
+      
+l.192 ...as of rectangles whose base is on the $x$
+                                                  -axis, and whose far left ...
+
+Not a real error.
+
+[125]
+! Preview: Snippet 126 started.
+<-><->
+      
+l.192 ...t corner touches the curve representing $
+                                                  f$. Since the error of thi...
+
+Not a real error.
+
+! Preview: Snippet 126 ended.(498346+139537x428580).
+<-><->
+      
+l.192 ...corner touches the curve representing $f$
+                                                  . Since the error of this ...
+
+Not a real error.
+
+[126]
+! Preview: Snippet 127 started.
+<-><->
+      
+l.192 ...les an the curve, the error is of order $
+                                                  \pt 2\cd\Delta$.
+Not a real error.
+
+! Preview: Snippet 127 ended.(620716+177407x909317).
+<-><->
+      
+l.192 ...e, the error is of order $\pt 2\cd\Delta$
+                                                  .
+Not a real error.
+
+[127]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 194.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 194.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 194.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 194.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 194.
+ ) 
+Here is how much of TeX's memory you used:
+ 1191 strings out of 487573
+ 16711 string characters out of 6060232
+ 186039 words of memory out of 5000000
+ 10057 multiletter control sequences out of 15000+600000
+ 13781 words of font info for 52 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 40i,16n,29p,403b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
+r/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
+/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on de.pdf (127 pages, 161769 bytes).
+PDF statistics:
+ 561 PDF objects out of 1000 (max. 8388607)
+ 413 compressed objects within 5 object streams
+ 45 named destinations out of 1000 (max. 500000)
+ 89 words of extra memory for PDF output out of 10000 (max. 10000000)
+

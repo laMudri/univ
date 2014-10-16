@@ -1,0 +1,165 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Vectors and matrices}}
+\author{James Wood}
+\date{2014-10-11}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\newcommand*\C{\ensuremath{\mathbb C}}
+\newcommand*\R{\ensuremath{\mathbb R}}
+\newcommand*\id{\iota}
+\newcommand*\cd{\cdot}
+\newcommand*\prg{\paragraph}
+\newcommand*\pt{\prescript}
+\newcommand*\conj[1]{\overline{#1}}
+\DeclareMathOperator{\abs}{abs}
+\DeclareMathOperator{\all}{all}
+\DeclareMathOperator{\any}{any}
+\DeclareMathOperator{\card}{card}
+
+\begin{document}
+
+\maketitle
+
+\section*{Notations and conventions}
+\prg{}The notation used here is under development. Details can be found at \url{http://fancyfahu.blogspot.co.uk}. Particularly, the arguments of subtraction and division are swapped.
+
+\section{Complex numbers}
+\subsection{Basic properties}
+\prg{}If $z$ is a complex number, it can be expressed in the form $a+i\cd b$, where $a,b\in\mathbb R$ and $\pt 2 \cd i=1^-$. Complex numbers are closed under addition, subtraction, multiplication, division and exponentiation.
+
+\subsection{Argand diagram}
+Complex numbers hold the same information as real 2-vectors ($\R\times\R$), and hence complex numbers can be represented as 2-vectors visually. Also, addition of complex numbers corresponds to addition of 2-vectors. From this representation, the triangle inequality is obvious.
+$$
+\abs(z_0+z_1)\leq\abs z_0+\abs z_1
+$$
+The fact that the triangle inequality holds is the characteristic of complex numbers that makes them form a metric space.
+
+\prg{}The following inequality also holds, and is identical:
+$$
+\abs(z_0-z_1)\geq\abs(\abs z_0-\abs z_1)
+$$
+\prg{}This is proved as follows. $\abs z_0=\abs(z_1+z_1-z_0)$. By the triangle inequality,
+$\abs(z_1+(z_1-z_0))\leq\abs z_1+\abs(z_1-z_0)$. Hence, $\abs z_1-\abs z_0\leq\abs(z_1-z_0)$. A similar argument gives $\abs z_1\leq\abs z_0+\abs(z_0-z_1)$, and hence $\abs z_0-\abs z_1\leq\abs(z_0-z_1)$. $\abs(z_1-z_0)=\abs(z_0-z_1)$, so
+$\abs(z_0-z_1)^-\leq\abs z_0-\abs z_1;\leq\abs(z_0-z_1)$. In other words, $\abs(\abs z_0-\abs z_1)\leq\abs(z_0-z_1)$, QED.
+
+\subsection{Complex exponential}
+The Taylor series of the $\exp:\R\rightarrow\R$ function can be used to extend its domain (and, incidentally, codomain).
+\[
+\begin{aligned}
+\exp&=1+\id+\frac{2!}{\pt 2\cd\id}+\hdots; \\
+    &=\sum^0_\infty z:\frac{\id!}{\pt\id\cd z}
+\end{aligned}
+\]
+\prg{}This funciton converges for all $\C$.
+
+\subsubsection{Multiplication}
+\prg{}Here, we prove that $\all(\exp z_0\cd\exp z_1=\exp(z_0+z_1))\,(\C\times\C)$. Let $f\,z\,n=\frac{n!}{\pt n\cd z}$
+\[
+\begin{aligned}
+\exp z_0\cd\exp z_1&=\left(\sum^0_\infty z_0,z_1:f\,z_0\right)\cd\left(\sum^0_\infty z_0,z_1:f\,z_1\right); \\
+                  &=\sum^0_\infty z_0,z_1:\left(\sum^0_\infty\kappa:f\,z_0\,\id\cd f\,z_1\,\kappa\right)\id; \\
+                  &=\sum^0_\infty z_0,z_1:\left(\sum_{\leq|0,\id|\geq}\kappa:f\,z_0\,(\id-\kappa)\cd f\,z_1\,\id\right)\id;\quad\textrm{taking sums along minor diagonals}\\
+                  &=\sum^0_\infty z_0,z_1:\left(\sum_{\leq|0,\id|\geq}\kappa:\frac{(\id-\kappa)!}{\pt{\id-\kappa}{\cd}z_0}\cd \frac{\id!}{\pt\id\cd z_1}\right)\id; \\
+                  &=\sum^0_\infty z_0,z_1:\frac{\id!}{1}\cd\left(\sum_{\leq|0,\id|\geq}\kappa:\frac{(\id-\kappa)!\cd\id!}{\kappa!}\cd\pt{\id-\kappa}{\cd}z_0\cd\pt\id\cd z_1\right)\id; \\
+                  &=\sum^0_\infty z_0,z_1:\frac{\id!}{\pt\id\cd(z_0+z_1)};\quad\textrm{reversing the binomial expansion} \\
+                  &=\exp(z_0+z_1)
+\end{aligned}
+\]
+
+\section{The complex exponential and Argand diagram}
+\subsection{Trigonometric functions}
+\prg{}The basic trigonometric functions can be defined using the complex exponential function and splitting the result into real and imaginary parts. On the Argand diagram (for real argument $\theta$), this is represented by plotting the point $\exp(i\cd\theta)$ and measuring the $x$ (for $\cos$) and $y$ (for $\sin$) parts of its co\"ordinates.
+\[
+\begin{aligned}
+\exp(i\cd z)&=\sum^0_\infty\frac{\id!}{\pt\id\cd i\cd\pt\id\cd z} \\
+&=\sum^0_\infty\frac{(2\cd\id)!}{\pt{2\cd\id}{\cd}i\cd\pt{2\cd\id}{\cd}z}+
+  \sum^0_\infty\frac{(1+2\cd\id)!}{\pt{1+2\cd\id}{\cd}i\cd\pt{1+2\cd\id}{\cd}z} \\
+&=\sum^0_\infty\frac{(2\cd\id)!}{\pt\id\cd(1^-)\cd\pt{2\cd\id}{\cd}z}+i\cd
+  \sum^0_\infty\frac{(1+2\cd\id)!}{\pt\id\cd(1^-)\cd\pt{1+2\cd\id}{\cd}z} \\
+&=\cos z+i\cd\sin z
+\end{aligned}
+\]
+
+\subsection{Roots of unity}
+\prg{}The equation $\pt n\cd\id=1$ (with $n\in\mathbb N$), being a polynomial equation of order $n$, has $n$ values that satisfy it. The obvious root is $1$, but there are others.
+\[
+\begin{aligned}
+&\textrm{Let }\exp(\tau\cd i\cd k)=1;=\pt n\cd z \\
+&\exp\frac{n}{\tau\cd i\cd k}=z \\
+&z\in\exp\frac{n}{\tau\cd i\cd\mathbb Z} \\
+\end{aligned}
+\]
+\prg{}Though $\mathbb Z$ is infinite, $\exp(\frac{n}{\tau\cd i}\cd\mathbb Z)=\exp(\frac{n}{\tau\cd i}\cd(n+\mathbb Z))$, due to the latter being a complete rotation around the Argand diagram of the former.
+
+\prg{}The roots of unity for a given $n$ form a regular polygon about $0$ when adjacent roots are connected on the Argand diagram. This is related to the fact that the sum of all roots (for $n>1$) is equal to $0$:
+\[
+\begin{aligned}
+&\textrm{Let }\pt{\leq|0,n|>}{\cd}\omega\textrm{ be the solutions to }1-\pt n\cd\id=0 \\
+&1-\pt n\cd\omega=0 \quad\textrm{by definition of }\omega \\
+&1-\pt n\cd\omega=(1-\omega)\cd\sum^0_n(\pt\id\cd\omega) \\
+&0=(1-\omega)\cd\sum^0_n(\pt\id\cd\omega) \\
+&\omega\neq 1\quad\therefore\quad\sum^0_n(\pt\id\cd\omega)=0
+\end{aligned}
+\]
+
+\subsection{Complex logarithm}
+\prg{}The $\ln$ function is defined as the inverse of the $\exp$ function:
+\[
+\begin{aligned}
+\id&=r\cd\exp(i\cd\theta) \\
+\ln&=\ln r+\ln(\exp(i\cd\theta)) \quad r\in\R\textrm{, so we can calculate }\ln r \\
+\ln&=\ln r+i\cd\theta \quad\textrm{by definition of }\ln \\
+\ln&=\ln\abs+i\cd\arg \quad\textrm{explicitly}
+\end{aligned}
+\]
+\prg{}Since, for complex input, there are infinite classes of values which can be passed to $\exp$ to give the same output, the range of $\ln$ has to be restricted. Given the above expression, the obvious way is to restrict the range of $\arg$ to a $\tau$-sized half-open interval.
+
+\subsection{Complex power function}
+\prg{}The complex power function is derived as follows:
+\[
+\begin{aligned}
+\pt\alpha\cd z&=\exp(\ln(\pt\alpha\cd z)) \\
+&=\exp(\alpha\cd\ln z)
+\end{aligned}
+\]
+\prg{}With the multivalued (list-producing) $\ln$ function, we note the following:
+\[
+\alpha\in\mathbb Q\iff\card\pt\alpha\cd z<\infty
+\]
+
+\subsection{Lines and circles in $\C$}
+\subsubsection{Lines}
+\prg{}Lines can be expressed in a parametric way, as they would be with vectors.
+\[
+\id=z+\lambda\cd w\textrm{, }\lambda\in\R
+\]
+\prg{}Compare to $\id=\mathbf a+\lambda\cd\mathbf d$. However, with complex numbers, the $\lambda$ can be removed by the following process:
+\[
+\begin{aligned}
+\lambda&=\frac{w}{z-\id} \\
+\conj\lambda&=\conj{\left(\frac{w}{z-\id}\right)} \\
+\lambda&=\frac{\conj w}{\conj z-\conj\id} \quad\textrm{N.B: }\lambda\in\R \\
+\frac{w}{z-\id}&=\frac{\conj w}{\conj z-\conj\id} \\
+\conj w\cd(z-\id)&=w\cd(\conj z-\conj\id)
+\end{aligned}
+\]
+
+\subsubsection{Circles}
+\prg{}Circles are specified with a centre and a radius. By definition, every distance from a point on the circle to the centre is the radius.
+\[
+\abs(c-\id)=\rho
+\]
+\prg{}This can be expressed in an alternative form:
+\[
+\begin{aligned}
+\pt 2\cd\abs(c-\id)&=\pt 2\cd\rho \quad\textrm{N.B: both $\abs(c-\id)$ and $\rho$ are positive.} \\
+(c-\id)\cd(\conj c-\conj\id)&=\pt 2\cd\rho \\
+c\cd\conj\id-\id\cd\conj c-\id\cd\conj\id&=c\cd\conj c-\pt 2\cd\rho
+\end{aligned}
+\]
+
+\end{document}
