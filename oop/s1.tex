@@ -1,0 +1,131 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Object oriented programming -- supervision 1}}
+\author{James Wood}
+\usepackage{listings}
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\begin{document}
+
+\maketitle
+
+\section*{a}
+\paragraph{}\begin{enumerate}
+  \item The typical imperative language encourages mutation of variables. The typical functional language doesn't.
+  \item The typical imperative language doesn't treat functions as it would values. The typical functional language does.
+  \item The typical imperative language has built-in structures for iteration. The typical functional language relies on higher-order functions and recursion.
+\end{enumerate}
+
+\section*{b}
+\paragraph{}\lstinputlisting[language=java]{code/S1b.java}
+\paragraph{}The \texttt{main} method calls itself immediately without any change in parameters. Logically, this puts the program into an infinite loop, but in practice, since each function call is designated a distinct area on the (finite) stack, an exeption is thrown when there is no more space on the stack.
+
+\section*{c}
+\paragraph{}If one tries to read from or write to a \texttt{null} reference, an exception is thrown. With a misplaced pointer, reading or writing will have an unforeseen effect.
+
+\section*{d}
+\paragraph{}The stack is used to store primitive values, including references. The heap is used to store objects. Only values on the stack can be directly assigned to in Java. Values on the heap need to be created via a constructor.
+
+\section*{e}
+\paragraph{}Just after \texttt{myfunction2} is called:
+\paragraph{}\begin{tabular}{c || c}
+  Stack & Heap \\
+  \hline
+  \begin{tabular}{c | c}
+    \texttt{x} & 1 \\
+    \texttt{a} & ref0 \\
+    \hline
+    \texttt{num} & 1 \\
+    \texttt{numarray} & ref0 \\
+  \end{tabular} &
+  \begin{tabular}{c | c}
+    ref0 & \{1\} \\
+  \end{tabular} \\
+\end{tabular}
+\paragraph{}After first two lines of \texttt{myfunction2} have run:
+\paragraph{}\begin{tabular}{c || c}
+  Stack & Heap \\
+  \hline
+  \begin{tabular}{c | c}
+    \texttt{x} & 2 \\
+    \texttt{a} & ref0 \\
+    \hline
+    \texttt{num} & 1 \\
+    \texttt{numarray} & ref0 \\
+  \end{tabular} &
+  \begin{tabular}{c | c}
+    ref0 & \{1\} \\
+  \end{tabular} \\
+\end{tabular}
+\paragraph{}\texttt{x} represents a stack value, so changing it will not affect \texttt{num}.
+\paragraph{}As \texttt{myfunction2} is about to return:
+\paragraph{}\begin{tabular}{c || c}
+  Stack & Heap \\
+  \hline
+  \begin{tabular}{c | c}
+    \texttt{x} & 2 \\
+    \texttt{a} & ref1 \\
+    \hline
+    \texttt{num} & 1 \\
+    \texttt{numarray} & ref0 \\
+  \end{tabular} &
+  \begin{tabular}{c | c}
+    ref0 & \{1\} \\
+    ref1 & \{2\} \\
+  \end{tabular} \\
+\end{tabular}
+\paragraph{}On the third line, \texttt{a} was assigned to a new object, and hence changes to the new object don't affect the old one.
+\paragraph{}After \texttt{myfunction2} has returned:
+\paragraph{}\begin{tabular}{c || c}
+  Stack & Heap \\
+  \hline
+  \begin{tabular}{c | c}
+    \texttt{num} & 1 \\
+    \texttt{numarray} & ref0 \\
+  \end{tabular} &
+  \begin{tabular}{c | c}
+    ref0 & \{1\} \\
+    ref1 & \{2\} \\
+  \end{tabular} \\
+\end{tabular}
+\paragraph{}\texttt{num} and \texttt{numarray} have not been affected. ref1 is ready to be garbage collected. The output is \texttt{1 1}.
+
+\section*{f}
+\paragraph{}Primitives:
+\begin{itemize}
+  \item \texttt{double}
+  \item \texttt{int}
+\end{itemize}
+\paragraph{}References:
+\begin{itemize}
+  \item \texttt{i} references an array
+  \item \texttt{l} references a List
+  \item \texttt{k} references a Double
+  \item \texttt{t} references null
+  \item \texttt{f} references null
+  \item \texttt{c} references null
+\end{itemize}
+\paragraph{}Classes:
+\begin{itemize}
+  \item \texttt{List}
+  \item \texttt{Double}
+  \item \texttt{Tree}
+  \item \texttt{Float}
+  \item \texttt{Computer}
+\end{itemize}
+\paragraph{}Objects:
+\begin{itemize}
+  \item \texttt{\{1,2,3,4\}}
+  \item \texttt{new List()}
+  \item \texttt{new Double()}
+\end{itemize}
+
+\section*{g}
+\paragraph{}\includegraphics{s1g.1}
+
+\end{document}

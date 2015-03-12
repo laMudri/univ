@@ -8,6 +8,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
+\usepackage{esvect}
 \newcommand*\C{\ensuremath{\mathbb C}}
 \newcommand*\R{\ensuremath{\mathbb R}}
 \newcommand*\id{\iota}
@@ -19,6 +20,8 @@
 \DeclareMathOperator{\all}{all}
 \DeclareMathOperator{\any}{any}
 \DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\mgn}{mgn}
+\DeclareMathOperator{\prj}{prj}
 
 \begin{document}
 
@@ -54,7 +57,7 @@ The Taylor series of the $\exp:\R\rightarrow\R$ function can be used to extend i
     &=\sum^0_\infty z:\frac{\id!}{\pt\id\cd z}
 \end{aligned}
 \]
-\prg{}This funciton converges for all $\C$.
+\prg{}This function converges for all $\C$.
 
 \subsubsection{Multiplication}
 \prg{}Here, we prove that $\all(\exp z_0\cd\exp z_1=\exp(z_0+z_1))\,(\C\times\C)$. Let $f\,z\,n=\frac{n!}{\pt n\cd z}$
@@ -62,9 +65,9 @@ The Taylor series of the $\exp:\R\rightarrow\R$ function can be used to extend i
 \begin{aligned}
 \exp z_0\cd\exp z_1&=\left(\sum^0_\infty z_0,z_1:f\,z_0\right)\cd\left(\sum^0_\infty z_0,z_1:f\,z_1\right); \\
                   &=\sum^0_\infty z_0,z_1:\left(\sum^0_\infty\kappa:f\,z_0\,\id\cd f\,z_1\,\kappa\right)\id; \\
-                  &=\sum^0_\infty z_0,z_1:\left(\sum_{\leq|0,\id|\geq}\kappa:f\,z_0\,(\id-\kappa)\cd f\,z_1\,\id\right)\id;\quad\textrm{taking sums along minor diagonals}\\
-                  &=\sum^0_\infty z_0,z_1:\left(\sum_{\leq|0,\id|\geq}\kappa:\frac{(\id-\kappa)!}{\pt{\id-\kappa}{\cd}z_0}\cd \frac{\id!}{\pt\id\cd z_1}\right)\id; \\
-                  &=\sum^0_\infty z_0,z_1:\frac{\id!}{1}\cd\left(\sum_{\leq|0,\id|\geq}\kappa:\frac{(\id-\kappa)!\cd\id!}{\kappa!}\cd\pt{\id-\kappa}{\cd}z_0\cd\pt\id\cd z_1\right)\id; \\
+                  &=\sum^0_\infty z_0,z_1:\left(\sum_{{\leq}|0,\id|{\geq}}\kappa:f\,z_0\,(\id-\kappa)\cd f\,z_1\,\id\right)\id;\quad\textrm{taking sums along minor diagonals}\\
+                  &=\sum^0_\infty z_0,z_1:\left(\sum_{{\leq}|0,\id|{\geq}}\kappa:\frac{(\id-\kappa)!}{\pt{\id-\kappa}{\cd}z_0}\cd \frac{\id!}{\pt\id\cd z_1}\right)\id; \\
+                  &=\sum^0_\infty z_0,z_1:\frac{\id!}{1}\cd\left(\sum_{{\leq}|0,\id|{\geq}}\kappa:\frac{(\id-\kappa)!\cd\id!}{\kappa!}\cd\pt{\id-\kappa}{\cd}z_0\cd\pt\id\cd z_1\right)\id; \\
                   &=\sum^0_\infty z_0,z_1:\frac{\id!}{\pt\id\cd(z_0+z_1)};\quad\textrm{reversing the binomial expansion} \\
                   &=\exp(z_0+z_1)
 \end{aligned}
@@ -98,7 +101,7 @@ The Taylor series of the $\exp:\R\rightarrow\R$ function can be used to extend i
 \prg{}The roots of unity for a given $n$ form a regular polygon about $0$ when adjacent roots are connected on the Argand diagram. This is related to the fact that the sum of all roots (for $n>1$) is equal to $0$:
 \[
 \begin{aligned}
-&\textrm{Let }\pt{\leq|0,n|>}{\cd}\omega\textrm{ be the solutions to }1-\pt n\cd\id=0 \\
+&\textrm{Let }\pt{{\leq}|0,n|{>}}{\cd}\omega\textrm{ be the solutions to }1-\pt n\cd\id=0 \\
 &1-\pt n\cd\omega=0 \quad\textrm{by definition of }\omega \\
 &1-\pt n\cd\omega=(1-\omega)\cd\sum^0_n(\pt\id\cd\omega) \\
 &0=(1-\omega)\cd\sum^0_n(\pt\id\cd\omega) \\
@@ -161,5 +164,199 @@ The Taylor series of the $\exp:\R\rightarrow\R$ function can be used to extend i
 c\cd\conj\id-\id\cd\conj c-\id\cd\conj\id&=c\cd\conj c-\pt 2\cd\rho
 \end{aligned}
 \]
+\section{Vectors}
+\subsection{Definition and basic properties}
+\prg{}A vector is defined by its magnitude (${\leq}|0,\infty{>}$) and direction (in $n$ dimensions). In any vector space, there exists the vector $\mathbf 0$, such that $\mgn{\mathbf v}=0\iff\mathbf v=\mathbf 0$. Also, the function $\hat\id$ is such that $\mgn{\hat{\mathbf v}}=1\wedge\mathbf v\parallel\hat{\mathbf v}$.
+
+\prg{}A vector field is a function mapping the points of a space to vectors. These are found often in physics, where forces (like gravity and electromagnetism) have associated fields. These fields map points in 3D space to 3D force vectors.
+
+\subsubsection{Addition}
+\prg{}Vectors are added together using the parallelogram rule. Addition of vectors always has these properties:
+\[
+\begin{aligned}
+\mathbf a+\mathbf b&=\mathbf b+\mathbf a &&\quad\textrm{(commutative)} \\
+\mathbf a+(\mathbf b+\mathbf c)&=(\mathbf a+\mathbf b)+\mathbf c &&\quad\textrm{(associative)} \\
+\mathbf a+\mathbf 0&=\mathbf a &&\quad\textrm{(there is a unique $\mathbf 0$)} \\
+\mathbf a+(\mathbf a^-)&=\mathbf 0 &&\quad\textrm{(every element has an inverse)} \\
+\mathbf a+\mathbf b&=\mathbf c &&\quad\textrm{(closure)}
+\end{aligned}
+\]
+\prg{}These properties mean that an Abelian group can be formed from any vector space.
+
+\subsubsection{Multiplication by a scalar}
+\prg{}For vectors $\mathbf a$ and $\mathbf b$, and scalars $\lambda$ and $\mu$:
+\[
+\begin{aligned}
+\mgn{\lambda\cd\mathbf a}&=\mgn\lambda\cd\mgn{\mathbf a} \\
+\lambda\cd\mathbf a&\parallel\mathbf a \\
+(\lambda+\mu)\cd\mathbf a&=\lambda\cd\mathbf a+\mu\cd\mathbf a &&\quad\textrm{(distributive over addition of scalars)}\\
+\lambda\cd(\mathbf a+\mathbf b)&=\lambda\cd\mathbf a+\lambda\cd\mathbf b &&\quad\textrm{(distributive over addition of vectors)}\\
+\lambda\cd(\mu\cd\mathbf a)&=(\lambda\cd\mu)\cd\mathbf a &&\quad\textrm{(associative with scalar multiplication)}\\
+1\cd\mathbf a&=\mathbf a &&\quad\textrm{(unit)}\\
+\lambda\cd\mathbf a&=\mathbf b &&\quad\textrm{(closure)}
+\end{aligned}
+\]
+\subsection{Vector spaces}
+\prg{}A vector space is a set of vectors which satisfy all of the previous properties. The obvious class of examples is $\pt{\mathbb N}\times\R$. Given $\pt n\times S=\{\mathbf x|\mathbf x=(x_0,x_1,\dotsc,x_{1-n}),\all x_{{\leq} 0,n{>}}\in S\}$ and the following definitions, the vector properties hold for all $n$.
+\[
+\begin{aligned}
+\mathbf x+\mathbf y&=(x_0+y_0,\dotsc,x_{1-n}+y_{1-n}) \\
+\mathbf 0&=(0,\dotsc,0) \\
+\mathbf x^-&=(x_0^-,\dotsc,x_{1-n}^-) \\
+\lambda\cd\mathbf x&=(\lambda\cd\mathbf x_0,\dotsc,\lambda\cd\mathbf x_{1-n})
+\end{aligned}
+\]
+\prg{}A consequence of the properties is that any vector space embedded inside another space must contain the space's origin. For example, any line passing through the origin of a 2D plane can form a vector space, but not any other lines on the 2D plane.
+
+\subsection{Scalar product}
+\prg{}The scalar product is defined by the expression
+\[
+\mathbf a\cd\mathbf b=\mgn{\mathbf a}\cd\mgn{\mathbf b}\cd\cos\theta
+\]
+\prg{}where $\theta$ is the angle between the two vectors. This angle is more difficult to define in higher-dimensional space, and turns out to be defined by rearranging the above expression:
+\[
+\theta=\pt{1^-}{\circ}\cos\frac{\mgn{\mathbf a}\cd\mgn{\mathbf b}}{\mathbf a\cd\mathbf b}
+\]
+\prg{}The scalar product has the following properties:
+\[
+\begin{aligned}
+\mathbf a\cd\mathbf b&=\mathbf b\cd\mathbf a\\
+\mathbf a\cd\mathbf a&=\pt 2\cd{}\mgn{\mathbf a}\\
+\mathbf a\cd\mathbf b=0&\iff\mathbf a\perp\mathbf b\vee\mathbf a=\mathbf 0\vee\mathbf b=\mathbf 0
+\end{aligned}
+\]
+\prg{}The scalar product can be used to produce a projection of one vector up to another. We can define:
+\[
+\prj\mathbf a\,\mathbf b=(\mathbf{\hat a}\cd\mathbf b)\cd\mathbf{\hat a}
+\]
+\prg{}This produces a vector parallel to $\mathbf a$ with a length such that if a perpendicular line is taken from its end, it will reach the end of $\mathbf b$.
+
+\subsection{Inner product}
+\prg{}The scalar product is an example of an inner product. An inner product is a binary function (denoted $<x|y>$) that satisfies the following laws:
+\[
+\begin{aligned}
+\langle\mathbf x|\mathbf y\rangle&=\langle\mathbf y|\mathbf x\rangle &&\quad\textrm{(symmetry)}\\
+\langle\mathbf x|\lambda\cd\mathbf y+\mu\cd\mathbf z\rangle&=\lambda\cd \langle\mathbf x|\mathbf y\rangle+\mu\cd\langle\mathbf x|\mathbf z\rangle &&\quad\textrm{(linearity)}\\
+\langle\mathbf x|\mathbf x\rangle&\geq\mathbf 0\\
+\langle\mathbf x|\mathbf x\rangle&=\mathbf 0\iff\mathbf x=\mathbf 0\\
+\pt{\frac 21}\cd\langle\mathbf x|\mathbf x\rangle&=\mgn{\mathbf x} &&\quad\textrm{(norm)}
+\end{aligned}
+\]
+\prg{}Inner products can be defined on things other than vectors. For example, let $f$ and $g$ be continuous functions of type ${\leq}|0,1|{\geq}\rightarrow{\leq}|0,1|{\geq}$. Then,
+\[
+\langle f|g\rangle=\int^0_1(f\cd g)
+\]
+\subsection{Cauchy-Schwarz inequality}
+\prg{}This inequality of vectors is as follows:
+\[
+\mathbf x\cd\mathbf y\leq\mgn\mathbf x\cd\mgn\mathbf y
+\]
+\prg{}This is obvious in the definition involving $\cos\theta$, but can be proved without that. The proof is as follows, where $\lambda$ is an arbitrary scalar:
+\[
+\begin{aligned}
+\pt 2\cd{}\mgn{(\lambda\cd\mathbf x-\mathbf y)}&\geq 0\\
+(\lambda\cd\mathbf x-\mathbf y)\cd(\lambda\cd\mathbf x-\mathbf y)&\geq 0\\
+\pt 2\cd\lambda\cd\mathbf x\cd\mathbf x+2\cd\lambda\cd\mathbf x\cd\mathbf y-\mathbf y\cd\mathbf y&\geq 0
+\end{aligned}
+\]
+\prg{}The last left-hand expression is a quadratic expression in $\lambda$. Because, for all values of $\lambda$, it is greater than $0$, it has either 1 repeated root or no roots. This means:
+\[
+\begin{aligned}
+\Delta\,(\pt 2\cd\id\cd\mathbf x\cd\mathbf x+2\cd\id\cd\mathbf x\cd\mathbf y-\mathbf y\cd\mathbf y)&\leq 0\\
+4\cd(\mathbf x\cd\mathbf x)\cd(\mathbf y\cd\mathbf y)-\pt 2\cd(2\cd\mathbf x\cd\mathbf y)&\leq 0\\
+\pt 2\cd(2\cd\mathbf x\cd\mathbf y)&\leq 4\cd(\mathbf x\cd\mathbf x)\cd(\mathbf y\cd\mathbf y)\\
+4\cd\pt 2\cd(\mathbf x\cd\mathbf y)&\leq 4\cd\pt 2\cd{}\mgn{\mathbf x}\cd\pt 2\cd{}\mgn{\mathbf y}\\
+\pt 2\cd(\mathbf x\cd\mathbf y)&\leq\pt 2\cd(\mgn{\mathbf x}\cd\mgn{\mathbf y})\\
+\end{aligned}
+\]
+\prg{}$\mgn{\mathbf x}\cd\mgn{\mathbf y}\geq 0$, so the inequality follows.
+
+\subsubsection{Example}
+Let $\mathbf x=\begin{pmatrix}\alpha\\\beta\\\gamma\end{pmatrix}$ and $\mathbf y=\begin{pmatrix}1\\1\\1\end{pmatrix}$. Then, the Cauchy-Schwarz inequality states that:
+\[
+\begin{aligned}
+\mathbf x\cd\mathbf y&\leq\mgn{\mathbf x}\cd\mgn{\mathbf y}\\
+\alpha+\beta+\gamma&\leq\sqrt{\pt 2\cd\alpha+\pt 2\cd\beta+\pt 2\cd\gamma}\cd\sqrt{3}\\
+\pt 2\cd(\alpha+\beta+\gamma)&\leq 3\cd\left(\pt 2\cd\alpha+\pt 2\cd\beta+\pt 2\cd\gamma\right)\\
+\left(\pt 2\cd\alpha+\pt 2\cd\beta+\pt 2\cd\gamma\right)+2\cd\left(\alpha\cd\beta+\beta\cd\gamma+\gamma\cd\alpha\right)&\leq 3\cd\left(\pt 2\cd\alpha+\pt 2\cd\beta+\pt 2\cd\gamma\right)\\
+2\cd\left(\alpha\cd\beta+\beta\cd\gamma+\gamma\cd\alpha\right)&\leq 2\cd\left(\pt 2\cd\alpha+\pt 2\cd\beta+\pt 2\cd\gamma\right)\\
+\alpha\cd\beta+\beta\cd\gamma+\gamma\cd\alpha&\leq\pt 2\cd\alpha+\pt 2\cd\beta+\pt 2\cd\gamma\\
+\end{aligned}
+\]
+
+\section{Triangle inequality and vector product}
+\subsection{Triangle inequality}
+\prg{}The triangle inequality for vectors is proved as follows:
+\[
+\begin{aligned}
+\pt 2\cd{}\mgn{(\mathbf x+\mathbf y)}&=(\mathbf x+\mathbf y)\cd(\mathbf x+\mathbf y);\\
+&=\mathbf x\cd\mathbf x+\mathbf y\cd\mathbf y+2\cd\mathbf x\cd\mathbf y;\\
+&=\pt 2\cd{}\mgn{\mathbf x}+\pt 2\cd{}\mgn{\mathbf y}+2\cd\mathbf x\cd\mathbf y;\\
+&\leq\pt 2\cd{}\mgn{\mathbf x}+\pt 2\cd{}\mgn{\mathbf y}+2\cd\abs{(\mathbf x\cd\mathbf y)};\\
+&=\pt 2\cd{}\mgn{\mathbf x}+2\cd\abs{\mathbf x}\cd\abs{\mathbf y}+\pt 2\cd{}\mgn{\mathbf y};\\
+&=\pt 2\cd(\mgn{\mathbf x}+\mgn{\mathbf y});\\
+\mgn{(\mathbf x+\mathbf y)}&\leq\mgn{\mathbf x}+\mgn{\mathbf y}
+\end{aligned}
+\]
+
+\subsection{Vector product}
+\prg{}The vector product is defined only for 3- and 7-vectors (and 1-vectors -- scalars). It is defined as follows:
+\[
+\mathbf a\times\mathbf b=\mgn{\mathbf a}\cd\mgn{\mathbf b}\cd\sin\theta\cd\mathbf{\hat n}
+\]
+\prg{}where $\theta$ is the angle between the two vectors and $\mathbf{\hat n}$ is the unit vector perpendicular to both input vectors in the right-hand direction. The vector product satisfies these properties:
+\[
+\begin{aligned}
+\mathbf a\times\mathbf b&=\mathbf b\times\mathbf a^-\\
+\mathbf a\times\mathbf a&=0\\
+\mathbf a\times\mathbf b=0&\implies\mathbf a=\mu\cd\mathbf b\\
+\mathbf a\times(\lambda\cd\mathbf b)&=\lambda\cd(\mathbf a\times\mathbf b)\\
+\mathbf a\times(\mathbf b+\mathbf c)&=\mathbf a\times\mathbf b+\mathbf a\times\mathbf c
+\end{aligned}
+\]
+
+\subsection{Area of a triangle}
+\prg{}The area of the triangle subtended by two vectors can be calculated using their cross product. Imagine triangle $OAB$, with point $N$ on $OA$ and $BN\perp OA$. Taking $OA$ as the base and $BN$ as the height, we get:
+\[
+\begin{aligned}
+\mathrm{area}&=\frac 21\cd\mgn{\mathbf a}\cd\mgn{\vv{BN}}\\
+&=\frac 21\cd\mgn{\mathbf a}\cd\mgn{\mathbf b}\cd\sin\theta\\
+&=\frac 21\cd\mgn{(\mathbf a\times\mathbf b)}\\
+\end{aligned}
+\]
+\prg{}The vector area of a triangle formed by two vectors is the same expression, but without $\mgn$. The area of the parallelogram formed by the input vectors is simply $\mgn{(\mathbf a\times\mathbf b)}$.
+
+\subsection{Scalar triple product}
+\prg{}The scalar triple product, often written as $[\mathbf a,\mathbf b,\mathbf c]$ (but I shall use $\langle\mathbf a|\mathbf b|\mathbf c\rangle$), is defined by:
+\[
+\langle\mathbf a|\mathbf b|\mathbf c\rangle=\mathbf a\cd(\mathbf b\times\mathbf c)
+\]
+\prg{}This gives the volume of the parallelepiped formed by the three input vectors. The proof is best stated graphically, so I shall defer to my handwritten notes.
+
+\prg{}Since volume is not affected by orientation, the arguments to the triple product can be reordered. However, if the arguments are reversed, the product will be negated.
+
+\prg{}The triple product can be used to prove whether 3 vectors are coplanar. It is self-evident that:
+\[
+\mathrm{coplanar}\,\mathbf a\,\mathbf b\,\mathbf c\implies\langle\mathbf a|\mathbf b|\mathbf c\rangle=0
+\]
+\prg{}Also, if any two of the three vectors are mutually parallel, all three vectors will be coplanar. This is because they can be re\"arranged to form the cross product, which will yield $\mathbf 0$.
+
+\subsection{Distributive law}
+\prg{}The fact that the vector product distributes over addition can be proved by the fact that the scalar product distributes over addition:
+\[
+\begin{aligned}
+\textrm{Let }\mathbf d&=\mathbf a\times(\mathbf b+\mathbf c)-\mathbf a\times \mathbf b+\mathbf a\times \mathbf c\\
+\mathbf d\cd \mathbf d&=\mathbf d\cd \mathbf a\times(\mathbf b+\mathbf c)-\mathbf d\cd(\mathbf a\times \mathbf b)+\mathbf d\cd(\mathbf a\times \mathbf c)\\
+&=\langle \mathbf d|\mathbf a|\mathbf b+\mathbf c\rangle-\langle \mathbf d|\mathbf a|\mathbf b\rangle+\langle \mathbf d|\mathbf a|\mathbf c\rangle\\
+&=\langle \mathbf b+\mathbf c|\mathbf d|\mathbf a\rangle-\langle \mathbf b|\mathbf d|\mathbf a\rangle+\langle \mathbf c|\mathbf d|\mathbf a\rangle\\
+&=(\mathbf b+\mathbf c)\cd(\mathbf d\times \mathbf a)-\mathbf b\cd(\mathbf d\times \mathbf a)+\mathbf c\cd(\mathbf d\times \mathbf a)\\
+&=\mathbf 0
+\end{aligned}
+\]
+
+\subsection{Spanning sets and bases}
+\prg{}A set of vectors is said to span a space if every point in the space can be translated to any other point in the space using a linear combination of vectors from the set. A basis is a spanning set such that if any element were to be removed from that set, it would no longer be a spanning set.
+
+\prg{}An example of a basis is $\{\mathbf{\hat i},\mathbf{\hat j}\}$ in 2D Euclidean space. If the vector $\mathbf{\hat i}+\mathbf{\hat j}$ is added to this set, it will still be a spanning set, but not a basis.
 
 \end{document}

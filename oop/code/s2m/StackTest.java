@@ -1,0 +1,1 @@
+/home/james/IdeaProjects/s2m/src/s2m/StackTest.java

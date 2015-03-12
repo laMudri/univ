@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Object oriented programming -- supervision 2}}
+\author{James Wood}
+\usepackage{listings}
+\usepackage{bold-extra}
+\usepackage{xcolor}
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  basewidth=0.5em,
+  frame=single,
+  breaklines=true,
+  %postbreak=\raisebox{0ex}[0ex][0ex]{
+  %  \ensuremath{\color{red}\hookrightarrow\space}
+  %}
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{a}
+Dynamic polymorphism is a process by which the method run on an object is decided based on the runtime type of the object. The methods to be chosen from have the same name, where some override others due to being implemented in subclasses. It is useful because it allows the more relevant methods of subclasses to be used without the compiler needing to infer the type of each object.
+
+For example, consider the following code:
+
+\lstinputlisting[language=Java]{code/S2a.java}
+
+When calling \texttt{write()} from inside the \texttt{for} loop, the compiler can only infer that each element of \texttt{arr} is of type \texttt{A}, and can't infer which of them (if any) are of type \texttt{B}. Due to dynamic polymorphism, however, the runtime can see that the second element is actually of type \texttt{B}, so the \texttt{write} defined for class \texttt{B} is called. Output:
+
+\begin{verbatim}
+Hello from A
+Hello from B
+\end{verbatim}
+
+\section*{b}
+A class is a template for an object, and can be extended to make other classes (unless it is final). It can define what type of state and what behaviour its instances will have. An abstract class is a class that cannot be instantiated. It can define type of state and default behaviours for its subclasses. An interface also cannot have instances, but cannot define state either. An interface is implemented, rather than extended, and classes can implement any number of interfaces (as opposed to only being able to extend exactly one class).
+
+\section*{c}
+\texttt{List} is an interface defining what behaviours an ordered mutable list should have. \texttt{AbstractList} is an abstract class that gives a minimal implementation of the methods in \texttt{List}. \texttt{Vector}, \texttt{LinkedList} and \texttt{ArrayList} implement \texttt{List} and are non-abstract. \texttt{Vector} and \texttt{ArrayList} extend \texttt{AbstractList}. \texttt{Vector} is considered deprecated due to poorly-designed concurrency features, whilst \texttt{ArrayList} is still used. Both \texttt{Vector} and \texttt{ArrayList} are implemented using arrays whose length is updated when the list needs more or less capacity. \texttt{LinkedList} is implemented as a doubly-linked list.
+
+The interface \texttt{Set} describes what behaviours a collection containing strictly distinct elements (according to the elements' \texttt{equals} methods) should have. \texttt{TreeSet} and \texttt{HashSet} implement it concretely. \texttt{TreeSet} stores its elements in a \texttt{TreeMap}, ordered either by their natural ordering or a specified \texttt{Comparator} object. \texttt{HashSet} stores its elements in a \texttt{HashMap}, which offers constant-time operations (as opposed to the typically logarithmic-time operations of \texttt{TreeSet}, which uses a red-black tree).
+
+\texttt{HashMap} and \texttt{LinkedHashMap} implement \texttt{Map}, which means that they both store a table of key-value pairs. \texttt{LinkedHashMap} is implemented as a doubly-linked list, meaning that most actions run in linear time. It guarantees that its elements will be kept in the order in which their key was added to the map. \texttt{HashMap} acieves constant time compexity by storing values in an array with their position being determined by the hash of their key. There is a possibility for key collision for both types if the number of elements approaches the number of available keys.
+
+\section*{d}
+Mutability allows an object to be modified without it being moved to a new part of memory. This is much more efficient if the object is often modified. However, mutability means that the object could be modified by any function it is passed to. This makes reasoning about mutable objects difficult. Reasoning about mutable objects is even more difficult when concurrency is involved.
+
+A Java class can be made immutable by making all member fields private and not providing setter methods. There should also be suitable constructors to allow the fields to be populated.
+
+\section*{e}
+Shadowing occurs when two different entities are given the same name, and both could be available in a single scope. Generally, the more local name will shadow the less local name. For example, a method variable will shadow a member variable.
+
+Example:
+\lstinputlisting[language=Java]{code/S2e.java}
+This outputs \texttt{223ABB} because, in Java, field shadowing is decided at compile time but method shadowing is decided at runtime. \texttt y is an \texttt A according to the compiler, but a \texttt B at runtime, which leads to this descrepancy.
+
+\section*{f}
+\texttt{public void add(Vector2D v)} would be used with a mutable implementation of \texttt{Vector2D}. The statement \texttt{a.add(b);} would add the value of \texttt b onto \texttt a, modifying \texttt a.
+
+\texttt{public Vector2D add(Vector2D v)} would do the same thing, but also return the new value of \texttt a. This would make the method work like other assignment operators, like \texttt{+=}. Alternatively, it may simply return the result of adding \texttt v to the base vector without modifying anything.
+
+\texttt{public Vector2D add(Vector2D v1, Vector2D v2)} is like the above method, but adds two vectors to the original vector. It doesn't seem that useful.
+
+\texttt{public static Vector2D add(Vector2D v1, Vector2D v2)} is analogous to a usual binary operator, but is written as a prefix function. \texttt{Vector2D.add(a, b)} would return the sum of \texttt a and \texttt b without mutating either of them.
+
+\section*{g}
+\begin{tabular}{r|llll}
+  & \texttt{public} & \texttt{protected} & \texttt{private} & unspecified\\
+  \hline
+  a & free access & free access & compile error & free access\\
+  b & free access & free access & compile error & compile error\\
+  c & free access & free access & compile error & free access\\
+  d & free access & compile error & compile error & compile error\\
+\end{tabular}
+
+\section*{h}
+\lstinputlisting[language=Java]{code/S2h.java}
+
+\section*{i}
+Bytecode (comments moved to new line):
+\lstinputlisting[language=java]{code/S2i_bytecode.txt}
+
+The bytecode for \texttt{main} can be split into three sections -- initialisation (ending before line 4), loop (ending before line 20) and output (line 20 onward). \texttt{istore\_n} stores the value at the top of the stack to virtual register \texttt{n}. \texttt{total} is stored in address \texttt 1 and \texttt i is stored in address \texttt 2. \texttt{iload\_n} pushes the value from virtual register \texttt n onto the stack. \texttt{iadd} pops two values from the stack, adds them together and pushes the result. \texttt{iinc} increments the value at the top of the stack.
+
+\section*{j}
+Subclassing is a special case of subtyping in which the subtype extends the supertype, and both are classes. For a type to subtype another, the only restriction is that the subtype must be able to be cast to the supertype. Subclassing is covered by this, but so are types where the parameters are in a subtype relationship. For example, \texttt{ArrayList<B>} is a subtype of \texttt{ArrayList<A>} if \texttt B is a subtype of \texttt A.
+
+\section*{k}
+Java 7 introduces:
+\begin{itemize}
+  \item multi-catch exceptions: in the \texttt{catch} line of a \texttt{try} block, multiple exception types can be supplied as options. The types are separated by a \texttt| and the identifier follows. This allows different types of exception to share the same handling logic without copying code.
+  \item rethrowing exceptions: the exception caught in a \texttt{catch} block can be thrown for code further down the call stack to handle. Previously, the exception had to be wrapped in a new exception, and the other code had to be modified to catch this new type of exception (\texttt{RuntimeException}, usually), rather than the exception that was actually thrown.
+  \item try-with: a \texttt{try} block can be combined with a block that would be called \texttt{with} in Python or \texttt{using} in C\#. A variable of a type implementing \texttt{AutoCloseable} can be assigned to in round brackets after the \texttt{try} keyword, and it will be usable in the rest of the \texttt{try} block. Importantly, a \texttt{finally} block will be added, which uses the methods described by \texttt{AutoCloseable} to clean up the object. For example, when a file has finished being read, it should be closed to allow other programs to access it. If there were no \texttt{finally} block and an error occurred before the file was closed, the file would never be closed.
+\end{itemize}
+
+\section*{l}
+\lstinputlisting[language=java]{code/Students.java}
+
+\section*{m}
+\texttt{Stack.java}:
+\lstinputlisting[language=java]{code/s2m/Stack.java}
+\texttt{StackTest.java}:
+\lstinputlisting[language=java]{code/s2m/StackTest.java}
+\texttt{Test results}:
+\lstinputlisting[language=xml]{code/s2m/TestResults.xml}
+
+\end{document}

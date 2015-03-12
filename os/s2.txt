@@ -1,0 +1,24 @@
+Operating systems -- supervision 2
+=================================
+
+1ai  | Cache memory stores a selection of data the OS expects to need soon.
+     | This is much smaller than main memory, and quicker to access.
+  ii | Main memory, ideally, should store all of the intermediate state of the
+     | processes currently running. To avoid using other storage methods (such
+     | as the hard disk), this should be large.
+  iii| Registers store information being used immediately by the CPU. They
+     | store a very small amount of information, and have very quick access
+     | time.
+ b   | When main memory has no available space, the OS will swap some memory to
+     | disk. Thus, there will be virtual memory for which the physical address
+     | is not in main memory.
+2    | If an application blocks to read keyboard input, it will be suspended,
+     | and resumed only when a keypress occurs. It will not be able to do any
+     | processing or take any other input until a key has been pressed.
+     | If the application does a non-blocking read, the operating system will
+     | read the state of the keyboard and send this information back to the
+     | application.
+     | If the application does an asynchronous read, it will continue running.
+     | When a keyboard event occurs, the operating system will send the
+     | application a signal, and it will respond to that signal. In many
+     | languages, this is how events are implemented.

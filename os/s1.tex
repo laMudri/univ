@@ -1,0 +1,83 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Operating systems -- supervision 1}}
+\author{James Wood}
+\usepackage{listings}
+\usepackage{bold-extra}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usetikzlibrary{arrows}
+
+\lstset{
+  basicstyle=\small,
+  basewidth=0.5em,
+  frame=single,
+  breaklines=true,
+  %postbreak=\raisebox{0ex}[0ex][0ex]{
+  %  \ensuremath{\color{red}\hookrightarrow\space}
+  %}
+  language=python,
+  literate=
+    {<=}{{\(\leq\)}}1
+    {>=}{{\(\geq\)}}1
+    {&&}{{\(\wedge\)}}1
+    {||}{{\(\vee\)}}1
+    {->}{{\(\rightarrow\)}}1
+}
+
+\tikzset{
+  treenode/.style = {align=center, inner sep=0pt, text centered,
+    font=\sffamily},
+  bnode/.style = {treenode, circle, white, draw=black,
+    fill=black, text width=1.5em},
+  rnode/.style = {treenode, circle, red, draw=red,
+    text width=1.5em, very thick},
+  leaf/.style = {treenode, rectangle, draw=black,
+    minimum width=0.5em, minimum height=0.5em}
+}
+
+\begin{document}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\renewcommand{\labelenumii}{(\alph{enumi})}
+\renewcommand{\labelenumiii}{(\roman{enumii})}
+
+\maketitle
+
+\begin{enumerate}
+\item A general-purpose computer requires a way to store data, a way to process data and a way to do input and output.
+\item Since most computers work with just high and low values, these are used to encode binary numbers. Hence, binary numbers are used to address memory, and thus, if all of address space is to have a correspondence to memory, the size of memory will be a power of 2.
+\item Processors usually contain an arithmetic logic unit, providing addition, subtraction, multiplication, division and comparisons for integers of a predefined size.
+\item Two's complement allows positive and negative numbers to be summed by a standard full adder, saving on the amount of circuitry needed in the ALU. It also means that a separate subtraction circuit isn't needed.
+\item Little endian means that any number made up of multiple words can be interpreted directly as a base \(w\) (where \(w\) is the word size) where word 0 gives the \(w^0\) digit, word 1 gives the \(w^1\) digit, \&c. Big endian means that, for two's complement integers, the sign of a multi-word number can be deduced from the first word.
+\item A stack frame will contain an instruction number denoting the part of the program to return to, along with the values for each of its parameters.
+\item In the average case, the time taken to access a datum is the time taken for the arm to reach the correct radius plus half of the time it takes for the disk to rotate. \href{http://www.amazon.co.uk/Generic-Hard-Disk-Drive-500GB/dp/B000OUF6OQ/ref=pd_sxp_f_pt}{This} hard disk spins at \(7200\,\mathrm{r/min}\), giving a latency of \(\frac{60}{7200\times 2}\,\mathrm{s}\), which is \(1/240\,\mathrm{s}\). For a \(1\,\mathrm{GHz}\) processor, this takes about \(4.2\) million cycles.
+\item \(2764800000\) bits per second (approximately \(2.6\,\mathrm{Gib/s}\)).
+\item DMA gives a way for components to access memory without the CPU being in control of the transaction. This frees up CPU time, and is useful if there are a lot of IO requests going on. Because DMA avoids the CPU, it makes attacks targeted on DMA-accessible memory easier. These attacks can be avoided by having, rather than direct access, access via an IOMMU. This limits DMA devices to specific areas of memory.
+\item
+  \noindent
+  \begin{tabularx}{\textwidth}[t]{r|XX}
+    attacks & denial of service & confidentiality \\
+    \hline
+    processor & A job takes up all of CPU time. & - \\
+    video card & A job takes up all of GPU time. & - \\
+    memory & A job fills up physical memory. & A process reads memory from outside its allocated space. \\
+    storage & A job causes the hard disk to be filled up. & A process reads stored files it shouldn't have access to. \\
+  \end{tabularx}
+\item
+  \begin{tabularx}{\textwidth}[t]{r|XX}
+    prevention & denial of service & confidentiality \\
+    \hline
+    processor & Use a scheduling method that doesn't allow one process to maintain priority. & - \\
+    video card & Don't allow processes direct access to the GPU. & - \\
+    memory & Have a large amount of memory, so that jobs can be interrupted before using it up. & Have a hardware component for converting between logical addresses and physical addresses. \\
+    storage & - & Have the operating system be in complete control of file IO, and have it manage permissions. \\
+  \end{tabularx}
+\item The new code gets its own PCB, so does not remain part of the old process's PCB after it has been constructed.
+\item Context switches require register contents to be swapped, which is more expensive than writing to a stack. Context switching often involves IO, but this is not the case for function calls.
+\end{enumerate}
+
+\end{document}

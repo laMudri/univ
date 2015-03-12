@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Algorithms I -- supervision 1}}
+\author{James Wood}
+\usepackage{listings}
+\lstset{language=python}
+\usepackage{bold-extra}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\setenumerate[0]{label=(\alph*)}
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  basewidth=0.5em,
+  frame=single,
+  breaklines=true,
+  %postbreak=\raisebox{0ex}[0ex][0ex]{
+  %  \ensuremath{\color{red}\hookrightarrow\space}
+  %}
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Insertion sort}
+\begin{enumerate}
+  \item
+    \begin{minipage}[t]{\linewidth}
+      \begin{lstlisting}
+def insertSort(a):
+    for i from 1 included to len(a) excluded:
+        j = i - 1
+        this = a[i]
+        while j >= 0 and a[j] > this:
+            a[j + 1] = a[j]
+            j = j - 1
+        a[j] = this
+      \end{lstlisting}
+    \end{minipage}
+  \item All of \texttt{a[j + 1:i]} are greater than \texttt{this}, and are sorted.
+  \item \(O(n^2)\)
+\end{enumerate}
+
+\section{Selection sort}
+\texttt{[7,6,5,4,3,2,1]}
+
+\begin{minipage}[t]{\linewidth}
+  \section{Bubble sort}
+  Keep track of the number of passes by introducing the variable \texttt{i}:
+  \begin{lstlisting}
+def bubbleSort(a):
+    i = 0
+    repeat:
+        didSomeSwapsInThisPass = False
+        for k from 0 included to len(a) - 1 excluded:
+            if a[k] > a[k + 1]:
+                swap(a[k], a[k + 1])
+                didSomeSwapsInThisPass = True
+        i = i + 1
+    until didSomeSwapsInThisPass == False
+  \end{lstlisting}
+\end{minipage}
+The statement is then that, once the algorithm has completed, \(i \leq n\).
+\begin{description}
+\item[Lemma 0] \hfill \\
+  Items \texttt{a[n - i:n]} are in the correct place at the start of each pass.
+\item[Proof] \hfill \\
+  \texttt{a[n - i:n]} are in the correct place iff it is a sorted list containing elements greater than or equal to every element in \texttt{a[0:n - i]}. This is equivalent to saying that \texttt{a[n - i:n]} is sorted and \texttt{a[n - i]} is greater than or equal to every element in \texttt{a[0:n - i]}, given that every element in the sorted list \texttt{[n - i:n]} is greater than or equal to \texttt{a[n - i]}.
+
+  We proceed by induction. In the base case, where \(i = 0\), the list in question is empty. Thus, it is sorted and any predicate is true for all of its elements. Then, given that \texttt{a[n - i:n]} satisfy the conditions, consider \texttt{a} after another pass. Let \texttt{x} denote the largest element in \texttt{a[0:n - i]}, and suppose that it starts in position \texttt{j}. When \texttt{k == j}, either \texttt{k + 1 == n - i}, in which case \texttt{x} was already in the correct place, or \texttt{a[k] > a[k + 1]} is true by the fact that \texttt{x} is greater than every other element in \texttt{a[0:n - i]}. In the latter case, \texttt{x} moves to position \texttt{k + 1}. By repeating this process, it is seen that \texttt{x} is moved to position \texttt{n - i - 1}. Hence, \texttt{a[n - i - 1:n]} are in the correct place, QED.
+\end{description}
+Using this lemma, we note that, at the start of the \texttt{n}th pass, the elements of \texttt{a[n - n:n]}, equivalently \texttt{a}, are in the correct place. The elements are ordered in such a way that \texttt{a[k] > a[k + 1]} is always false, so \texttt{didSomeSwapsInThisPass} remains \texttt{False} and the algorithm terminates.
+
+\section{Mergesort}
+\begin{enumerate}
+  \item
+    The standard \texttt{min} function loses the information of which of the two numbers it chose. Hence, it becomes difficult to update \texttt{i1} and \texttt{i2} to reflect which sublist was chosen from. To solve this problem, I would write the function \texttt{minE : (Ord a) => (a,a) -> Either a a} defined by:
+    \begin{lstlisting}
+def minE(x, y):
+    if x <= y:
+        Left x
+    else:
+        Right y
+    \end{lstlisting}
+    I would then case split on its result:
+    \begin{lstlisting}
+case minE(a1[i1], a2[i2]):
+    Left x:
+        a3[i3] = x
+        i1 = i1 + 1
+    Right y:
+        a3[i3] = y
+        i2 = i2 + 1
+    \end{lstlisting}
+    The main problem with this approach is that it requires a language that is so Haskell-like that the imperative pseudocode algorithm would have to be completely restructured before it could be implemented. Alternatively, the information conveyed in the choice of \texttt{Left} vs \texttt{Right} could be conveyed in a boolean value, returned in a tuple with the minimum. Then the only disadvantage is the use of slightly more space and time than a function \texttt{smallest} that mutates its arguments.
+  \item
+    When merging, start storing the merged elements in the \(n/2\)-sized spare array. Once half of the elements have been merged, swap the elements from the first sorted subarray with the merged elements, and move the elements from the second sorted subarray to the end of the main storage array. Then, continue merging until there are no more elements in the spare array to consider. The remaining elements from the second sorted subarray will then be in the correct place, and the whole array will be sorted.
+\end{enumerate}
+
+\section{Quicksort}
+First-element-pivot or last-element-pivot quicksort's worst case comes about when the input list is monotonic. In these cases, random-element-pivot quicksort improves performance on average by more often picking a non-extremal element. However, the worst case remains the same, namely when random-element-pivot quicksort happens to emulate the other variants. In fact, it is possible for any input list to become pathological in random-element-pivot quicksort. However, in general, the expected performance is the same, except that random numbers have to be generated (though only to the order of \(n\) in the worst case).
+
+\section{Comparisons}
+\begin{enumerate}
+  \item \(n - 1\)
+  \item \(2 \cdot n - 3\)
+\end{enumerate}
+
+\end{document}

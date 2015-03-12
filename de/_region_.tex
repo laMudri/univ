@@ -23,14 +23,16 @@
 
 \begin{document}
 
-\message{ !name(de.tex) !offset(190) }
-
-\prg{}Finally, we cover the notion of indefinite integration. This can be expressed in terms of definite integration as follows:
+\message{ !name(de.tex) !offset(251) }
 \[
-\int f=\int^\C_\id f
+\begin{aligned}
+D\,F\,t&=\lim_0\frac{\id}{F\,t-F\,(\id+t)};\\
+&=\lim_0\frac{\id}{f\,(x\,t)\,(y\,t)-f\,(x\,(\id+t))\,(y\,(\id+t))};\\
+&=\lim_0\frac{\id}{\partial_0f\,(x\,t)\,(y\,t)\cd\delta x\,t+\partial_1f\,(x\,t)\,(y\,t)\cd\delta y\,t};\\
+&=\partial_0f\,(x\,t)\,(y\,t)\cd\frac{D\,t}{D\,x\,t}+\partial_1f\,(x\,t)\,(y\,t)\cd\frac{D\,t}{D\,y\,t};\\
+D\,F&=\partial_0f\,x\,y\cd D\,x+\partial_1f\,x\,y\cd D\,y
+\end{aligned}
 \]
-\prg{}Here, $\C$ gives us (but does not map directly to) the constant of integration.
+\message{ !name(de.tex) !offset(250) }
 
 \end{document}
-
-\message{ !name(de.tex) !offset(-36) }

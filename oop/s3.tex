@@ -1,0 +1,118 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Object oriented programming -- supervision 3}}
+\author{James Wood}
+\usepackage{listings}
+\lstset{language=java}
+\usepackage{bold-extra}
+\usepackage{xcolor}
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  basewidth=0.5em,
+  frame=single,
+  breaklines=true,
+  %postbreak=\raisebox{0ex}[0ex][0ex]{
+  %  \ensuremath{\color{red}\hookrightarrow\space}
+  %}
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{a}
+The singleton pattern would be used. The singleton pattern ensures that only one instance of the class is created whilst the program is running. The \texttt{Configuration} class would have a static member of type \texttt{Configuration}, used whenever an instance of that type is needed. It will be modified each time it is used. The member will be private, and be accessed by a method that mutates it and then returns a reference to it.
+
+\section*{b}
+Behavioural patterns are patterns used to specify how objects interact, including specification of run time details. Creational patterns are used to control the building of new objects. Compositional patterns describe how objects of different types can be combined to form objects of new types.
+
+The \textit{Bridge} and \textit{Strategy} patterns both allow an abstract task to be specified along with various implementations. However, the \textit{Bridge} pattern is designed to give an interface to many different existing classes, whereas the \textit{Strategy} pattern is generally set up before specifying implementations. What implementation the \textit{Bridge} pattern uses is based on the type of value the \textit{Bridge} instance is wrapping, but what implementation the \textit{Strategy} chooses is based on an arbitrary run time decision process.
+
+\section*{c}
+The \textit{Adapter} pattern provides a way of accessing the members of multiple different classes with a common interface. This is a useful way to abstract away the differences between multiple different implementations of a data structure. The \textit{Façade} pattern provides a way to give a collection of classes a unified interface, in which members of all of the classes can be accessed through a single instance of the \textit{Façade}.
+
+\section*{d}
+\begin{enumerate}
+  \item Yes.
+  \item
+    \begin{minipage}[t]{\linewidth}
+      \begin{lstlisting}
+// `shapes` is the list of Shape objects
+for (Shape s : shapes)
+    s.draw();
+      \end{lstlisting}
+    \end{minipage}
+  \item
+    \begin{minipage}[t]{\linewidth}
+      \begin{lstlisting}
+class Group extends Shape {
+    private List<Shape> mShapes;
+
+    public Group(List<Shape> shapes) {
+        mShapes = shapes;
+    }
+
+    @Override
+    public void draw() {
+        for (Shape s : mShapes)
+            s.draw();
+    }
+}
+      \end{lstlisting}
+    \end{minipage}
+  \item
+    \begin{minipage}[t]{\linewidth}
+      The \textit{Decorator} is used as follows:
+      \begin{lstlisting}
+class Frame extends Shape {
+    private Shape mShape;
+
+    public Frame(Shape shape) {
+        mShape = shape;
+    }
+
+    @Override
+    public void draw() {
+        mShape.draw();
+
+        // draw frame around shape
+        // ...
+    }
+}
+      \end{lstlisting}
+    \end{minipage}
+\end{enumerate}
+
+\section*{e}
+\begin{minipage}{\linewidth}
+  The \textit{Observer} pattern is the primary pattern used in solving this problem.
+  \lstinputlisting{code/s3/User.java}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+  Test:
+  \lstinputlisting{code/s3/S3e.java}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Output:
+\begin{lstlisting}[language={}]
+u0 tweeted: u0's first tweet
+u1 followed u0
+u0 tweeted: u0's second tweet
+u1 received: u0's second tweet
+u1 tweeted: u1's first tweet
+u0 followed u1
+u1 tweeted: u1's second tweet
+u0 received: u1's second tweet
+\end{lstlisting}
+\end{minipage}
+
+\end{document}

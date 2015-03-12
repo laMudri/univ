@@ -71,7 +71,7 @@ f\in o_x\,g\iff\lim_x\frac g f=0
 \[
 f\in O_x\,g\iff\frac g f\text{ remains bounded as the argument approaches }x
 \]
-\prg{}It is obvious that $f\in o_x\,g\implies f\in O_x\,g$, since the hypothesis of that statement suggests that $\frac g f$ tends to 0, which is a valid bound. An example of a statement involving $O$ but not having a discernable limit is $\sin\in O\,1$, as $\frac 1\sin;=\sin$ is always between 1\textsuperscript- and 1.
+\prg{}It is obvious that $f\in o_x\,g\implies f\in O_x\,g$, since the hypothesis of that statement suggests that $\frac g f$ tends to 0, which is a valid bound. An example of a statement involving $O$ but not having a discernible limit is $\sin\in O\,1$, as $\frac 1\sin;=\sin$ is always between 1\textsuperscript- and 1.
 
 \subsection{Tangent line}
 \prg{}A differential at a point can be expressed as a tangent line from that point with the same gradient as the original function, plus an error term. We say
@@ -83,8 +83,8 @@ This can be rearranged to give
 f\,(\id+h)=D\,f\cd h+f+o_0\,h\textrm{.}
 \]
 
-\section{Chain rule, Liebnitz' rule, Taylor series and L'Hopital's rule}
-\prg{}Here, we bulid from the fact that
+\section{Chain rule, Leibniz's' rule, Taylor series and L'Hopital's rule}
+\prg{}Here, we build from the fact that
 \[
 \lim_0\frac{o_0\,h}{h}=0 \quad\textrm{for arbitrary function }h\textrm{.}
 \]
@@ -109,7 +109,7 @@ F'\,x&=\lim_0\left(g'\,x\cd f'\,(g\,x)\right) \\
 \end{aligned}
 \]
 
-\subsection{Liebnitz' rule}
+\subsection{Leibniz's' rule}
 \prg{}When the product of two functions is differentiated repeatedly, a familiar pattern is produced. \\
 \begin{center}
 \begin{tabular}{r c c}
@@ -162,7 +162,7 @@ D\,f\,0&=1\cd a_1                \\
 \[
 a_n=\frac{n!}{\pt{n}{}D\,f\,0}\textrm{.}
 \]
-\subsection{L'Hoptal's rule}
+\subsection{L'Hopital's rule}
 \prg{}Let $f$ and $g$ be differentiable and tend to $0$ at $x$. L'Hopital's rule states that:
 \[
 \lim_x\frac f g=\lim_x\frac{D\,f}{D\,g}\textrm{, provided that }D\,f\,x\neq 0\wedge D\,g\,x=0\textrm{.}
@@ -220,5 +220,69 @@ D\int^a_gf&=D\,\left(\int^a_\id f\circ g\right); \\
 \int f=\int^\C_\id f
 \]
 \prg{}Here, $\C$ gives us (but does not map directly to) the constant of integration.
+
+\section{Functions of several variables}
+\prg{}This is the first truly new concept in the lecture series. Partial differentiation is the focus of this section.
+
+\subsection{Visualisation}
+\prg{}It is tempting to think of a function in 2 variables being plotted in a 3D space. However, it is easier to consider a 2D space with contour lines. This representation works for differentiable functions, so is adequate for our purposes.
+
+\prg{}This kind of plot reminds us of a map of terrain. Hence, we can ask questions like “What is the slope of a hill?”. The key is that the answer to this question depends on which way one is walking. Suitable directions include directions parallel to each of the independent variables.
+
+\subsection{Notation}
+\prg{}The usual notation for taking partial derivatives, given $f:\C\times\C\rightarrow\C$ is like this:
+\[
+\left\frac{\partial f}{\partial x}\right\rvert_y\quad\textrm{or}\quad f_x
+\]
+\prg{}This represents the partial derivative of $f$ with respect to variable $x$ whilst variable $y$ is held constant. However, my notation prefers the expression:
+\[
+D\,y:f\,\id\,y
+\]
+\prg{}This replicates the effect of the above expression, in that $y$ is kept constant by being a lambda variable. Then, differentiation is done with respect to the first argument, once $y$ has been given. This has the unfortunate effect of swapping the arguments, so I also introduce:
+\[
+\partial_0f
+\]
+\prg{}, which has the same effect, except that the arguments are not exchanged. Note that this relies on dependent types, which I haven't worked out yet. The $0$ refers to the fact that the partial derivative is taken with respect to the first argument.
+
+\subsection{Example}
+\prg{}Let $f=\pt 2\cd x+\pt 3\cd y+\exp(x\cd\pt 2\cd y)$. The partial derivatives with respect to each argument can be calculated:
+\[
+\begin{aligned}
+\partial_0f&=2\cd x+\pt 2\cd y\cd\exp(x\cd\pt 2\cd y) \\
+\partial_1f&=3\cd\pt 2\cd y+2\cd x\cd y\cd\exp(x\cd\pt 2\cd y)
+\end{aligned}
+\]
+\prg{}Notice that, in this context, $x=\id$ and $y=K\,\id$, in order to make the values filter through as expected. A consequence of this is that $f=f\,x\,y$, which is what we want.
+
+\prg{}It is also possible to take second partial derivatives ($\pt 2\circ\partial_n$) and the mixed partial derivative ($\partial_0\circ\partial_1;=\partial_1\circ\partial_0$).
+
+\subsection{Chain rule}
+\prg{}For a function of two variables, the chain rule is derived thus. Consider the function $f$ evaluated to give $f\,x\,y$ and $f\,(\delta x+x)\,(\delta y+y)$. The increase in height between the two points of evaluation is $f\,x\,y-f\,(\delta x+x)\,(\delta y+y)$. Call this $\delta f$.
+\[
+\begin{aligned}
+\delta f&=f\,x\,y-f\,(\delta x+x)\,(\delta y+y);\\
+&=f\,x\,y-f\,(\delta x+x)\,y+f\,(\delta x+x)\,y-f\,(\delta x+x)\,(\delta y+y);\\
+&\in\partial_0f\,x\,y\cd\delta x+o_0\,\delta x+\partial_1f\,(\delta x+x)\,y\cd\delta y+o_0\,\delta y;\\
+&=\partial_0f\,x\,y\cd\delta x+o_0\,\delta x+(\partial_1f\,x\,y+o_0\,1)\cd\delta y+o_0\,\delta y;\\
+&=\partial_0f\,x\,y\cd\delta x+\partial_1f\,x\,y\cd\delta y+o_0\,(\delta x+\delta y);\\
+\end{aligned}
+\]
+\prg{}Taking limits, the final expression reduces to give the equation:
+\[
+d\,f=\partial_0f\,x\,y\cd d\,x+\partial_1f\,x\,y\cd d\,y
+\]
+\prg{}$d$ is another function relying on dependent types, which takes the total derivative of a function with possibly multiple arguments.
+
+\subsection{Parameterised path}
+Let $F\,t=f\,(x\,t)\,(y\,t)$. This new function expresses the value of $f$ at some point along a path defined by (x,y)\,t (where $t\in\C$). Hence, $D\,F\,t$ gives the slope of $f$ at point $t$ on the path.
+\[
+\begin{aligned}
+D\,F\,t&=\lim_0\frac{\id}{F\,t-F\,(\id+t)};\\
+&=\lim_0\frac{\id}{f\,(x\,t)\,(y\,t)-f\,(x\,(\id+t))\,(y\,(\id+t))};\\
+&=\lim_0\frac{\id}{\partial_0f\,(x\,t)\,(y\,t)\cd\delta x\,t+\partial_1f\,(x\,t)\,(y\,t)\cd\delta y\,t};\\
+&=\partial_0f\,(x\,t)\,(y\,t)\cd\frac{D\,t}{D\,x\,t}+\partial_1f\,(x\,t)\,(y\,t)\cd\frac{D\,t}{D\,y\,t};\\
+D\,F&=\partial_0f\,x\,y\cd D\,x+\partial_1f\,x\,y\cd D\,y
+\end{aligned}
+\]
 
 \end{document}

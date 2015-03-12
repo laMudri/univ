@@ -8,6 +8,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
+\usepackage{esvect}
 \newcommand*\C{\ensuremath{\mathbb C}}
 \newcommand*\R{\ensuremath{\mathbb R}}
 \newcommand*\id{\iota}
@@ -19,19 +20,18 @@
 \DeclareMathOperator{\all}{all}
 \DeclareMathOperator{\any}{any}
 \DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\mgn}{mgn}
+\DeclareMathOperator{\prj}{prj}
 
 \begin{document}
 
-\message{ !name(vm.tex) !offset(129) }
+\message{ !name(vm.tex) !offset(326) }
 
-\prg{}This can be expressed in an alternative form:
-\[
-\begin{aligned}
-\pt 2\cd\abs(c-\id)&=\pt 2\cd\rho \quad\textrm{N.B: both $\abs(c-\id)$ and $\rho$ are positive.} \\
-(c-\id)\cd(\conj c-\conj\id)&=\pt 2\cd\rho \\
-c\cd\conj\id-\id\cd\conj c-\id\cd\conj\id&=c\cd\conj c-\pt 2\cd\rho
-\end{aligned}
-\]
+
+\subsection{Spanning sets and bases}
+\prg{}A set of vectors is said to span a space if every point in the space can be translated to any other point in the space using a linear combination of vectors from the set. A basis is a spanning set such that if any element were to be removed from that set, it would no longer be a spanning set.
+
+\prg{}An example of a basis is $\{\mathbf{\hat i},\mathbf{\hat j}\}$ in 2D Euclidean space. If the vector $\mathbf{\hat i}+\mathbf{\hat j}$ is added to this set, it will still be a spanning set, but not a basis.
 
 \end{document}
 

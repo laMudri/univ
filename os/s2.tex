@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{Operating systems -- supervision 2}}
+\author{James Wood}
+\usepackage{listings}
+\usepackage{bold-extra}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usetikzlibrary{arrows}
+
+\lstset{
+  basicstyle=\small,
+  basewidth=0.5em,
+  frame=single,
+  breaklines=true,
+  %postbreak=\raisebox{0ex}[0ex][0ex]{
+  %  \ensuremath{\color{red}\hookrightarrow\space}
+  %}
+  language=python,
+  literate=
+    {<=}{{\(\leq\)}}1
+    {>=}{{\(\geq\)}}1
+    {&&}{{\(\wedge\)}}1
+    {||}{{\(\vee\)}}1
+    {->}{{\(\rightarrow\)}}1
+}
+
+\tikzset{
+  treenode/.style = {align=center, inner sep=0pt, text centered,
+    font=\sffamily},
+  bnode/.style = {treenode, circle, white, draw=black,
+    fill=black, text width=1.5em},
+  rnode/.style = {treenode, circle, red, draw=red,
+    text width=1.5em, very thick},
+  leaf/.style = {treenode, rectangle, draw=black,
+    minimum width=0.5em, minimum height=0.5em}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+\item
+  \begin{enumerate}
+  \item
+    \begin{enumerate}
+    \item Cache memory stores a selection of data the OS expects to need soon. This is much smaller than main memory, and quicker to access.
+    \item Main memory, ideally, should store all of the intermediate state of the processes currently running. To avoid using other storage methods (such as the hard disk), this should be large.
+    \item Registers store information being used immediately by the CPU. They store a very small amount of information, and have very quick access time.
+    \end{enumerate}
+  \item When main memory has no available space, the OS will swap some memory to disk. Thus, there will be virtual memory for which the physical address is not in main memory.
+  \end{enumerate}
+\item
+  If an application blocks to read keyboard input, it will be suspended, and resumed only when a keypress occurs. It will not be able to do any processing or take any other input until a key has been pressed.
+
+  If the application does a non-blocking read, the operating system will read the state of the keyboard and send this information back to the application.
+
+  If the application does an asynchronous read, it will continue running. When a keyboard event occurs, the operating system will send the application a signal, and it will respond to that signal. In many languages, this is how events are implemented.
+\item
+  A non-preëmptive scheduler is usually simpler than a preëmptive scheduler, since a preëmptive scheduler has to do preëmption, which requires each process to have extra information stored about it and extra calculations done.
+
+  A preëmptive scheduler is capable of choosing which process to run based on how long it is likely to take, so can schedule in such a way that each process gets a similar amount of processor time. This makes it fairer than a non-preëmptive scheduler could be.
+
+  Preëmptive scheduling introduces the overhead of preëmption, and thus is less performant than non-preëmptive scheduling. However, a preëmptive scheduler will make the system seem more responsive.
+
+  To gather any data to use for preëmption, the hardware must include a timer for CPU bursts.
+\item
+  \begin{enumerate}
+  \item When choosing a process to run, a static priority scheduler will choose a process of high priority before any process of lower priority. In the event of a tie, the scheduler has to resort to some priorityless scheduling method.
+  \item FCFS can be considered as a priority scheduling algorithm in which the priority of a process is always lower than any that came before it. Similarly, SJF has priority based on the preëmpted length of process, and SRTF has priority based on preëmpted time remaining (which changes as the process is run). Finally, in RR, the priority is based on how long it has been since the process last ran.
+  \item Static priority scheduling can cause jobs of low priority to never be run. This problem can be overcome by augmenting the priority with some dynamic measure favouring jobs that have been ready for a long time.
+  \item I/O-intensive jobs are favoured because they take a long time to complete, but use very little CPU time while completing. Thus, it is good to have them scheduled to be first, since they don't get in the way of more CPU-intensive jobs.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \item ?
+  \item All jobs are guaranteed to be allowed to run within a reasonable time, so many users can be having jobs run at the same time.
+  \item
+    \begin{tabular}{ll|ll}
+      start & end & process running & required time remaining \\
+      \hline
+       0 &  3 & P1 & 6 \\
+       3 &  6 & P2 & 1 \\
+       6 &  9 & P1 & 3 \\
+       9 & 10 & P2 & 0 \\
+      10 & 12 & P3 & 0 \\
+      12 & 15 & P1 & 0 \\
+    \end{tabular}
+
+    \begin{tabular}{l|l}
+      process & time from creation to finish \\
+      \hline
+      P1 & 15 \\
+      P2 &  9 \\
+      P3 &  5 \\
+    \end{tabular}
+  \item Having a small quantum reduces the worst case time a job will have to wait to be run, but causes a need for more swaps, which take time. This causes an increase in average waiting time.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \item
+    The sceduler maintains two priority queues: the ready queue and the wait queue. The ready queue stores processes that currently have processing to do, and the wait queue stores processes blocked due to IO requests. Consider this example, where the front of a queue is shown at the top:
+    \begin{tabular}{l|l}
+      ready queue & wait queue \\
+      \hline
+      P83 & P12 \\
+      P28 & P42 \\
+      P76 &     \\
+    \end{tabular}
+    If a new process, P94, is created, the scheduler works out its priority and places it in the queue accordingly. The queues may look like this:
+    \begin{tabular}{l|l}
+      ready queue & wait queue \\
+      \hline
+      P83 & P12 \\
+      P94 & P42 \\
+      P28 &     \\
+      P76 &     \\
+    \end{tabular}
+    Eventually, P83 finishes, gets put back in the ready queue, or makes an IO call that puts it in the wait queue. Then, P94 gets run. If it ever makes a blocking IO request, it will be put in the wait queue, and a process from the ready queue (like P28) will be run. Once the request has completed, it will be put back into the ready queue. P94 may get put back into the ready queue while being processed. Once it has finished, it will be released by the CPU.
+  \item Each process has a PCB, which stores the state of the process (including program counter) as well as information needed by the scheduler, such as an ID and history about the process's performance.
+  \item SJF and SRTF need data upon which to base a prediction of burst length for each process. The simplest prediction schemes need only the length of the last CPU burst for that process, but if more history is stored, a better prediction can be made. The burst length can be obtained using a timer.
+  \item A non-preëmptive scheduler has the advantage of having less overhead associated with recording of burst lengths and calculating predictions, and the disadvantage that it can't distinguish between long and short jobs, which tends to make it less able to be fair.
+  \item In the programmed IO case, the CPU will have to arrange the reading from and writing to memory, which it won't do for DMA devices. After this, the scheduler checks the wait queue for processes waiting for the given interrupt, and moves any of them into the ready queue. Given that they have been using blocking IO, the scheduler will probably give them high priority.
+  \item If there were many interrupts being raised, the bus handling signals may become full, causing signals to have to wait. Also, the CPU will have to modify the wait queue many times, possibly causing processes that were on the wait queue to be run soon. This creates a need for more swapping.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \item When a program is written, it is not generally possible to know where in physical memory its storage should be.
+  \item
+    To solve this problem at compile time means that addresses are substituted in to the program based on the state of memory when the program is being compiled. This typically means that the program has some reserved area of memory to use that will not be used by any other processes. This is the simplest solution, but generally not viable.
+
+    To solve this problem at link time means that addresses are substituted when an instance of the program is loaded as a process. This is a safer solution, because physical addresses chosen can be based on what other processes are using. However, it adds a start-up cost to each process.
+
+    To solve this problem at run time means that the source program contains virtual addresses, which are translated into physical addresses when memory needs to be accessed (usually by dedicated hardware). This allows physical addresses to change whilst the process is running, which includes allowing virtual memory to be larger than main memory (by use of the hard disk or similar). However, without dedicated hardware, it can make lookups slow.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \item Preëmptive schedulers require something to time burst length, so do require hardware support.
+  \item It is possible that there is some state of the process being switched in not stored in the TLB, particularly if that process has been idle for a long time. In this case, a flip-flop in the TLB will not suffice, since we also need to deal with main memory.
+  \item If a device doesn't allow its state to be read without blocking, non-blocking IO with it is not possible.
+  \item It depends on the required properties and metric of performance of the scheduling algorithm. SRTF will usually be a better choice than SJF if it is possible.
+  \item RR does not suffer from the convoy effect because it gives every ready proccess the same share of CPU time. A long process does not take up particularly much of this time in each cycle.
+  \item Paging virtual memory facilitates having physical memory other than the main memory, so paged memory will be larger than segmented memory.
+  \item DMA allows faster reads and writes to memory for devices.
+  \item System calls are still needed so that applications can access devices, write to files \&c, but are usually hidden from application programmers by the OS's libraries.
+  \item Yes, I tried it.
+  \item The temporary files used by Unix commands are likely to be stored in the buffer cache, rather than on the hard disk.
+  \end{enumerate}
+\end{enumerate}
+
+\end{document}
