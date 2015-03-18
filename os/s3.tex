@@ -160,6 +160,11 @@
   \item See question 6.
   \item With a block size of \(512\,\mathrm{B}\), 10 direct blocks, and \(4\,\mathrm{B}\) pointers, each indirect block has 128 pointers, giving a total maximum file size of \(512\,\mathrm{B}\cdot(10+128+128^2+128^3)\), which is just over \(1\,\mathrm{GiB}\).
   \item
+    \begin{itemize}
+    \item The Unix V7 file system suffers from the fact that accessing a file requires at least two disk reads which are likely to be in completely different places. To fix this, inodes should be stored at the same radius as the data blocks associated with them. There should also be multiple super blocks, providing multiple lists of free blocks.
+    \item Also, at \(512\,\mathrm{B}\), blocks are too small. It saves on disk reads to have large blocks, even if it requires greater disk useage.
+    \item Reducing the number of disk reads will also improve reliability, since there is less chance for a disk access to go wrong.
+    \end{itemize}
   \end{enumerate}
 \item
   It needs to be impossible for users to modify the archived files in-place, so all write permissions should be removed. However, whole archived roots should be deletable by the administrator, so (only) these directories need write permissions for the owner, with the owner being the administrator.
@@ -207,9 +212,12 @@
   \begin{enumerate}
   \item Access control lists are stored with the files they pertain to, whilst capabilities are stored with the user. With the capabilities model, it is easy to add new users with few permissions, and all such users can be given access to some shared files in an automatic way. When using ACLs, users generally have to be arranged into groups so that files can be created without needing to know exactly what users there are on the system. Deciding accessibility for capabilities is simpler, since it requires only checking a key (which can be done in hardware).
   \item
-  \item
+  \item Capabilities can be emulated in a POSIX system using groups and setuid. In theory, a user could be made for each possible set of permissions an administrator could want other users to have at various times, then allow them to be that user for the required action.
   \item Capability-based systems allow finer control of what each user can do to each file, so it is possible to get closer to the ideal of users having only the permissions they need. This improves security because it limits what users could (possibly accidentally) do, reducing the chance of the system becoming compromised.
   \end{enumerate}
 \item
+  \begin{itemize}
+  \item If the size of the problem is secret and the algorithm's performance varies with the size of the problem, the algorithm could be timed to find out the secret. This can be mitigated by using a different algorithm.
+  \end{itemize}
 \end{enumerate}
 \end{document}
