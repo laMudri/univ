@@ -1,0 +1,217 @@
+# Work submission
+
+All work should be submitted electronically to <dwws2@cam.ac.uk> as an
+e-mail response to my assignment mail. Text files are preferred but
+canned handwritten work will be accepted. Please mark your name on your
+completed work.
+
+Work should be sent at least 48 hours prior to the supervision for which
+it was set. Late submissions might not be reviewed and persistent
+tardiness will result in a report to your DoS.
+
+# Problem Set 4
+
+## System Exploration
+
+These questions are exploratory in nature and require a GNU/Linux system to
+complete. Either use a virtualization solution like VirtualBox or Xen on
+your personal machine, log in to a lab machine like
+ssh-remote-0.cl.cam.ac.uk, or use a workstation in the Intel lab at the
+CL. Feel free to talk with your fellow classmates about these questions
+and read manuals (e.g. "man 2 fork") or online material
+(e.g. stackoverflow.com) to answer them. Modification of the programs
+and system exploration is encouraged. The source is deliberately
+simplified and lacks most error handling that would be necessary in
+application software.
+
+0. bunzip and tar expand the attached source code with a command like
+
+   tar xvjf pset_4.tar.bz2
+
+   It will create a new directory, pset_4 in your shell's present
+   working directory.
+
+   Build the pset software with "make" in the directory "pset_4".
+
+1. Run "pset_4_map".
+
+   (a) What is the meaning of each column in the output table?
+
+   (b) Give a brief explanation for the purpose of each row in the first
+       table.
+
+   (c) What's different in the second table? Why?
+
+   (d) What's different in the third table? Why?
+
+2. Run "pset_4_num".
+
+   (a) Describe the bit structure of signed, unsigned, and 32-bit IEEE
+       754 ("float") floating point numbers.
+
+   (b) What is the 32-bit representation of float 1? Give the meaning of
+       each component in the representation.
+
+   (c) What is the purpose of the IEEE 754 bias? What is its value?
+
+3. Run "pset_4_fs".
+
+   (a) What are the permissions of "tmpdir"? Why?
+
+   (b) How can a file be read after it is deleted?
+
+   (c) When is a file completely deleted from a POSIX-like system?
+
+   (d) How can you ensure that a file's contents are inaccessible from a
+       POSIX-like system using standard interfaces? Does this guarantee
+       that the data contained therein has been destroyed? Why or why not?
+
+   (e) Describe the behavior of the program and operating system between
+       the "begin write" and "end write" comments.
+
+## Exam Preparation
+
+Please complete these questions in an exam-like environment. Write your
+answers longhand (and scan for submission) in approximately the
+proportionate time available during your exam. Do not consult external
+materials.
+
+4. Contrast UNIX pipes with a general, asynchronous message-passing
+   facility as a basis for inter-process communication between processes
+   which run in separate address spaces. (20)
+
+5.
+   (a) Why does the widespread use of graphical user interfaces (GUIs)
+       make explicit the need for the underlying operating system to support
+       concurrent processes and threads? (2)
+
+   (b) Outline the data structures that might be held by an operating
+       system to support the entities that are scheduled (processes or
+       threads). (8)
+
+   (c) Describe one scheduling algorithm and explain how it would be
+       implemented, based on the data structures you have described
+       above. (7)
+
+   (d) What are the implications for scheduling of the need to support
+       new media types such as voice and video? (3)
+
+6.
+   (a) Operating systems need to be able to prevent applications from
+       crashing or locking up the system, or from interfering with other
+       applications. Which three kinds of hardware support do we require to
+       accomplish this? Justify your answer. (6)
+
+   (b) How do applications request that the operating system performs
+       tasks on their behalf? (2)
+
+   (c) What could we do if we did not have the requisite hardware
+       support? (2)
+
+7. Consider the following scheme for structuring a file from a set of
+   disk blocks.  A disk block contains 4096 bytes and a block address is
+   32 bits.  The first block of the file contains the following
+   information:
+
+        control information:            1024 bytes
+        direct block pointers:          1024 bytes
+        indirect block pointer:            4 bytes
+        double indirect block pointer:     4 bytes
+        immediate data:                 2040 bytes
+
+   The data bytes of the file start at the beginning of the immediate
+   data.  After the immediate data, the file data is found on the block
+   addressed by the first direct block pointer and then carries on in a
+   fashion similar to the structure defined by a Unix inode.  We
+   consider the first byte of the file to be byte 0, then byte 1, etc.
+
+   (a) For each of the following describe the actions taken to fetch the
+       indicated byte of a file, and state how many disk blocks may need
+       to be read:
+
+       (i)  byte 70 of the file (1)
+       (ii) byte 2^20 + 2044 of the file (1)
+
+   (b) How large can a file be if it is to be guaranteed that only three
+       disk blocks need to be read in order to access any given byte of
+       the file? (4)
+
+   (c) Information about a file can be stored in a directory that
+       references the file or in the control part of the first block of
+       the file (i.e. inode in Unix).  Which of these is used in the
+       Unix file system to store the following information and why?
+
+       (i)   time of creation (3)
+       (ii)  file name (3)
+       (iii) file access rights (3)
+
+   (d) Another way to structure files on a disk is to use physically
+       contiguous blocks (with contiguous addresses), so that if
+       the first block of a file is block b, then the next block of
+       the file is b + 1.  Suppose we use this method, retain the
+       control information on the first block, but include the first 3
+       KBytes of the file in the first block.  Comment on the
+       performance of such a system, considering reading, writing, and
+       creating files. (5)
+
+8.
+   (a) In the context of virtual memory management:
+
+       (i)   What is demand paging?  How is it implemented? (4)
+
+       (ii)  What is meant by temporal locality of reference? (2)
+
+       (iii) How does the assumption of temporal locality of reference
+             influence page replacement decisions?  Illustrate your
+             answer by briefly describing an appropriate page replacement
+             algorithm or algorithms. (3)
+
+       (iv)  What is meant by spatial locality of reference? (2)
+
+       (v)   In what ways does the assumption of spatial locality of
+             reference influence the design of the virtual memory
+             system? (3)
+
+   (b) Buses are used to connect devices to the processor.
+
+       (i)  Describe with the aid of a diagram the operation of a
+            synchronous bus. (4)
+
+       (ii) In what ways does an asynchronous bus differ? (2)
+
+9.
+   (a) Describe with the aid of a diagram how a simple computer executes
+       a program in terms of the fetch-execute cycle, including the
+       ways in which arithmetic instructions, memory accesses and
+       control flow instructions are handled. (12)
+
+   (b) Explain how a program accesses I/O devices when:
+
+       (i)  it is running in supervisor-mode; (5)
+       (ii) it is running in user-mode. (3)
+
+10.
+   (a) What was the key innovation of the von Neumann Architecture? (2)
+
+   (b) Does an operating system need to know whether the contents of a
+       particular register represent a signed or unsigned integer?
+       Justify your answer. (2)
+
+   (c) Describe what occurs during a context switch. (4)
+
+11. Let N be the 16-bit value 1001 0101 0000 0000.
+
+   (a) What is the value of N when interpreted as:
+
+       (i)   An unsigned integer? (1)
+
+       (ii)  A sign-and-magnitude format integer? (1)
+
+       (iii) A two's complement integer? (2)
+
+       (iv) A floating-point number with a 5-bit bias-15 exponent and a
+            normalised mantissa? State any assumptions you make. (4)
+
+   (b) Imagine N has been loaded into the 16-bit register r1.  Explain
+       what the values of the C (carry) and V (overflow) flags would be
+       after the CPU executes the instruction "add r0 <- r1, r1". (2)

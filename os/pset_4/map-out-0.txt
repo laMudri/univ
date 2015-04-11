@@ -1,0 +1,18 @@
+00400000-00401000 r-xp 00000000 08:09 1979197                            /home/home/james/univ/os/pset_4/pset_4_map
+00600000-00601000 r--p 00000000 08:09 1979197                            /home/home/james/univ/os/pset_4/pset_4_map
+00601000-00602000 rw-p 00001000 08:09 1979197                            /home/home/james/univ/os/pset_4/pset_4_map
+7fc03211a000-7fc0322cd000 r-xp 00000000 08:0a 7343844                    /usr/lib64/libc-2.20.so
+7fc0322cd000-7fc0324cd000 ---p 001b3000 08:0a 7343844                    /usr/lib64/libc-2.20.so
+7fc0324cd000-7fc0324d1000 r--p 001b3000 08:0a 7343844                    /usr/lib64/libc-2.20.so
+7fc0324d1000-7fc0324d3000 rw-p 001b7000 08:0a 7343844                    /usr/lib64/libc-2.20.so
+7fc0324d3000-7fc0324d7000 rw-p 00000000 00:00 0 
+7fc0324d7000-7fc0324f8000 r-xp 00000000 08:0a 7341537                    /usr/lib64/ld-2.20.so
+7fc0326d8000-7fc0326db000 rw-p 00000000 00:00 0 
+7fc0326f7000-7fc0326f8000 rw-p 00000000 00:00 0 
+7fc0326f8000-7fc0326f9000 r--p 00021000 08:0a 7341537                    /usr/lib64/ld-2.20.so
+7fc0326f9000-7fc0326fa000 rw-p 00022000 08:0a 7341537                    /usr/lib64/ld-2.20.so
+7fc0326fa000-7fc0326fb000 rw-p 00000000 00:00 0 
+7ffce3984000-7ffce39a6000 rw-p 00000000 00:00 0                          [stack]
+7ffce39dc000-7ffce39de000 r--p 00000000 00:00 0                          [vvar]
+7ffce39de000-7ffce39e0000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
