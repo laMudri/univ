@@ -3,4 +3,26 @@
        offset – the index of the byte of the file that will next be read or written to
        dev – device on which the file is stored
        inode – ID of the inode associated with the file
-       pathname – 
+       pathname – path of the file being used
+   (b) The first three lines are about the program being run (pset_4_map). The copies kept are for execution, reading and writing.
+       The next four lines give reference to C's base library.
+       The next three non-empty lines are for the C linker.
+       The [stack] line refers to the program's stack. At this point in the execution, it is empty.
+       I don't know what the other lines are for.
+   (c) A [heap] line has been added to store the values being written in the while loop.
+       Also, one of the empty lines moved its start back in memory, so that must represent some allocated area of memory.
+   (d) There is a new line for the execution of file pset_4_map_mmap.
+       Also, the heap has been reduced in size due to the freeing of `ptr`.
+
+2. (a) Unsigned integers are stored as 32 bits, each bit expressing the value of the digit at the corresponding position in the number's binary representation. It is common for these bits to be stored in little-endian order.
+       Signed integers are similar, but the place value of the most significant bit is -2^31, rather than 2^31.
+       Single precision floating point numbers comprise a sign bit (1 for negative), 8 exponent bits (interpreted as their joint binary value minus 127) and 23 value bits (interpreted by reading them as a binary number prefixed by “1.”). Those sections are in the given order, assuming big endian ordering.
+   (b) In big endian order, 0 01111111 00000000000000000000000, interpreted as (-1)^0_2 * 2^(01111111_2 - 127) * 1.00000000000000000000000_2.
+   (c) The exponent bias of -127 is added to allow negative exponents, and hence precise representation of numbers very close to 0. It is used in favour of two's complement to simplify comparisons.
+
+3. (a) rwxrwxr-x. This allows the owner and their group to do anything with the directory and its contents (at least, as much as the contained files allow), but stops other users being able to rename, create or delete files.
+   (b) When a file is deleted, its data will usually remain on disk until they need to be overwritten. Hence, if the data are found, the file can be read by reading the relevant area of the disk.
+   (c) A file is completely deleted only when the space it was using happens to be written to for some other file.
+   (d) The contents of a file can be written to before it is deleted, to ensure that the original data are unavailable.
+   (e) `write(fd,"hello\0",6)` writes the null-terminated string "hello" (consisting of 6 bytes) to tmpdir/file, and returns the number of bytes successfully written.
+       `fsync` commits the data written to the file descriptor it is given to physical memory, returning an error code (0 for success, -1 for failure).

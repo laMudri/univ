@@ -18,4 +18,3 @@
 7ffce39dc000-7ffce39de000 r--p 00000000 00:00 0                          [vvar]
 7ffce39de000-7ffce39e0000 r-xp 00000000 00:00 0                          [vdso]
 ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
-
