@@ -1,3 +1,5 @@
+Operating systems – supervision 4 – James Wood
+
 1. (a) address – the address space allocated to the file
        perms – permissions associated with the file, where ‘p’ signifes that the file should not be modified in-place, but copied on write if the current process needs to modify it
        offset – the index of the byte of the file that will next be read or written to
