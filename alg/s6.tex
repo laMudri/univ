@@ -46,7 +46,7 @@
 
 \section{Dijkstra}
 \begin{enumerate}
-\item The algorithm starts at a given vertex, whose distance is marked as 0. All edges connected to this vertex are added to a priority queue, sorted by weight in ascending order (lightest first). The first vertex in the queue is then traversed, and the new vertex is given a distance equal to the weight of the edge. Its edges are then added to the queue, and the process is repeated (assigning distances equal to the weight of the edge plus the distance given to the vertex at the other end of the edge). Edges between vertices with distances already calculated are removed from the queue. Assuming a connected graph, the algorithm terminates when all vertices have been assigned a distance, or equivalently when the queue is exhausted.
+\item The algorithm starts at a given vertex, whose distance is marked as 0. All nodes directly connected to this vertex are added to a priority queue, sorted by weight of the connecting edge in ascending order (lightest first). The first vertex in the queue is then moved to, and is given a distance equal to the weight associated with it. Vertices directly conected to it without an assigned distance are then added to the queue, with value equal to the distance of the previous vertex plus the weight of the edge used to reach the new vertex, and the process is repeated. Assuming a connected graph, the algorithm terminates when all vertices have been assigned a distance, or equivalently when the queue is exhausted.
 \item
   \begin{tikzpicture}[baseline={(1.base)},node distance=3cm,main node/.style={circle,draw}]
     \node[main node] (1) {-2};
@@ -86,6 +86,13 @@
 
   The shortest path from left to right is now to go there directly. Hence, this tactic does not work.
 \item
+  \begin{enumerate}
+    \item Inserting a vertex into the queue takes \(O\,1\) time, and is done \(O\,|E|\) times. Extracting a vertex takes \(O\,|V|\) time, and this is done \(O\,|V|\) times. These give the total complexity \(O\,(|E|+|V|^2)\), which is equivalent to just \(O\,(|V|^2)\).
+    \item The estimate could be poor. Inserting now takes \(O\,|V|\) time, giving a total complexity of \(O\,(|V|\cdot|E|+|V|^2)\), which is simplified to \(O\,(|V|\cdot|E|)\).
+    \item Inserting takes \(O\,(\log{|V|})\) time and extracting takes \(O\,(\log{|V|})\) time, giving complexity \(O\,(|E|\cdot\log{|V|}+|V|\cdot\log{|V|})\), which is \(O\,(|E|\cdot\log{|V|})\).
+    \item Inserting/modifying costs \(O\,(\log{|V|})\), and extracting costs \(O\,(\log{|V|})\), giving the same complexity as the binary heap.
+    \item Inserting/modifying has \(O\,1\) amortized cost, and extracting costs \(O\,(\log{|V|})\), giving complexity \(O\,(|E|+|V|\cdot\log{|V|})\).
+  \end{enumerate}
 \end{enumerate}
 
 \section{Amortized and aggregate analysis}
@@ -119,7 +126,7 @@ class Queue
 \end{enumerate}
 
 \section{Linear cost}
-When only a single item of an array is put out of order, bubble sort requires only two passes (one to put the element in the correct place, and another to check that the array is sorted).
+In the operation of the queue, it is always the case that either all of the items are in the correct place, or exactly one item is too high in priority for its position. The latter situation occurs after either an insertion to the start of the array or a call to \texttt{decreaseKey}. Keeping high-priority (low-key) items at the right, the out-of-place item is too far left. Bubble sort will move it to the correct position in one pass. If a standard bubble sort algorithm is used, there will also be another pass to check the array, but this doesn't affect asymptotic complexity.
 
 \section{Disjoint-sets, linked lists and trees}
 \begin{enumerate}
@@ -131,19 +138,61 @@ When only a single item of an array is put out of order, bubble sort requires on
 
 \section{Recurrence relations}
 \begin{enumerate}
-\item
-  \begin{aligned}
-    2\cdot
-  \end{aligned}
+\item Observe:
+  \[
+    \begin{aligned}
+      T\,u&\leq 2\cdot T\,(u^{\frac{1}{2}})+c \quad &&\textrm{for some constant }c \\
+      &\leq 2^k\cdot T\,\left(u^{\frac{1}{2^k}}\right)+\left(2^k-1\right)\cdot c \quad &&\textrm{for any }k\textrm{ small enough}
+    \end{aligned}
+  \]
+  This can be verified by induction. Take the implicit base case to be \(T\,2=1\), and choose \(k\) such that:
+  \[
+    \begin{aligned}
+      u^{\frac{1}{2^k}}&=2 \\
+      u&=2^{2^k} \\
+      \lg u&=2^k
+    \end{aligned}
+  \]
+  Substituting this in, we get:
+  \[
+    \begin{aligned}
+      T\,u&\leq\lg u\cdot T\,2+\left(\lg u-1\right)\cdot c \\
+      &\leq(c+1)\cdot\lg u - c \\
+      &\in O\,(\lg u) \quad \textrm{QED}
+    \end{aligned}
+  \]
+\item Similarly, we find that:
+  \[
+    \begin{aligned}
+      T\,u&\leq 2^k\cdot T\,\left(u^{\frac{1}{2^k}}\right)+c\cdot\lg\left(u^{\frac{k}{2}}\right) \quad &&\textrm{for some }c \\
+      &\leq 2^k\cdot T\,\left(u^{\frac{1}{2^k}}\right)+\frac{c}{2}\cdot k\cdot\lg u
+    \end{aligned}
+  \]
+  Again, try:
+  \[
+    \begin{aligned}
+      u^{\frac{1}{2^k}}&=2 \\
+      u&=2^{2^k} \\
+      \lg u&=2^k \\
+      \lg\,(\lg u)&=k
+    \end{aligned}
+  \]
+  Using the last two results and the base case \(T\,2=1\), we rewrite the inequality as:
+  \[
+    \begin{aligned}
+      T\,u&=\lg u+\frac{c}{2}\cdot\lg\,(\lg u)\cdot\lg u \\
+      &\in O\,(\lg u\cdot\lg\,(\lg u)) \quad \textrm{QED}
+    \end{aligned}
+  \]
 \end{enumerate}
 
 \section{k-Anonymity}
 \begin{enumerate}
 \item Yes. There are an odd number of elements, so there had to be some group of three, which has a cost of at least 3. Pairings have a cost of at least 1. This solution incurred only those costs, so is optimal.
-\item Let the length of the list be \(d\cdot k+r\). Partition it into \(d-1\) \(k\)-length subsequences and one \(k+r\)-length subsequence (with all subsequences made up of contiguous items), and vary the positioning of the \(k+r\)-length subsequence. Increase the values of the items in each partition to the maximum in that partition. The resulting \(d\) outputs will satisfy conditions i and ii. The final output is the output amongst these with the lowest cost (satisfying iii).
+\item Let the length of the list be \(d\cdot k+r\), where \(r\in[0..k)\). Produce all possible partitionings of the list where the size of each partition is in \([k..2k)\). In each partition, increase all of the elements to become equal to the largest element, keeping track of the cost. Sum the costs from all partitions in each partitioning, and choose the partitioning with the lowest cost. This can be re\"assembled to give a valid output.
 
-This has cost \(O\,(d\cdot n)\), because \(d\) possible outputs are processed, each taking unit time for each of the \(n\) items in them. This bound is equivalent to \(O\,(n^2)\).
-\item Only consider a single intermediate result from the above algorithm.
+  This seems to have factorial cost, since almost all possible partitionings have to be checked exhaustively.
+\item Some improvement can be gained by memoization, though this doesn't reach linear running time.
 \end{enumerate}
 
 \end{document}
