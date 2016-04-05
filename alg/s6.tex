@@ -192,7 +192,7 @@ In the operation of the queue, it is always the case that either all of the item
 \item Let the length of the list be \(d\cdot k+r\), where \(r\in[0..k)\). Produce all possible partitionings of the list where the size of each partition is in \([k..2k)\). In each partition, increase all of the elements to become equal to the largest element, keeping track of the cost. Sum the costs from all partitions in each partitioning, and choose the partitioning with the lowest cost. This can be re\"assembled to give a valid output.
 
   This seems to have factorial cost, since almost all possible partitionings have to be checked exhaustively.
-\item Some improvement can be gained by memoization, though this doesn't reach linear running time.
+\item Some improvement can be gained by memoization, though this doesn't reach linear running time. There seem to be too many difficult cases to provide a suitable greedy algorithm.
 \end{enumerate}
 
 \end{document}
