@@ -1,0 +1,162 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{tikz}
+
+\usetikzlibrary{automata,arrows}
+
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumii}{\roman{enumii}}
+
+\begin{document}
+\title{Computer Networking -- supervision 6}
+\author{James Wood}
+\maketitle
+
+\section*{Question 1}
+\begin{enumerate}
+  \item
+    \begin{tabular}[t]{r|l|l|l|l|l|l|l}
+      Current & A & B & C & D & E & F & G
+      \\ \hline
+        & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $0$ & $\infty$ & $\infty$
+      \\
+      E & $3$ & $1$ & $\infty$ & $\infty$ & $0$ & $10$ & $\infty$
+      \\
+      B & $2$ & $1$ & $3$ & $\infty$ & $0$ & $6$ & $\infty$
+      \\
+      A & $2$ & $1$ & $3$ & $\infty$ & $0$ & $6$ & $\infty$
+      \\
+      C & $2$ & $1$ & $3$ & $10$ & $0$ & $5$ & $4$
+      \\
+      G & $2$ & $1$ & $3$ & $7$ & $0$ & $5$ & $4$
+      \\
+      F & $2$ & $1$ & $3$ & $7$ & $0$ & $5$ & $4$
+      \\
+      D & $2$ & $1$ & $3$ & $7$ & $0$ & $5$ & $4$
+      \\
+    \end{tabular}
+  \item
+    \begin{enumerate}
+      \item Anycast message delivery allows a client to connect to any of the data centres without specifying which. Typically, a close data centre will be chosen. Multi-hosting gives a way to access one of many data centres via a load balancer, which ensures that a single TCP connection only involves one of the data centres.
+      \item 208.65.153.224/27
+      \item The new advertised netblock is no more specific than the netblock already advertised by the ISP, so clients have no reason to prefer one advertisement over the other. The bad information from the ISP is still accessible.
+      \item Each smaller netblock is more specific than the one advertised by the ISP, so clients know to choose it for routing information.
+      \item The filtering affects netblocks of less than 8 bits.
+      \item Filtering out advertisements for small netblocks avoids routing attacks where the attacker falsely advertises many small netblocks, overriding the legitimate advertisements for containing netblocks.
+    \end{enumerate}
+\end{enumerate}
+
+\section*{Question 2}
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item $\SI{100}{kB} = \SI{8e5}{b}$ and $\SI{1}{Mb/s} = \SI{1e6}{b/s}$. Transmitting \SI{8e5}{b} of information at \SI{1e6}{b/s} takes \SI{8e-1}{s}.
+      \item The router could have just started transmitting a \SI{1500}{b} low-priority packet. This takes \SI{1.5e-3}{s} to clear, after which time the high-priority packet could be started transmitting.
+    \end{enumerate}
+  \item
+    $d_{\mathrm{proc}}$:
+    \begin{enumerate}
+      \item Delay in processing the packet, where the processing may include determining the forwarding strategy and error detection.
+      \item Run the processing in parallel, implemented in hardware.
+      \item This depends on the router, but is probably about \SI{1e-4}{s}.
+    \end{enumerate}
+    $d_{\mathrm{queue}}$:
+    \begin{enumerate}
+      \item Time spent in the output queue of the node by a packet.
+      \item Use a faster outgoing link.
+      \item This varies greatly with congestion, but will be multiple times larger than $d_{\mathrm{trans}}$.
+    \end{enumerate}
+    $d_{\mathrm{trans}}$:
+    \begin{enumerate}
+      \item Time taken to transfer a packet from the node to the outgoing link.
+      \item Have smaller packets.
+      \item Assuming a MTU of \SI{1}{kb}, it takes \SI{1e-6}{s} to transfer a packet to the wire.
+    \end{enumerate}
+    $d_{\mathrm{prop}}$:
+    \begin{enumerate}
+      \item Time taken for a packet to reach the node along the physical medium.
+      \item Use a faster incoming link.
+      \item If packets can be propagated at the speed of light, the maximum propagation delay is about $\frac{\SI{5e2}{m}}{\SI{3e8}{m/s}}$, or \SI{1.67e-6}{s}.
+    \end{enumerate}
+  \item In centralized multiplexing, the network is split into several regions, with messages between regions being sent through the switch for the sender's region. This contrasts to distributed multiplexing, where all nodes can communicate with each other through a shared link. Centralized multiplexing has the advantage that it does not suffer from collision. Where collision would occur in a decentralized multiplexing system, packets in a centralized multiplexing system go into a queue at the switch. Also, since there is only one long-distance link between each pair of switches, it is relatively cheap to improve the efficiency of this link.
+    % Centralized multiplexing
+\end{enumerate}
+
+\section*{Question 3}
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item 91.45.23.82
+      \item 91.45.23.85
+      \item Having a long TTL risks the cache becoming invalid in this time. However, it also means that clients less frequently have to contact the DNS server, which is helpful for services which are likely to be accessed multiple times in quick succession. This is the case for a website, where a user will typically want to access multiple pages in a day. For mail, the short TTL is justified by the fact that sending email happens less often, and also the client is less worried about how long this takes.
+      \item Caching can significantly reduce the work of DNS servers, particularly because clients will often look for the same domain multiple times in a session. It also provides a quicker experience for the client, as they don't have to wait for the DNS server at all.
+      \item The availability of the name service is determined by whether there is at least one name server running and whether the name servers can handle the volume of requests.
+      \item
+        % Improve availability of DNS server for lemon.co.uk domain
+        \begin{itemize}
+          \item Name servers can be replicated, which helps to cope with failure of a name server and spread the load when all name servers are running.
+          \item It may be advantageous to convert the existing name servers so that they all contain information about everything in the \texttt{lemon.co.uk} domain. This would improve redundancy, and comes at little cost if some of the name servers currently hold little information.
+        \end{itemize}
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item $\textrm{average delay} = \frac{\SI{8}{MB}}{\SI{10}{Gb/s}} = \frac{8 \times \SI{8e6}{s}}{\SI{10e9}{}} = \SI{6.4e-3}{s}$.
+      \item
+        \begin{tabular}[t]{r|l}
+          Link & Latency
+          \\ \hline
+          A to R & \SI{40}{\micro s}
+          \\
+          R to B & \SI{50}{\micro s}
+          \\
+          R to C & \SI{40}{\micro s}
+          \\
+          B to C & \SI{2}{\micro s}
+        \end{tabular}
+
+        Along with the average delay at R of \SI{6400}{\micro s}, this gives us the following route latencies.
+
+        \begin{tabular}[t]{r|l}
+          Route & Latency
+          \\ \hline
+          A to B & \SI{6482}{\micro s}
+          \\
+          A to C & \SI{6480}{\micro s}
+          \\
+          B to C & \SI{2}{\micro s}
+        \end{tabular}
+      \item Much of the delay is caused by the switch's queue. If there were less data being sent through R, it would have a shorter queue, which would cause less latency.
+    \end{enumerate}
+\end{enumerate}
+
+\section*{Question 4}
+Host A contacts (g) to request the IP address of domain \texttt{mine.foo.com}. (g) doesn't have this cached, so contacts (a), which gives an address for \texttt{com} name server (c). (g) contacts (c), which gives the address of (f). Finally, (g) contacts (f), which gives the address of (h), and this address is sent back to host A.
+
+\section*{Question 5}
+\begin{enumerate}[label=\roman*)]
+  \item Before each page or image starts being received, the client has to wait for a time of $4 \cdot L$. After waiting for this long, the page takes $P/B$ to be downloaded, and each image takes $M/B$ to be downloaded. These add up to give answer \textbf{(e)}.
+  \item As before, the page is loaded first, taking $4 \cdot L + P/B$. Then, all of the image connections are set up simultaneously, taking $4 \cdot L$, then the $4 \cdot M$ of data is downloaded. These add up to give answer \textbf{(i)}.
+  \item The page is completely downloaded after $4 \cdot L + P/B$. Then, each image takes a further $2 \cdot L + M/B$ to be downloaded. These add up to give answer \textbf{(a)}.
+  \item The page is completely downloaded after $4 \cdot L + P/B$. Then, all of the images are requested, taking $2 \cdot L$ for the downloading to begin. Finally, the download of all of the images takes $3 \cdot M/B$. These add up to give answer \textbf{(l)}.
+\end{enumerate}
+
+\section*{Question 6}
+\begin{enumerate}[label=\roman*)]
+  \item d, c, c, a, 1
+  \item
+    \begin{itemize}
+      \item {[A], [A-C], [A-C-F], [A-C-F-E], [A-C-G]}
+      \item {[C], [C-F], [C-F-E], [C-G]}
+      \item {[E], [E-F]}
+      \item {[F]}
+      \item {[E-F]}
+      \item {[D-B-E-F]}
+      \item {[D-B-C-G]}
+    \end{itemize}
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,104 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{tabularx}
+
+\begin{document}
+\title{Computer Networking -- supervision 2}
+\author{James Wood}
+\maketitle
+
+
+\section*{Question 1}
+See scanned pages.
+
+\section*{Question 2}
+\begin{enumerate}
+  \item
+    \begin{align*}
+      \textrm{timeToEOF} & = \textrm{networkLatency} + \textrm{reservationTime} \\
+                         & \phantom{=} {} + \textrm{networkLatency} + \textrm{reservationTime} \\
+                         & \phantom{=} {} + \textrm{networkLatency} + \textrm{fileTime} \\
+                         & = n \cdot L + R / B + n \cdot L + R / B + n \cdot L + F / B \\
+                         & = 3 \cdot n \cdot L + \frac{2 \cdot R + F}{B}
+    \end{align*}
+  \item
+    \begin{align*}
+      \textrm{timeToEOF} & = n \cdot L + n \cdot D / B + (Q - 1) \cdot D / B \\
+                         & = n \cdot (L + D / B) + (Q - 1) \cdot D / B
+    \end{align*}
+  \item For a large file, the first time tends to $F / B$, whereas the second time tends to $Q \cdot D / B$. $F < Q \cdot D$ because of the header data, so the first method is faster.
+  \item If each packet has a small payload, the second time tends to $Q \cdot H / B$ because $Q$ becomes large and $D$ is dominated by $H$. This isn't really comparable to the first time.
+  \item For large $B$, the times tend to $3 \cdot n \cdot L$ and $n \cdot L$, respectively, meaning that the second method is about 3 times faster.
+\end{enumerate}
+
+\section*{Question 3}
+\begin{itemize}
+  \item CSMA -- Carrier Sense Multiple Access
+  \item CD -- Collision Detection
+  \item CA -- Collision Avoidance
+\end{itemize}
+In CSMA/CD, if a sender detects a singnal from another sender, it aborts the sending of its message and tries again based on a binary exponential back-off scheme. This protocol requires that all nodes on the network can communicate with each other, so it cannot be used for wireless connections. However, it is commonly used on wired networks.
+
+In CSMA/CA, each message is preceded by a request to send (RTS) to the receiver. The sender then waits for a clear to send (CTS), which will be sent only if there are no other senders the receiver can detect. This notifies other potential senders that there is already a sender in range. After this, the data are sent, and the receiver broadcasts an ACK when all data have arrived. This tells surrounding nodes that they are free to send. This approach has more latency than CSMA/CD, but is necessary for wireless networks.
+
+\section*{Question 4}
+I don't understand what is meant by "scheduling" in this context.
+
+\begin{enumerate}
+  \item A code is an XOR mask applied to a signal. Many bits of the code are applied to each bit of the signal. Codes are orthogonal to each other iff the 0 and 1 signals transmitted are distinct from the 0s and 1s transmitted from other codes.
+  \item
+    \newcolumntype{t}{>{\ttfamily}l}
+    \begin{tabular}{r|tttt}
+      $A$ transmits & 01101000 & 10010111 & 10010111 & 01101000 \\
+      $B$ transmits & 00111101 & 00111101 & 11000010 & 11000010 \\
+      \hline
+      Received      & 01212101 & 10121212 & 21010121 & 12101010
+    \end{tabular}
+
+    This assumes that the signals from $A$ and $B$ have equal strength when they get to the receiver.
+
+    The decoding happens as follows:
+
+    \begin{tabular}{r|tttt}
+      Both started with     & 0x1x1x0x & x0x1x1x1 & 1x0x0x1x & x1x0x0x0 \\
+      \hline
+      XORed with $A$'s code & 1x1x1x1x & x0x0x0x0 & 0x0x0x0x & x1x1x1x1 \\
+      Giving $A$'s message  & 1        & 0        & 0        & 1 \\
+      \hline
+      XORed with $B$'s code & 0x0x0x0x & x0x0x0x0 & 1x1x1x1x & x1x1x1x1 \\
+      Giving $B$'s message  & 0        & 0        & 1        & 1 \\
+    \end{tabular}
+\end{enumerate}
+
+\section*{Question 5}
+\begin{enumerate}
+  \item We interpret the bits as a base-$x$ number, where $x$ is the parameter of the polynomial. For example, $1001$ becomes $1 \cdot x^3 + 0 \cdot x^2 + 0 \cdot x + 1$, which is $x^3 + 1$.
+  \item The sender and receiver must agree on a divisor polynomial of order exactly $n$, which is used to encode and decode the message. The message is padded at the end with $n$ 0 bits. Then, the message polynomial is divided by the divisor, but with subtractions replaced by bitwise XOR. This leaves 0s in place of the original message and an $n$-bit checksum at the end. The checksum is appended to the message and sent. The receiver does the same division on the received message, which succeeds iff the result is all 0s.
+  \item See scanned pages.
+\end{enumerate}
+
+\section*{Question 6}
+ARP is used to find a MAC address corresponding to a given IP address. It does this by having each node keep a cache of known MAC addresses and having them broadcast requests for IP addresses without a known MAC address. The machine with the requested IP address responds to this with its MAC address.
+
+DHCP is a protocol used to automatically configure a machine that has just joined a network. Most notably, it assigns an IP address. The configuration of a client may differ each time it connects to the network. As with ARP, DHCP involves an initial broadcast by the connecting machine. A DHCP server responds to this message, giving the configuration and updating its internal state.
+
+ARP and DHCP are connected in that ARP turns IP addresses into MAC addresses, and DHCP turns MAC addresses into IP addresses. However, DHCP is for generating new addresses, whereas ARP is about finding existing addresses. Also, ARP is a decentralized protocol, whereas DHCP relies on specific servers (which, if there are multiple servers, need to co\"ordinate).
+
+\section*{Question 7}
+\textit{Line coding} is a coding technique used to change the bit pattern of a transmitted message in a specific way that makes it more suitable to the medium, sender, or receiver.
+
+\begin{enumerate}
+  \item The message is encoded using high voltage for 1 bits, and low voltage for 0 bits. It fits with how bits are stored in a computer, so is the simplest line coding system. It is used when the clocks are known to be synchronized.
+  \item 1s in the message are encoded as transitions between 0 and 1, and 0s are encoded as no transition. It is used when transitions are more easy to generate or detect than levels, as with a noisy channel.
+  \item 0s are represented by down transitions, and 1s are represented by up transitions. The baud rate has to be twice the bit rate. This is useful because there is at least one transition for each bit sent, so it can be used when clock drift may happen.
+  \item Each 4-bit chunk of the message is encoded as 5 bits such that each 5-bit chunk has at least 2 high bits. This is used when it is difficult to detect long sequences of 0s.
+  \item Each chunk of input is XORed with a set bit pattern, then transmitted. Decoding uses the same process. This can be used to make sure that common sequences like all 0s and all 1s get transmitted with transitions, avoiding bit loss.
+  \item The bit stream is multiplied (with additions replaced by XORs) by a set bit pattern. Decoding is then division of the kind used in CRCs. The purpose of multiplicative scramblers is similar to the purpuse of additive scramblers.
+\end{enumerate}
+
+Scramblers should not be used for encryption because they rely on a fixed private key. They are susceptible to brute-force attacks, unless made impractically large.
+
+\end{document}

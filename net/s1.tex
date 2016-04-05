@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+
+\begin{document}
+\title{Computer Networking -- supervision 1}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item At the top of the stack is the \textit{application layer}. The information carried at this level is intended to be interpreted by the application a given user is using. This differs from the \texttt{presentation layer}, in which data may be encrypted or stored in a non-native way (e.g, in big-endian order when being received on a little-endian machine). Below this is the \textit{session layer}, which establishes and manages a connection between the communicating peers. The \textit{transport layer} refines the session layer by managing the transmission of individual messages from end to end. TCP and UDP are the protocols most often used at this layer. TCP ensures that all data sent get to the client (if possible, otherwise fail), and also does error detection and keeps the order of packets. UDP doesn't make as many guarantees, leaving them to the application handling the messages. The central layer is the \textit{network layer}, implemented by the IP. This layer handles routing, converting between the logical addresses given by the application (such as a web address) and physical addresses (IP addresses). Below this is the \textit{data link layer}, which maintains a physical connection between two nodes with known physical addresses. This includes the connection between a computer and a router, and from the router to other nodes on the internet. Finally is the \textit{physical layer}, associated with the raw transmission of data over physical media (including copper wire, radio Wi-Fi signals, and optical fibres).
+  \item
+    \begin{itemize}
+      \item node -- person
+      \item channel -- air
+      \item entity -- ?
+      \item layer -- depends on one's philosophy of language.
+      \item transmission -- thoughts are transmitted; the act of transmission would be the sender saying something and the receiver listening.
+      \item coding -- thoughts are coded into speech sounds (via various intermediate codes).
+      \item addressing -- there is some form of addressing achieved by use of vocatives, though this can be ambiguous (e.g, if two people have the same name), and often isn't required.
+      \item multiplexing -- people can distinguish voices by tone and location.
+    \end{itemize}
+  \item
+    \begin{enumerate}
+      \item The telephone network uses time division multiple access. This means that there is some latency, since data have to be buffered up and transmitted in a single time frame. Upon connection, if two users try to use the same time division, they will be made to wait for a random length of time, so that they don't interfere with each other repeatedly.
+      \item For a fixed propagation speed, WDM is the same thing as FDM. The distinction is usually indicative of the type of wave used. Near-visible light (as used in optical fibres) is described by wavelength, whereas radio and sound are described by frequency.
+      \item TDM works well when the signals to be multiplexed come in at a fixed rate, and the shared medium can carry the signals at a faster rate. A circuit is a conduit through which information is transmitted. Radio broadcasting does not use TDM. It instead uses FDM because it is difficult to transmit enough information for TDM on a single radio frequency.
+      \item ATDM relies on the sender tagging each packet of information, and the receiver reading that tag to determine whether to read the contained information. This means that any receiver has to read part of every package it receives, rather than only reading the packets that hit the required time interval. This makes more efficient use of the shared medium when there are many senders, but few are ever trying to send anything at any given time.
+      \item In ATDM, each packet is marked with its sender. The contention policy is simple in this case: wait for an empty time frame, and put packets in it. For a shared media link, we need some connection procedure to establish which division of the medium we are using. Also, there could be a livelock situation where two senders try to connect at the same time, request the same division, and both fail. If they wait for the same time, there is some risk that the situation will re\"occur.
+      \item I don't understand the idea of an Ethernet having a length.
+      \item Token loss occurs when a message is sent, but the intended receiver doesn't receive it. Token duplication occurs when a sender hasn't received confirmation that the message has been received, so resends it.
+      \item In synchronous TDM, each sender is assigned a time division at the start of its transmission. In asynchronous TDM, each message is assigned a time division, and the message has to be tagged with its sender. The two are the same if senders have to be tagged anyway, and senders happen to choose time divisions to send on which are regularly spaced.
+      \item When a caller dials a number, the system tries to find an available circuit. It does this by trying one circuit, and if that fails, waiting for a random time before trying again. The wait has to be reasonably random in order to avoid a livelock situation where two callers repeatedly cause each other to fail to get a reservation.
+    \end{enumerate}
+\end{enumerate}
+\end{document}

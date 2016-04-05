@@ -1,0 +1,21 @@
+- 1.
+System.out.println(i = i + 1);
+- 2.
+    10
+    9
+On the second line, the expression `j--` sets j to j - 1 and returns the
+original value of j (10). j is now 9, and this value is printed on the third
+line.
+- 3.
+    9
+    9
+- 4.i.
+4
+- 4.ii.
+7
+- 5.
+One left shift corresponds to multiplication by 2, as numbers are stored in
+binary. Therefore, n left shifts corresponds to n multiplications by 2, which
+is equivalent to multiplication by 2^n.
+- 6.
+0x20 & x >> 5  // assuming “nth bit” means “bit with value 2^n”

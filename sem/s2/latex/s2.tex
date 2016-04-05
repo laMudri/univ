@@ -1,0 +1,411 @@
+\documentclass{article}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{mathpartir,amsmath}
+%\usepackage{bussproofs}
+
+\usepackage{textgreek}
+\usepackage{agda}
+
+\DeclareUnicodeCharacter{8988}{\ensuremath{\ulcorner}}
+\DeclareUnicodeCharacter{8989}{\ensuremath{\urcorner}}
+\DeclareUnicodeCharacter{8803}{\ensuremath{\overline{\equiv}}}
+\DeclareUnicodeCharacter{9001}{\ensuremath{\langle}}
+\DeclareUnicodeCharacter{9002}{\ensuremath{\rangle}}
+\DeclareUnicodeCharacter{8759}{\ensuremath{\mathbin{::}}}
+
+\newcommand{\defeq}{\overset{\mathit{def}}{=}}
+
+\begin{document}
+\title{Semantics of Programming Languages -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+\item
+  \begin{code}%
+\>\AgdaKeyword{module} \AgdaModule{s2} \AgdaKeyword{where}\<%
+\\
+%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Data.Nat}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Data.Bool}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Data.Product}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Data.Plus} \AgdaKeyword{hiding} \AgdaSymbol{(}Plus\AgdaSymbol{)} \AgdaKeyword{renaming} \AgdaSymbol{(}Plus′ \AgdaSymbol{to} Plus\AgdaSymbol{)}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Data.Sum}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Relation.Binary.PropositionalEquality}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Data.Empty}\<%
+\\
+%
+\\
+\>\AgdaKeyword{infix} \AgdaNumber{5} \_+s\_\<%
+\\
+\>\AgdaKeyword{infix} \AgdaNumber{4} ifs\_then\_else\_\<%
+\\
+\>\AgdaKeyword{infix} \AgdaNumber{3} \_↝\_\<%
+\\
+%
+\\
+\>\AgdaComment{-- Convention: no suffix}\<%
+\\
+\>\AgdaKeyword{data} \AgdaDatatype{Ast} \AgdaSymbol{:} \AgdaPrimitiveType{Set} \AgdaKeyword{where}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{nats} \AgdaSymbol{:} \AgdaDatatype{ℕ} \AgdaSymbol{→} \AgdaDatatype{Ast}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{bools} \AgdaSymbol{:} \AgdaDatatype{Bool} \AgdaSymbol{→} \AgdaDatatype{Ast}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{\_+s\_} \AgdaSymbol{:} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Ast}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{ifs\_then\_else\_} \AgdaSymbol{:} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Ast}\<%
+\\
+%
+\\
+\>\AgdaComment{-- Convention: uses the letter ‘r’ (for “reduction”)}\<%
+\\
+\>\AgdaKeyword{data} \AgdaDatatype{\_↝\_} \AgdaSymbol{:} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaPrimitiveType{Set} \AgdaKeyword{where}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{E-IF} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e0} \AgdaBound{e0'} \AgdaBound{e1} \AgdaBound{e2}\AgdaSymbol{\}} \AgdaSymbol{→}\<%
+\\
+\>[2]\AgdaIndent{9}{}\<[9]%
+\>[9]\AgdaBound{e0} \AgdaDatatype{↝} \AgdaBound{e0'} \AgdaSymbol{→} \AgdaInductiveConstructor{ifs} \AgdaBound{e0} \AgdaInductiveConstructor{then} \AgdaBound{e1} \AgdaInductiveConstructor{else} \AgdaBound{e2} \AgdaDatatype{↝} \AgdaInductiveConstructor{ifs} \AgdaBound{e0'} \AgdaInductiveConstructor{then} \AgdaBound{e1} \AgdaInductiveConstructor{else} \AgdaBound{e2}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{E-IF-TRUE} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e1} \AgdaBound{e2}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaInductiveConstructor{ifs} \AgdaInductiveConstructor{bools} \AgdaInductiveConstructor{true} \AgdaInductiveConstructor{then} \AgdaBound{e1} \AgdaInductiveConstructor{else} \AgdaBound{e2} \AgdaDatatype{↝} \AgdaBound{e1}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{E-IF-FALSE} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e1} \AgdaBound{e2}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaInductiveConstructor{ifs} \AgdaInductiveConstructor{bools} \AgdaInductiveConstructor{false} \AgdaInductiveConstructor{then} \AgdaBound{e1} \AgdaInductiveConstructor{else} \AgdaBound{e2} \AgdaDatatype{↝} \AgdaBound{e2}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{E-PLUS} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{n0} \AgdaBound{n1}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaInductiveConstructor{nats} \AgdaBound{n0} \AgdaInductiveConstructor{+s} \AgdaInductiveConstructor{nats} \AgdaBound{n1} \AgdaDatatype{↝} \AgdaInductiveConstructor{nats} \AgdaSymbol{(}\AgdaBound{n0} \AgdaPrimitive{+} \AgdaBound{n1}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e0} \AgdaBound{e0'} \AgdaBound{e1}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaBound{e0} \AgdaDatatype{↝} \AgdaBound{e0'} \AgdaSymbol{→} \AgdaBound{e0} \AgdaInductiveConstructor{+s} \AgdaBound{e1} \AgdaDatatype{↝} \AgdaBound{e0'} \AgdaInductiveConstructor{+s} \AgdaBound{e1}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{n0} \AgdaBound{e1} \AgdaBound{e1'}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaBound{e1} \AgdaDatatype{↝} \AgdaBound{e1'} \AgdaSymbol{→} \AgdaInductiveConstructor{nats} \AgdaBound{n0} \AgdaInductiveConstructor{+s} \AgdaBound{e1} \AgdaDatatype{↝} \AgdaInductiveConstructor{nats} \AgdaBound{n0} \AgdaInductiveConstructor{+s} \AgdaBound{e1'}\<%
+\end{code}
+
+  \begin{enumerate}[label=\roman*]
+  \item
+    We analyse cases on the possible reduction steps, directed implicitly by the form of the initial expression.
+
+    \begin{code}%
+\>\AgdaFunction{deterministic} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e} \AgdaBound{e'} \AgdaBound{e''}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaBound{e} \AgdaDatatype{↝} \AgdaBound{e'} \AgdaSymbol{→} \AgdaBound{e} \AgdaDatatype{↝} \AgdaBound{e''} \AgdaSymbol{→} \AgdaBound{e'} \AgdaDatatype{≡} \AgdaBound{e''}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaInductiveConstructor{E-PLUS} \AgdaInductiveConstructor{E-PLUS} \AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaInductiveConstructor{E-PLUS} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaSymbol{())}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaInductiveConstructor{E-PLUS} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaSymbol{())}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaSymbol{())} \AgdaInductiveConstructor{E-PLUS}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaBound{x'}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaBound{x''}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaKeyword{rewrite} \AgdaFunction{deterministic} \AgdaBound{x'} \AgdaBound{x''} \AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaSymbol{())} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaBound{x''}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaSymbol{())} \AgdaInductiveConstructor{E-PLUS}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaBound{x'}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaSymbol{())}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaBound{x'}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaBound{x''}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaKeyword{rewrite} \AgdaFunction{deterministic} \AgdaBound{x'} \AgdaBound{x''} \AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-IF} \AgdaBound{x'}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{E-IF} \AgdaBound{x''}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaKeyword{rewrite} \AgdaFunction{deterministic} \AgdaBound{x'} \AgdaBound{x''} \AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-IF} \AgdaSymbol{())} \AgdaInductiveConstructor{E-IF-TRUE}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaSymbol{(}\AgdaInductiveConstructor{E-IF} \AgdaSymbol{())} \AgdaInductiveConstructor{E-IF-FALSE}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaInductiveConstructor{E-IF-TRUE} \AgdaSymbol{(}\AgdaInductiveConstructor{E-IF} \AgdaSymbol{())}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaInductiveConstructor{E-IF-TRUE} \AgdaInductiveConstructor{E-IF-TRUE} \AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaInductiveConstructor{E-IF-FALSE} \AgdaSymbol{(}\AgdaInductiveConstructor{E-IF} \AgdaSymbol{())}\<%
+\\
+\>\AgdaFunction{deterministic} \AgdaInductiveConstructor{E-IF-FALSE} \AgdaInductiveConstructor{E-IF-FALSE} \AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\end{code}
+
+  \item
+    We need to introduce rules about typing and values.
+
+    \begin{code}%
+\>\AgdaComment{-- Convention: called “τ”}\<%
+\\
+\>\AgdaKeyword{data} \AgdaDatatype{Type} \AgdaSymbol{:} \AgdaPrimitiveType{Set} \AgdaKeyword{where}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{nat} \AgdaInductiveConstructor{bool} \AgdaSymbol{:} \AgdaDatatype{Type}\<%
+\\
+%
+\\
+\>\AgdaKeyword{data} \AgdaDatatype{Val} \AgdaSymbol{:} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaPrimitiveType{Set} \AgdaKeyword{where}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{natv} \AgdaSymbol{:} \AgdaSymbol{\{}\AgdaBound{x} \AgdaSymbol{:} \AgdaDatatype{ℕ}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaDatatype{Val} \AgdaSymbol{(}\AgdaInductiveConstructor{nats} \AgdaBound{x}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{boolv} \AgdaSymbol{:} \AgdaSymbol{\{}\AgdaBound{x} \AgdaSymbol{:} \AgdaDatatype{Bool}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaDatatype{Val} \AgdaSymbol{(}\AgdaInductiveConstructor{bools} \AgdaBound{x}\AgdaSymbol{)}\<%
+\\
+%
+\\
+\>\AgdaComment{-- Convention: names suffixed by ‘t’}\<%
+\\
+\>\AgdaKeyword{infix} \AgdaNumber{3} ⊢\_∈\_\<%
+\\
+\>\AgdaKeyword{data} \AgdaDatatype{⊢\_∈\_} \AgdaSymbol{:} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Type} \AgdaSymbol{→} \AgdaPrimitiveType{Set} \AgdaKeyword{where}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{T-NAT} \AgdaSymbol{:} \AgdaSymbol{(}\AgdaBound{x} \AgdaSymbol{:} \AgdaDatatype{ℕ}\AgdaSymbol{)} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaInductiveConstructor{nats} \AgdaBound{x} \AgdaDatatype{∈} \AgdaInductiveConstructor{nat}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{T-BOOL} \AgdaSymbol{:} \AgdaSymbol{(}\AgdaBound{x} \AgdaSymbol{:} \AgdaDatatype{Bool}\AgdaSymbol{)} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaInductiveConstructor{bools} \AgdaBound{x} \AgdaDatatype{∈} \AgdaInductiveConstructor{bool}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e0} \AgdaBound{e1}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e0} \AgdaDatatype{∈} \AgdaInductiveConstructor{nat} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e1} \AgdaDatatype{∈} \AgdaInductiveConstructor{nat} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e0} \AgdaInductiveConstructor{+s} \AgdaBound{e1} \AgdaDatatype{∈} \AgdaInductiveConstructor{nat}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{T-IF} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e0} \AgdaBound{e1} \AgdaBound{e2} \AgdaBound{τ}\AgdaSymbol{\}} \AgdaSymbol{→}\<%
+\\
+\>[2]\AgdaIndent{9}{}\<[9]%
+\>[9]\AgdaDatatype{⊢} \AgdaBound{e0} \AgdaDatatype{∈} \AgdaInductiveConstructor{bool} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e1} \AgdaDatatype{∈} \AgdaBound{τ} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e2} \AgdaDatatype{∈} \AgdaBound{τ} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaInductiveConstructor{ifs} \AgdaBound{e0} \AgdaInductiveConstructor{then} \AgdaBound{e1} \AgdaInductiveConstructor{else} \AgdaBound{e2} \AgdaDatatype{∈} \AgdaBound{τ}\<%
+\\
+%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e} \AgdaBound{τ}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e} \AgdaDatatype{∈} \AgdaBound{τ} \AgdaSymbol{→} \AgdaDatatype{Val} \AgdaBound{e} \AgdaDatatype{⊎} \AgdaRecord{Σ} \AgdaDatatype{Ast} \AgdaSymbol{(λ} \AgdaBound{e'} \AgdaSymbol{→} \AgdaBound{e} \AgdaDatatype{↝} \AgdaBound{e'}\AgdaSymbol{)}\<%
+\end{code}
+
+    Syntactic values are values already, so needn't make progress.
+
+    \begin{code}%
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{x}\AgdaSymbol{)} \AgdaSymbol{=} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{natv}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-BOOL} \AgdaBound{x}\AgdaSymbol{)} \AgdaSymbol{=} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{boolv}\<%
+\end{code}
+
+    Consider the expression $e_0 + e_1$. First, suppose that $e_0$ is a value. If $e_1$ is a value, we use E-PLUS to reduce the whole expression. Otherwise, we use E-PLUS-RIGHT, reducing $e_1$. On the other hand, if $e_0$ reduces, we use E-PLUS-LEFT.
+
+    \begin{code}%
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaBound{at} \AgdaBound{bt}\AgdaSymbol{)} \AgdaKeyword{with} \AgdaFunction{progress} \AgdaBound{at}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{()} \AgdaBound{bt}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{boolv}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{x}\AgdaSymbol{)} \AgdaBound{bt}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{natv} \AgdaKeyword{with} \AgdaFunction{progress} \AgdaBound{bt}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{x}\AgdaSymbol{)} \AgdaSymbol{())} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{natv} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{boolv}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{x}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{y}\AgdaSymbol{))} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{natv} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{natv} \AgdaSymbol{=}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{inj₂} \AgdaSymbol{(}\AgdaInductiveConstructor{nats} \AgdaSymbol{(}\AgdaBound{x} \AgdaPrimitive{+} \AgdaBound{y}\AgdaSymbol{)} \AgdaInductiveConstructor{,} \AgdaInductiveConstructor{E-PLUS}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{x}\AgdaSymbol{)} \AgdaBound{bt}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{natv} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₂} \AgdaSymbol{(}\AgdaBound{b} \AgdaInductiveConstructor{,} \AgdaBound{r}\AgdaSymbol{)} \AgdaSymbol{=}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{inj₂} \AgdaSymbol{(}\AgdaInductiveConstructor{nats} \AgdaBound{x} \AgdaInductiveConstructor{+s} \AgdaBound{b} \AgdaInductiveConstructor{,} \AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaBound{r}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaBound{at} \AgdaBound{bt}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₂} \AgdaSymbol{(}\AgdaBound{a'} \AgdaInductiveConstructor{,} \AgdaBound{r}\AgdaSymbol{)} \AgdaSymbol{=} \AgdaInductiveConstructor{inj₂} \AgdaSymbol{(}\AgdaBound{a'} \AgdaInductiveConstructor{+s} \AgdaSymbol{\_} \AgdaInductiveConstructor{,} \AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaBound{r}\AgdaSymbol{)}\<%
+\end{code}
+
+    $\mathbf{if}$ expressions are similar. In $\mathbf{if}~e_0~\mathbf{then}~e_1~\mathbf{else}~e_2$, if $e_0$ is a value, the expression reduces to whichever of $e_1$ and $e_2$. Otherwise, $e_0$ reduces, and we can use E-IF.
+
+    \begin{code}%
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaBound{ct} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaKeyword{with} \AgdaFunction{progress} \AgdaBound{ct}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaSymbol{()} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{natv}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaSymbol{(}\AgdaInductiveConstructor{T-BOOL} \AgdaInductiveConstructor{true}\AgdaSymbol{)} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{boolv} \AgdaSymbol{=} \AgdaInductiveConstructor{inj₂} \AgdaSymbol{(\_} \AgdaInductiveConstructor{,} \AgdaInductiveConstructor{E-IF-TRUE}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaSymbol{(}\AgdaInductiveConstructor{T-BOOL} \AgdaInductiveConstructor{false}\AgdaSymbol{)} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₁} \AgdaInductiveConstructor{boolv} \AgdaSymbol{=} \AgdaInductiveConstructor{inj₂} \AgdaSymbol{(\_} \AgdaInductiveConstructor{,} \AgdaInductiveConstructor{E-IF-FALSE}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{progress} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaBound{ct} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaSymbol{|} \AgdaInductiveConstructor{inj₂} \AgdaSymbol{(}\AgdaBound{c'} \AgdaInductiveConstructor{,} \AgdaBound{r}\AgdaSymbol{)} \AgdaSymbol{=}\<%
+\\
+\>[0]\AgdaIndent{2}{}\<[2]%
+\>[2]\AgdaInductiveConstructor{inj₂} \AgdaSymbol{((}\AgdaInductiveConstructor{ifs} \AgdaBound{c'} \AgdaInductiveConstructor{then} \AgdaSymbol{\_} \AgdaInductiveConstructor{else} \AgdaSymbol{\_)} \AgdaInductiveConstructor{,} \AgdaInductiveConstructor{E-IF} \AgdaBound{r}\AgdaSymbol{)}\<%
+\end{code}
+
+  \item
+    This is a mechanical checking of possible reductions.
+
+    \begin{code}%
+\>\AgdaFunction{preserve} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e} \AgdaBound{τ} \AgdaBound{e'}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e} \AgdaDatatype{∈} \AgdaBound{τ} \AgdaSymbol{→} \AgdaBound{e} \AgdaDatatype{↝} \AgdaBound{e'} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e'} \AgdaDatatype{∈} \AgdaBound{τ}\<%
+\\
+\>\AgdaFunction{preserve} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{x}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{T-NAT} \AgdaBound{y}\AgdaSymbol{))} \AgdaInductiveConstructor{E-PLUS} \AgdaSymbol{=} \AgdaInductiveConstructor{T-NAT} \AgdaSymbol{(}\AgdaBound{x} \AgdaPrimitive{+} \AgdaBound{y}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{preserve} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaBound{at} \AgdaBound{bt}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-LEFT} \AgdaBound{r}\AgdaSymbol{)} \AgdaSymbol{=} \AgdaInductiveConstructor{T-PLUS} \AgdaSymbol{(}\AgdaFunction{preserve} \AgdaBound{at} \AgdaBound{r}\AgdaSymbol{)} \AgdaBound{bt}\<%
+\\
+\>\AgdaFunction{preserve} \AgdaSymbol{(}\AgdaInductiveConstructor{T-PLUS} \AgdaBound{at} \AgdaBound{bt}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{E-PLUS-RIGHT} \AgdaBound{r}\AgdaSymbol{)} \AgdaSymbol{=} \AgdaInductiveConstructor{T-PLUS} \AgdaBound{at} \AgdaSymbol{(}\AgdaFunction{preserve} \AgdaBound{bt} \AgdaBound{r}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{preserve} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaBound{ct} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaSymbol{(}\AgdaInductiveConstructor{E-IF} \AgdaBound{r}\AgdaSymbol{)} \AgdaSymbol{=} \AgdaInductiveConstructor{T-IF} \AgdaSymbol{(}\AgdaFunction{preserve} \AgdaBound{ct} \AgdaBound{r}\AgdaSymbol{)} \AgdaBound{tt} \AgdaBound{ft}\<%
+\\
+\>\AgdaFunction{preserve} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaBound{ct} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaInductiveConstructor{E-IF-TRUE} \AgdaSymbol{=} \AgdaBound{tt}\<%
+\\
+\>\AgdaFunction{preserve} \AgdaSymbol{(}\AgdaInductiveConstructor{T-IF} \AgdaBound{ct} \AgdaBound{tt} \AgdaBound{ft}\AgdaSymbol{)} \AgdaInductiveConstructor{E-IF-FALSE} \AgdaSymbol{=} \AgdaBound{ft}\<%
+\end{code}
+
+  \item
+    Tying it all together:
+
+    \begin{code}%
+\>\AgdaComment{-- 〈e〉 reduces in 1 or more steps to 〈e'〉}\<%
+\\
+\>\AgdaKeyword{infix} \AgdaNumber{3} \_↝⁺\_\<%
+\\
+\>\AgdaFunction{\_↝⁺\_} \AgdaSymbol{:} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaDatatype{Ast} \AgdaSymbol{→} \AgdaPrimitiveType{Set}\<%
+\\
+\>\AgdaFunction{\_↝⁺\_} \AgdaSymbol{=} \AgdaDatatype{Plus} \AgdaDatatype{\_↝\_}\<%
+\\
+%
+\\
+\>\AgdaFunction{safe} \AgdaSymbol{:} \AgdaSymbol{∀\{}\AgdaBound{e} \AgdaBound{τ} \AgdaBound{e'}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaDatatype{⊢} \AgdaBound{e} \AgdaDatatype{∈} \AgdaBound{τ} \AgdaSymbol{→} \AgdaBound{e} \AgdaFunction{↝⁺} \AgdaBound{e'} \AgdaSymbol{→} \AgdaDatatype{Val} \AgdaBound{e'} \AgdaDatatype{⊎} \AgdaRecord{Σ} \AgdaDatatype{Ast} \AgdaSymbol{(λ} \AgdaBound{e''} \AgdaSymbol{→} \AgdaBound{e'} \AgdaDatatype{↝} \AgdaBound{e''}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{safe} \AgdaBound{et} \AgdaInductiveConstructor{[} \AgdaBound{r} \AgdaInductiveConstructor{]} \AgdaSymbol{=} \AgdaFunction{progress} \AgdaSymbol{(}\AgdaFunction{preserve} \AgdaBound{et} \AgdaBound{r}\AgdaSymbol{)}\<%
+\\
+\>\AgdaFunction{safe} \AgdaBound{et} \AgdaSymbol{(}\AgdaBound{r} \AgdaInductiveConstructor{∷} \AgdaBound{rs}\AgdaSymbol{)} \AgdaSymbol{=} \AgdaFunction{safe} \AgdaSymbol{(}\AgdaFunction{preserve} \AgdaBound{et} \AgdaBound{r}\AgdaSymbol{)} \AgdaBound{rs}\<%
+\end{code}
+
+  \item
+    The proofs here show that, for this language, any well-typed term is either a value or reduces to some other term. Hence, there can be no occasions where the program is stuck at run time. We haven't proven that all expressions will reduce to a value, though it should be provable for this language. It won't be provable for other languages, including all Turing-equivalent languages, which necessarily have programs which won't terminate.
+  \end{enumerate}
+
+\item
+  \begin{enumerate}
+  \item $i$ and $l$.
+  \item
+    \begin{enumerate}
+    \item Replace $x$ with $y$ using $\alpha$-equivalence.
+    \item $\beta$-reduce $(\lambda f.f~x)~g$ to $g~x$, then replace $x$ with $y$ in the main expression by $\alpha$-equivalence.
+    \item Replace $f$ by $\lambda y.f~y$ by $\eta$-conversion.
+    \item The expressions have different free variables, so can't be converted into one another.
+    \end{enumerate}
+  \item
+    First, define the unary $\mathrm{Val}$ relation as follows:
+    \begin{mathpar}
+      \inferrule*[right=V-VAR]
+      { }
+      {\mathrm{Val}~x}
+      \and
+      \inferrule*[right=V-$\Lambda$]
+      {\mathrm{Val}~e}
+      {\mathrm{Val}~(\lambda x.e)}
+      \and
+      \inferrule*[right=V-VAR-APP]
+      {\mathrm{Val}~e}
+      {\mathrm{Val}~(x~e)}
+      \and
+      \inferrule*[right=V-APP-APP]
+      {\mathrm{Val}~(e_0~e_1) \\ \mathrm{Val}~e_2}
+      {\mathrm{Val}~(e_0~e_1~e_2)}
+    \end{mathpar}
+    Then, the evaluation rules:
+    \begin{mathpar}
+      \inferrule*[right=E-APP-L]
+      {e_0 \longrightarrow e_0'}
+      {e_0~e_1 \longrightarrow e_0'~e_1}
+      \and
+      \inferrule*[right=E-APP-R]
+      { \mathrm{Val}~e_0 \\ e_1 \longrightarrow e_1'}
+      {e_0~e_1 \longrightarrow e_0~e_1'}
+      \and
+      \inferrule*[right=E-APP]
+      {\mathrm{Val}~e_1}
+      {(\lambda x.e_0)~e_1 \longrightarrow [x \mapsto e_1]e_0}
+    \end{mathpar}
+  \item
+    \begin{mathpar}
+      \inferrule*[right=E-APP$'$]
+      {\mathrm{Val}~e_0}
+      {(\lambda x.e_0)~e_1 \longrightarrow [x \mapsto e_1]e_0}
+      \and
+      \inferrule*[right=E-$\Lambda$]
+      {e_0 \longrightarrow e_0'}
+      {\lambda x.e_0 \longrightarrow \lambda x.e_0'}
+    \end{mathpar}
+  \item
+    \begin{enumerate}
+      \item $PLUS \defeq \lambda m.\lambda n.\lambda f.\lambda x.m~f~(n~f~x)$
+      \item $MUL \defeq \lambda m.\lambda n.\lambda f.m~(n~f)$
+    \end{enumerate}
+  \item
+    $SUCC \defeq \lambda n.\lambda f.\lambda x.f~(n~f~x)$
+
+    $INFTY \defeq Y~SUCC~ZERO$
+  \item
+    We can consider the term $(\lambda x.x~x)~(\lambda x.x~x)$. This is a $\beta$-redex, and reduces to $(\lambda x.x~x)~(\lambda x.x~x)$. By induction, this term will never reduce to a term not containing a $\beta$-redex, so the untyped $\lambda$-calculus is not strongly normalizing.
+  \end{enumerate}
+
+\item
+  \begin{enumerate}
+  \item
+    \begin{mathpar}
+      \inferrule*[right=T-VAR]
+      { }
+      {\Gamma \vdash x : \tau}
+      \and
+      \inferrule*[right=T-$\Lambda$]
+      {\Gamma, x : \sigma \vdash e : \tau}
+      {\lambda x.e : \sigma \to \tau}
+      \and
+      \inferrule*[right=E-APP]
+      {\Gamma \vdash e_0 : \sigma \to \tau \\ \Gamma \vdash e_1 : \sigma}
+      {\Gamma \vdash e_0~e_1 : \tau}
+    \end{mathpar}
+  \item
+    Again, define a $\mathrm{Val}$ relation:
+    \begin{mathpar}
+      \inferrule*[right=V-VAR]
+      { }
+      {\mathrm{Val}~x}
+      \and
+      \inferrule*[right=V-$\Lambda$]
+      {\mathrm{Val}~e}
+      {\mathrm{Val}~(\lambda x:\tau.e)}
+      \and
+      \inferrule*[right=V-VAR-APP]
+      {\mathrm{Val}~e}
+      {\mathrm{Val}~(x~e)}
+      \and
+      \inferrule*[right=V-APP-APP]
+      {\mathrm{Val}~(e_0~e_1) \\ \mathrm{Val}~e_2}
+      {\mathrm{Val}~(e_0~e_1~e_2)}
+    \end{mathpar}
+    Then, the evaluation rules:
+    \begin{mathpar}
+      \inferrule*[right=E-APP-L]
+      {e_0 \longrightarrow e_0'}
+      {e_0~e_1 \longrightarrow e_0'~e_1}
+      \and
+      \inferrule*[right=E-APP-R]
+      {\mathrm{Val}~e_0 \\ e_1 \longrightarrow e_1'}
+      {e_0~e_1 \longrightarrow e_0~e_1'}
+      \and
+      \inferrule*[right=E-APP]
+      {\mathrm{Val}~e_1}
+      {(\lambda x:\tau.e_0)~e_1 \longrightarrow [x \mapsto e_1]e_0}
+    \end{mathpar}
+  \item
+    The $Y$-combinator, as defined previously, can't be typed in $\lambda_\to$. Typing it would require typing $x~x$ (in some context), which is impossible because the type of a function must be strictly greater (structurally) than the type of its argument.
+  \item To start with, annotate each variable with a type variable. Then, use the typing rules for application and abstraction to unify some of these variables with each other, and introduce function types. If there are free type variables at the end, assign them to arbitrary distinct elements of $B$.
+  \end{enumerate}
+\end{enumerate}
+\end{document}

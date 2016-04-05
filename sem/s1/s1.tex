@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bussproofs}
+\usepackage{todo}
+\usepackage{relsize}
+
+\newcommand {\lbrac} {\makebox[0pt]{[\kern-1ex[}}
+\newcommand {\rbrac} {\makebox[0pt]{]\kern-1ex]}}
+\newcommand{\denote}[1]{\lbrac~#1~\rbrac}
+
+\newcommand{\bignabla}{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\nabla}}}}}
+
+\begin{document}
+\title{Semantics of Programming Languages -- supervision 1}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+\item
+  \begin{enumerate}
+  \item A configuration should be represented as a program paired with a stack.
+  \item This language only considers values which are natural numbers. The values of L1 are from $\mathbb Z\cup\mathbb L\cup\mathbb B\cup\{\mathbf{skip}\}$.
+  \item Taking $::$ to be the cons operator,
+    \begin{align}
+      \tag{push} \langle \mathbf{PUSH}~v;p, vs \rangle &\to \langle p, v :: vs \rangle \\
+      \tag{add} \langle \mathbf{ADD};p, x :: y :: vs \rangle &\to \langle p, (x + y) :: vs \rangle
+    \end{align}
+  \item $\langle \mathbf{ADD};\cdot, \epsilon \rangle$ is stuck. There are instructions remaining, but no computation rules apply to it.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \item A store can be defined as an inhabitant of $\mathbb L \rightharpoonup \mathbb N$, i.e, a partial function from locations to natural numbers. This makes a configuration an inhabitant of $\mathbb P \times \mathbb N^* \times (\mathbb L \rightharpoonup \mathbb N)$, where $\mathbb P$ is the set of syntactically valid programs.
+  \item The push and add rules remain from before.
+    \begin{align}
+      & \tag{load} \langle \mathbf{LOAD}~l;p, vs, s \rangle \to \langle p, v :: vs, s \rangle \quad \textrm{if }l \in \mathrm{dom}~s\textrm{ and }s~l = v \\
+      & \tag{store} \langle \mathbf{STORE}~l;p, v :: vs, s \rangle \to \langle p, vs, \{l \mapsto v\} + s \rangle
+    \end{align}
+  \item
+    \begin{align*}
+                & \langle \mathbf{PUSH}~4;\mathbf{PUSH}~8;\mathbf{STORE}~l;\mathbf{PUSH}~15;\mathbf{ADD};\mathbf{LOAD}~l;\mathbf{ADD};\cdot, \epsilon, \{\} \rangle
+      \\ {} \to & \langle \mathbf{PUSH}~8;\mathbf{STORE}~l;\mathbf{PUSH}~15;\mathbf{ADD};\mathbf{LOAD}~l;\mathbf{ADD};\cdot, 4 :: \epsilon, \{\} \rangle
+      \\ {} \to & \langle \mathbf{STORE}~l;\mathbf{PUSH}~15;\mathbf{ADD};\mathbf{LOAD}~l;\mathbf{ADD};\cdot, 8 :: 4 :: \epsilon, \{\} \rangle
+      \\ {} \to & \langle \mathbf{PUSH}~15;\mathbf{ADD};\mathbf{LOAD}~l;\mathbf{ADD};\cdot, 4 :: \epsilon, \{l \mapsto 8\} \rangle
+      \\ {} \to & \langle \mathbf{ADD};\mathbf{LOAD}~l;\mathbf{ADD};\cdot, 15 :: 4 :: \epsilon, \{l \mapsto 8\} \rangle
+      \\ {} \to & \langle \mathbf{LOAD}~l;\mathbf{ADD};\cdot, 19 :: \epsilon, \{l \mapsto 8\} \rangle
+      \\ {} \to & \langle \mathbf{ADD};\cdot, 8 :: 19 :: \epsilon, \{l \mapsto 8\} \rangle
+      \\ {} \to & \langle \cdot, 27 :: \epsilon, \{l \mapsto 8\} \rangle
+    \end{align*}
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \item \hfill{}
+    \begin{prooftree}
+      \AxiomC{$\Gamma \vdash e_0 : \mathbf{nat}$} \AxiomC{$\Gamma \vdash e_1 : \mathbf{nat}$}
+      \RightLabel{op-+}
+      \BinaryInfC{$\Gamma \vdash e_0+e_1 : \mathbf{nat}$}
+    \end{prooftree}
+    \begin{prooftree}
+      \AxiomC{$n \in \mathbb N$}
+      \RightLabel{nat}
+      \UnaryInfC{$\Gamma \vdash n : \mathbf{nat}$}
+    \end{prooftree}
+    \begin{prooftree}
+      \AxiomC{$b \in \mathbb B$}
+      \RightLabel{bool}
+      \UnaryInfC{$\Gamma \vdash b : \mathbf{bool}$}
+    \end{prooftree}
+    \begin{prooftree}
+      \AxiomC{$\Gamma \vdash e_0 : \mathbf{bool}$} \AxiomC{$\Gamma \vdash e_1 : \tau$} \AxiomC{$\Gamma \vdash e_2 : \tau$}
+      \RightLabel{if}
+      \TrinaryInfC{$\Gamma \vdash \mathbf{if}~e_0~\mathbf{then}~e_1~\mathbf{else}~e_2 : \tau$}
+    \end{prooftree}
+  \item \hfill{}
+    \begin{prooftree}
+          \AxiomC{$true \in \mathbb B$}
+        \RightLabel{bool} \UnaryInfC{$\Gamma \vdash true : \mathbf{bool}$}
+        \AxiomC{$\bignabla$}
+          \AxiomC{$23 \in \mathbb N$}
+        \RightLabel{nat} \UnaryInfC{$\Gamma \vdash 23 : \mathbf{nat}$}
+      \RightLabel{if} \TrinaryInfC{$\Gamma \vdash \mathbf{if}~true~\mathbf{then}~(4+8)~\mathbf{else}~23 : \mathbf{nat}$}
+    \end{prooftree}
+    where $\nabla$ is
+    \begin{prooftree}
+          \AxiomC{$4 \in \mathbb N$}
+        \RightLabel{nat} \UnaryInfC{$\Gamma \vdash 4 : \mathbf{nat}$}
+          \AxiomC{$8 \in \mathbb N$}
+        \RightLabel{nat} \UnaryInfC{$\Gamma \vdash 8 : \mathbf{nat}$}
+      \RightLabel{op-+} \BinaryInfC{$\Gamma \vdash 4+8 : \mathbf{nat}$}
+    \end{prooftree}
+  \item The if typing rule specifies that the type of both branches should be some type $\tau$. However, $false$ can only have type $\mathbf{bool}$ and $8$ can only have type $\mathbf{nat}$. No type is both $\mathbf{bool}$ and $\mathbf{nat}$.
+  \item
+    \begin{enumerate}
+    \item There is no computational behaviour in the types specified by the rules, so type checking should be decidable. For each syntactic form, there is only one typing rule. This means that type inference should be decidable -- a matter of following the syntax.
+    \item Type checking can be implemented as type inference followed by a test for whether the given type is (a specialization of) the inferred type. For this language, there is no polymorphism or subtyping, so the test is just an equality test.
+    \end{enumerate}
+  \item The attached file contains a constructive proof of decidability of type inference.
+  \item First, define $v ::= n \mid b$.
+    \begin{prooftree}
+        \AxiomC{$n=n_0+n_1$}
+      \RightLabel{op-+} \UnaryInfC{$n_0+n_1 \to n$}
+    \end{prooftree}
+    \begin{prooftree}
+        \AxiomC{$e_0 \to e_0'$}
+      \RightLabel{+-l} \UnaryInfC{$e_0+e_1 \to e_0'+e_1$}
+    \end{prooftree}
+    \begin{prooftree}
+        \AxiomC{$e_1 \to e_1'$}
+      \RightLabel{+-r} \UnaryInfC{$v+e_1 \to v+e_1'$}
+    \end{prooftree}
+    \begin{prooftree}
+        \AxiomC{}
+      \RightLabel{if-t} \UnaryInfC{$\mathbf{if}~true~\mathbf{then}~e_t~\mathbf{else}~e_f \to e_t$}
+    \end{prooftree}
+    \begin{prooftree}
+        \AxiomC{}
+      \RightLabel{if-f} \UnaryInfC{$\mathbf{if}~false~\mathbf{then}~e_t~\mathbf{else}~e_f \to e_f$}
+    \end{prooftree}
+    \begin{prooftree}
+        \AxiomC{$e_c \to e_c'$}
+      \RightLabel{if-c} \UnaryInfC{$\mathbf{if}~e_c~\mathbf{then}~e_t~\mathbf{else}~e_f \to \mathbf{if}~e_c'~\mathbf{then}~e_t~\mathbf{else}~e_f$}
+    \end{prooftree}
+  \item Replace the if typing rule with the following two rules:
+    \begin{prooftree}
+        \AxiomC{$\denote{e_c} = \mathbf{inr}~true$}
+        \AxiomC{$\Gamma \vdash e_t : \tau$}
+      \RightLabel{if-t} \BinaryInfC{$\mathbf{if}~e_c~\mathbf{then}~e_t~\mathbf{else}~e_f : \tau$}
+    \end{prooftree}
+    \begin{prooftree}
+        \AxiomC{$\denote{e_c} = \mathbf{inr}~false$}
+        \AxiomC{$\Gamma \vdash e_f : \tau$}
+      \RightLabel{if-f} \BinaryInfC{$\mathbf{if}~e_c~\mathbf{then}~e_t~\mathbf{else}~e_f : \tau$}
+    \end{prooftree}
+    This requires the language to be pure and terminating for type checking and type inference to still be decidable, which is true of this language.
+  \item In a type system with type indices (rather than mere type parameters), type inference could be used to solve undecidable unification problems, so is undecidable. The Milner-Mycroft Calculus is such a type system.
+  \end{enumerate}
+\end{enumerate}
+
+\end{document}

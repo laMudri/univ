@@ -1,0 +1,304 @@
+\documentclass{article}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{mathpartir,amsmath}
+%\usepackage{bussproofs}
+
+\newcommand{\defeq}{\overset{\mathit{def}}{=}}
+\newcommand{\Val}{\ensuremath{\mathit{Val}}}
+\newcommand{\Index}{\ensuremath{\mathit{Index}}}
+\newcommand{\add}{\ensuremath{\mathit{add}}}
+\newcommand{\addt}{\ensuremath{\mathit{addt}}}
+\newcommand{\suc}{\ensuremath{\mathit{suc}}}
+
+\begin{document}
+\title{Semantics of Programming Languages -- supervision 3}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        First, define a $\Val$ predicate:
+        \begin{mathpar}
+          \inferrule*[right=V-NAT]
+          { }
+          {\Val~n}
+          \and
+          \inferrule*[right=V-BOOL]
+          { }
+          {\Val~b}
+          \and
+          \inferrule*[right=V-CTR]
+          {\Val~\overline{\tau}}
+          {\Val~(C~\overline{\tau})}
+          \and
+          \inferrule*[right=V-ABS]
+          { }
+          {\Val~(\lambda x:\tau.e)}
+        \end{mathpar}
+        Then, expression evaluation rules, taking $v$ to satisfy $\Val$:
+        \begin{mathpar}
+          \inferrule*[right=E-APP]
+          { }
+          {(\lambda x:\tau.e)~v \longrightarrow_e [v \mapsto x]e}
+          \and
+          \inferrule*[right=E-APP-L]
+          {e_0 \longrightarrow_e e_0'}
+          {e_0~e_1 \longrightarrow_e e_0'~e_1}
+          \and
+          \inferrule*[right=E-APP-R]
+          {e \longrightarrow_e e'}
+          {v~e \longrightarrow_e v~e'}
+        \end{mathpar}
+        Finally, program evaluation consists of removing data delcarations and evaluating the remaining expression:
+        \begin{mathpar}
+          \inferrule*[right=E-DATA]
+          { }
+          {\mathbf{data}~D = \overline{C~\overline{\tau};}~\mathbf{in}~p \longrightarrow_p p}
+          \and
+          \inferrule*[right=E-EXPR]
+          {e \longrightarrow_e e'}
+          {e \longrightarrow_p e'}
+        \end{mathpar}
+      \item The typing rules are as follows:
+        \begin{mathpar}
+          \inferrule*[right=T-DATA-BASE]
+          {\Gamma, C : \overline{\sigma_d} \to \tau_d \vdash p : \tau}
+          {\Gamma \vdash (\mathbf{data}~\tau_d = C~\overline{\sigma_d};~\mathbf{in}~p) : \tau}
+          \and
+          \inferrule*[right=T-DATA-STEP]
+          {\Gamma, C : \overline{\sigma_d} \to \tau_d \vdash (\mathbf{data}~\tau_d = cs~\mathbf{in}~p) : \tau}
+          {\Gamma \vdash (\mathbf{data}~\tau_d = C~\overline{\sigma_d};cs~\mathbf{in}~p) : \tau}
+          \and
+          \inferrule*[right=T-VAR]
+          {(v, \tau) \in \Gamma}
+          {\Gamma \vdash v : \tau}
+          \and
+          \inferrule*[right=T-APP]
+          {\Gamma \vdash e_0 : \sigma \to \tau \\ \Gamma \vdash e_1 : \sigma}
+          {\Gamma \vdash e_0~e_1 : \tau}
+          \and
+          \inferrule*[right=T-ABS]
+          {\Gamma, x : \sigma \vdash e : \tau}
+          {\Gamma \vdash (\lambda x : \sigma.e) : \tau}
+          \and
+          \inferrule*[right=T-NAT]
+          { }
+          {\Gamma \vdash n : \mathbf{nat}}
+          \and
+          \inferrule*[right=T-BOOL]
+          { }
+          {\Gamma \vdash b : \mathbf{bool}}
+        \end{mathpar}
+      \item Use topological sort, where there are edges from a data declaration to any data declarations it refers to.
+      \item The existing rules can stand, augmented by the following:
+        \begin{mathpar}
+          \inferrule*[right=E-CASE]
+          {e \longrightarrow_e e'}
+          {\mathbf{case}~e~\mathbf{where}~os \longrightarrow_e \mathbf{case}~e'~\mathbf{where}~os}
+          \and
+          \inferrule*[right=E-CASE-HIT]
+          { }
+          {\mathbf{case}~v~\mathbf{where}~v \to e; os \longrightarrow_e e}
+          \and
+          \inferrule*[right=E-CASE-MISS]
+          {v_0 \neq v_1}
+          {\mathbf{case}~v_0~\mathbf{where}~v_1 \to e; os \longrightarrow_e \mathbf{case}~v_0~\mathbf{where}~os}
+          \and
+          \inferrule*[right=E-CASE-DEFAULT]
+          { }
+          {\mathbf{case}~v~\mathbf{where}~\mathbf{default} \to e \longrightarrow_e e}
+        \end{mathpar}
+        Typing rules can also be copied, with the addition of:
+        \begin{mathpar}
+          \inferrule*[right=T-CASE-BASE]
+          {\Gamma \vdash e_c : \sigma \\ \Gamma \vdash e : \tau}
+          {\Gamma \vdash (\mathbf{case}~e_c~\mathbf{where}~\mathbf{default} \to e) : \tau}
+          \and
+          \inferrule*[right=T-CASE-STEP]
+          {\Gamma \vdash (\mathbf{case}~e_c~\mathbf{where}~os) : \tau \\ \Gamma \vdash e_c : \sigma \\ \Gamma \vdash v : \sigma \\ \Gamma \vdash e : \tau}
+          {\Gamma \vdash (\mathbf{case}~e_c~\mathbf{where}~v \to e; os) : \tau}
+        \end{mathpar}
+    \end{enumerate}
+  \item
+    The abstract syntax has the $\mathit{ctr}$ rule replaced by:
+    \begin{displaymath}
+      \begin{array}{lcl}
+        \mathit{ctr} & = & C~\tau^*; \mid C~\{~\mathit{fds}~\}; \\
+        \mathit{fds} & = & \mid \mathit{fd}, \mathit{fds} \\
+        \mathit{fd} & = & x : \tau
+      \end{array}
+    \end{displaymath}
+    For the operational semantics, we expand the configuration to include a partial function mapping any field name to a constructor name and a natural number representing the position of the field in the constructor declaration. The $\Val$ relation is unchanged.
+    \begin{mathpar}
+      \inferrule*[right=E-APP]
+      { }
+      {\langle (\lambda x:\tau.e)~v, f \rangle \langle \longrightarrow_e [v \mapsto x]e, f \rangle}
+      \and
+      \inferrule*[right=E-APP-L]
+      {\langle e_0, f \rangle \longrightarrow_e \langle e_0', f \rangle}
+      {\langle e_0~e_1, f \rangle \longrightarrow_e \langle e_0'~e_1, f \rangle}
+      \and
+      \inferrule*[right=E-APP-R]
+      {\langle e, f \rangle \longrightarrow_e \langle e', f \rangle}
+      {\langle v~e, f \rangle \longrightarrow_e \langle v~e', f \rangle}
+      \and
+      \inferrule*[right=E-FIELD]
+      {(x, C, n) \in f \\ \Index~n~\overline{e}~e}
+      {\langle x~(C~\overline{e}), f \rangle \longrightarrow_e \langle e, f \rangle}
+    \end{mathpar}
+    $\Index$ is given by the following rules:
+    \begin{mathpar}
+      \inferrule*[right=INDEX-HERE]
+      { }
+      {\Index~0~(e :: \_)~e}
+      \and
+      \inferrule*[right=INDEX-THERE]
+      {\Index~n~\mathit{es}~e}
+      {\Index~(\suc~n)~(\_ :: \mathit{es})~e}
+    \end{mathpar}
+    Data declarations now have an effect on the operational semantics, as shown by the replacement of E-DATA.
+    \begin{mathpar}
+      \inferrule*[right=E-DATA]
+      { }
+      {\langle \mathbf{data}~D = ctrs~\mathbf{in}~p, f \rangle \longrightarrow_p \langle p, \add~\mathit{ctrs}~f \rangle}
+      \and
+      \inferrule*[right=E-EXPR]
+      {\langle e, f \rangle \longrightarrow_e \langle e', f \rangle}
+      {\langle e, f \rangle \longrightarrow_p \langle e', f \rangle}
+    \end{mathpar}
+    $\add$ is defined by the following:
+    \begin{displaymath}
+      \begin{array}{lcl}
+        \mathit{addCtr}~n~(C~\overline{\tau};)~f & = & f \\
+        \mathit{addCtr}~n~(C~\{~\};)~f & = & f \\
+        \mathit{addCtr}~n~(C~\{~x : \tau, \mathit{fds}~\};)~f & = & \{(x,C,n)\} \cup \mathit{addCtr}~(\suc~n)~(C~\{~\mathit{fds}~\})~f \\
+        \\
+        \add~[\mathit{ctr}]~f & = & \mathit{addCtr}~0~\mathit{ctr}~f \\
+        \add~(\mathit{ctr} :: \mathit{ctrs})~f & = & \add~\mathit{ctrs}~(\mathit{addCtr}~0~\mathit{ctr}~f)
+      \end{array}
+    \end{displaymath}
+    %For the types, we need a subtyping relation:
+    %\begin{mathpar}
+    %  \inferrule*[right=SUB-REFL]
+    %  { }
+    %  {\tau <: \tau}
+    %\end{mathpar}
+    For the types, we need to keep an extra typing context $\Delta$, which keeps track of subtyping relationships induced by record declarations.
+    \begin{mathpar}
+      %\inferrule*[right=T-DATA-BASE]
+      %{\Gamma, C : \overline{\sigma_d} \to \tau_d; \Delta \vdash p : \tau}
+      %{\Gamma; \Delta \vdash (\mathbf{data}~\tau_d = C~\overline{\sigma_d};~\mathbf{in}~p) : \tau}
+      %\and
+      %\inferrule*[right=T-DATA-STEP]
+      %{\Gamma, C : \overline{\sigma_d} \to \tau_d; \Delta \vdash (\mathbf{data}~\tau_d = cs~\mathbf{in}~p) : \tau}
+      %{\Gamma; \Delta \vdash (\mathbf{data}~\tau_d = C~\overline{\sigma_d};cs~\mathbf{in}~p) : \tau}
+      \inferrule*[right=T-DATA]
+      {\Gamma \cup \Gamma'; \Delta \cup \Delta' \vdash p : \tau \\ (\Gamma', \Delta') = \addt~\tau_d~cs}
+      {\Gamma; \Delta \vdash (\mathbf{data}~\tau_d = cs~\mathbf{in}~p) : \tau}
+      \and
+      \inferrule*[right=T-VAR]
+      {(v, \tau) \in \Gamma}
+      {\Gamma; \Delta \vdash v : \tau}
+      \and
+      \inferrule*[right=T-APP]
+      {\Gamma; \Delta \vdash e_0 : \sigma \to \tau \\ \Gamma; \Delta \vdash e_1 : \sigma}
+      {\Gamma; \Delta \vdash e_0~e_1 : \tau}
+      \and
+      \inferrule*[right=T-ABS]
+      {\Gamma, x : \sigma; \Delta \vdash e : \tau}
+      {\Gamma \vdash (\lambda x : \sigma.e) : \tau}
+      \and
+      \inferrule*[right=T-NAT]
+      { }
+      {\Gamma; \Delta \vdash n : \mathbf{nat}}
+      \and
+      \inferrule*[right=T-BOOL]
+      { }
+      {\Gamma; \Delta \vdash b : \mathbf{bool}}
+      \and
+      \inferrule*[right=T-SUB]
+      {\Gamma; \Delta \vdash e : \sigma \\ (\sigma, \tau) \in \Delta}
+      {\Gamma; \Delta \vdash e : \tau}
+    \end{mathpar}
+    $\addt$ is defined by the following:
+    \begin{displaymath}
+      \begin{array}{lcl}
+        \mathit{addtFields}~n~\tau~C~[] & = & \{\} \\
+        \mathit{addtFields}~n~\tau~C~((x : \sigma) :: \mathit{fds}) & = & \{(x, \tau \to \sigma)\} \cup \mathit{addtFields}~(\suc~n)~\tau~C~\mathit{fds} \\
+        \\
+        \mathit{addtCtr}~\tau~(C~\overline{\sigma};) & = & (\{(C, \overline{\sigma} \to \tau)\}, \{(C, \tau)\}) \\
+        \mathit{addtCtr}~\tau~(C~\{~\mathit{fds}~\};) & = &
+          \mathbf{let}~(\Gamma, \Delta) = \mathit{addtCtr}~\tau~\mathit{fds}~\mathbf{in} \\
+          && (\{(C, \overline{\sigma} \to \tau)\} \cup \mathit{addtFields}~0~\tau~C~\mathit{fds} \cup \Gamma, \{(C, \tau)\} \cup \Delta) \\
+        \\
+        \addt~\tau~[\mathit{ctr}] & = & \mathit{addtCtr}~\tau~\mathit{ctr} \\
+        \addt~\tau~(\mathit{ctr} :: \mathit{ctrs}) & = &
+          \mathbf{let}~(\Gamma', \Delta') = \mathit{addtCtr}~\tau~\mathit{ctr}~\mathbf{in} \\
+          && \mathbf{let}~(\Gamma, \Delta) = \mathit{addt}~\tau~\mathit{ctrs}~\mathbf{in} \\
+          && (\Gamma' \cup \Gamma, \Delta' \cup \Delta)
+      \end{array}
+    \end{displaymath}
+  \item Inheritance is the mechanism by which classes have all of the members of their superclasses as their own members. Subtyping is the ability of an expression $e$ to be considered as having type $\tau$ given that $e$ has type $\sigma$ and $\sigma <: \tau$. Inheritance often implies subtyping, but this is not the case in OCaml, for example.
+  \item I don't quite understand what inheritance would look like in this language.
+  \item I already added a subtyping system, but this could be extended to allow records to have extra fields. This would require the fields of a record to be considered part of the type, rather than just the constructor. Each record constructor corresponds to a base type, and fields can be added to create subtypes (as part of a structural subtyping system).
+  \item
+    \begin{enumerate}
+      \item
+        \begin{mathpar}
+          \inferrule*[right=C-RECEIVE-ALPHA]
+          { }
+          {x(y).P \simeq x(z).[z \mapsto y]P}
+          \and
+          \inferrule*[right=C-NU-ALPHA]
+          { }
+          {(\nu x)P \simeq (\nu y)[y \mapsto x]P}
+        \end{mathpar}
+      \item
+        \begin{mathpar}
+          \inferrule*[right=C-ASSOC]
+          { }
+          {(P \mid Q) \mid R \simeq P \mid (Q \mid R)}
+          \and
+          \inferrule*[right=C-COMM]
+          { }
+          {P \mid Q \simeq Q \mid P}
+          \and
+          \inferrule*[right=C-UNIT]
+          { }
+          {0 \mid P \simeq P}
+        \end{mathpar}
+      \item
+        \begin{enumerate}
+          \item Yes, by symmetry of $\simeq$ and the rule that $(\nu x).0 \simeq 0$.
+          \item No.
+          \item Yes:
+            \begin{align*}
+              & (\nu x)(\nu y)(P \mid Q) \\
+              & \quad \simeq \langle \text{$\nu$ re\"ordering} \rangle \\
+              & (\nu y)(\nu x)(P \mid Q) \\
+              & \quad \simeq \langle \text{commutativity of $\mid$} \rangle \\
+              & (\nu y)(\nu x)(Q \mid P) \\
+              & \quad \simeq \langle \text{unit of $\mid$} \rangle \\
+              & (\nu y)(\nu x)(Q \mid P \mid 0) \\
+              & \quad \simeq \langle \text{i.} \rangle \\
+              & (\nu y)(\nu x)(Q \mid P \mid (\nu z)0)
+            \end{align*}
+          \item No. $y$ is bound in the $\overline y \langle i \rangle$ of the left program, but not in the right program.
+        \end{enumerate}
+    \end{enumerate}
+  \item Deadlock corresponds to getting stuck. This is easy to do:
+    $$(\nu x)x(a).\overline x \langle a \rangle.0$$
+  \item The E-SEND-RECEIVE rule only delivers to one receiver. With
+    $$(\nu a)(\nu x)(\nu y)(\nu z)(\overline x \langle a \rangle.0 \mid x(b).\overline y \langle b \rangle.0 \mid x(b).\overline z \langle b \rangle.0)$$
+    we could reduce to either
+    $$(\nu a)(\nu x)(\nu y)(\nu z)(0 \mid \overline y \langle a \rangle.0 \mid x(b).\overline z \langle b \rangle.0))$$
+    (by using E-SEND-RECIEVE directly), or
+    $$(\nu a)(\nu x)(\nu y)(\nu z)(0 \mid x(b).\overline y \langle b \rangle.0 \mid \overline z \langle a \rangle.0)$$
+    (by using commutativity and associativity).
+  \item The previous example shows that the $\pi$ calculus is non-deterministic.
+\end{enumerate}
+\end{document}

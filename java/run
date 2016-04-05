@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+javac uk/ac/cam/jdw74/fjava/tick0/DataInputStreamWithInt.java \
+  uk/ac/cam/jdw74/fjava/tick0/ExternalSort.java
+java -Xmx$1m uk.ac.cam.jdw74.fjava.tick0.ExternalSort \
+  "test-suite/test${1}a.dat" "test-suite/test${1}b.dat"
+grep -E "^$1 :" test-suite/checksum.txt --colour=never

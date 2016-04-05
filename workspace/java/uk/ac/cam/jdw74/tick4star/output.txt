@@ -1,0 +1,460 @@
+Analysing Glider
+Analysing Blinkers
+Analysing Octogon
+Analysing Block+Boat+Beehive
+Analysing The Phoenix
+Analysing Glider Gun
+Analysing Pi-heptomino
+Analysing 101
+Analysing 1-2-3
+Analysing 1-2-3-4
+Analysing 4-8-12 diamond
+Analysing 4 boats
+Analysing Achim's p144
+Analysing Achim's p16
+Analysing Achim's p4
+Analysing Achim's p8
+Analysing acorn
+Analysing A for all
+Analysing aircraft carrier
+Analysing airforce
+Analysing AK47 reaction
+Analysing almosymmetric
+Analysing ants
+Analysing anvil
+Analysing ark
+Analysing aVerage
+Analysing B29
+Analysing B-52 bomber
+Analysing babbling brook
+Analysing backrake
+Analysing baker
+Analysing baker's dozen
+Analysing bakery
+Analysing barge
+Analysing beacon
+Analysing beacon maker
+Analysing beehive
+Analysing beehive and dock
+Analysing beehive with tail
+Analysing bent keys
+Analysing B-heptomino
+Analysing bi-block
+Analysing biclock
+Analysing big glider
+Analysing big S
+Analysing bi-loaf
+Analysing bipole
+Analysing bi-pond
+Analysing biting off more than they can chew
+Analysing blinker
+Analysing blinker puffer
+Analysing blinkers bit pole
+Analysing blinker ship
+Analysing block
+Analysing blockade
+Analysing block and dock
+Analysing block and glider
+Analysing blocker
+Analysing block on table
+Analysing block pusher
+Analysing blom
+Analysing blonker
+Analysing boat
+Analysing boat-bit
+Analysing boat maker
+Analysing boat-tie
+Analysing boojum reflector
+Analysing bookend
+Analysing bookends
+Analysing boss
+Analysing bottle
+Analysing brain
+Analysing buckaroo
+Analysing bullet heptomino
+Analysing bun
+Analysing bunnies
+Analysing burloaferimeter
+Analysing butterfly
+Analysing by flops
+Analysing Canada goose
+Analysing candelabra
+Analysing candlefrobra
+Analysing canoe
+Analysing cap
+Analysing carnival shuttle
+Analysing caterer
+Analysing Caterpillar
+Analysing cauldron
+Analysing centinal
+Analysing century
+Analysing chemist
+Analysing C-heptomino
+Analysing Cheshire cat
+Analysing chicken wire
+Analysing cis-beacon on anvil
+Analysing cis-beacon on table
+Analysing cis-boat with tail
+Analysing cis fuse with two tails
+Analysing cis-mirrored R-bee
+Analysing clock
+Analysing clock II
+Analysing Coe ship
+Analysing Coe's p8
+Analysing colour of a glider
+Analysing conduit
+Analysing confused eaters
+Analysing converter
+Analysing Cordership
+Analysing cousins
+Analysing cover
+Analysing cow
+Analysing crane
+Analysing cross
+Analysing crowd
+Analysing crown
+Analysing crystal
+Analysing cuphook
+Analysing dart
+Analysing dead spark coil
+Analysing diamond ring
+Analysing diehard
+Analysing dinner table
+Analysing diuresis
+Analysing dock
+Analysing do-see-do
+Analysing double block reaction
+Analysing double caterer
+Analysing double ewe
+Analysing dove
+Analysing dragon
+Analysing eater
+Analysing eater1
+Analysing eater2
+Analysing eater3
+Analysing eater4
+Analysing eater/block frob
+Analysing eater plug
+Analysing ecologist
+Analysing edge-repair spaceship
+Analysing edge shooter
+Analysing E-heptomino
+Analysing electric fence
+Analysing elevener
+Analysing Elkies' p5
+Analysing en retard
+Analysing Enterprise
+Analysing Eureka
+Analysing extremely impressive
+Analysing factory
+Analysing Fast Forward Force Field
+Analysing F-heptomino
+Analysing figure-8
+Analysing filter
+Analysing fire-spitting
+Analysing fleet
+Analysing flotilla
+Analysing fly
+Analysing fore and back
+Analysing fountain
+Analysing fourteener
+Analysing fox
+Analysing French kiss
+Analysing frog II
+Analysing frothing puffer
+Analysing fumarole
+Analysing Gabriel's p138
+Analysing Garden of Eden
+Analysing germ
+Analysing glasses
+Analysing glider
+Analysing glider-block cycle
+Analysing glider duplicator
+Analysing gliderless
+Analysing glider pusher
+Analysing gliders by the dozen
+Analysing glider synthesis
+Analysing glider turner
+Analysing Gosper glider gun
+Analysing gourmet
+Analysing Gray counter
+Analysing great on-off
+Analysing grin
+Analysing grow-by-one object
+Analysing hammer
+Analysing hammerhead
+Analysing handshake
+Analysing harbor
+Analysing harvester
+Analysing hat
+Analysing hebdarole
+Analysing hectic
+Analysing Heisenburp device
+Analysing helix
+Analysing heptapole
+Analysing Herschel
+Analysing Herschel receiver
+Analysing Herschel transmitter
+Analysing Hertz oscillator
+Analysing hexapole
+Analysing H-heptomino
+Analysing hivenudger
+Analysing honeycomb
+Analysing honey farm
+Analysing hook with tail
+Analysing houndstooth agar
+Analysing house
+Analysing hustler
+Analysing hustler II
+Analysing HW emulator
+Analysing HWSS
+Analysing HW volcano
+Analysing I-heptomino
+Analysing infinite growth
+Analysing inline inverter
+Analysing integral sign
+Analysing interchange
+Analysing Iwona
+Analysing jack
+Analysing jam
+Analysing Jolson
+Analysing Justyna
+Analysing kickback reaction
+Analysing killer toads
+Analysing Kok's galaxy
+Analysing lake
+Analysing Laputa
+Analysing Lidka
+Analysing light bulb
+Analysing lightspeed wire
+Analysing loading dock
+Analysing loaf
+Analysing loaflipflop
+Analysing loaf siamese barge
+Analysing long barge
+Analysing long boat
+Analysing long bookend
+Analysing long canoe
+Analysing long integral
+Analysing long long barge
+Analysing long long boat
+Analysing long long canoe
+Analysing long long ship
+Analysing long long snake
+Analysing long shillelagh
+Analysing long ship
+Analysing long snake
+Analysing loop
+Analysing LW emulator
+Analysing LWSS
+Analysing mango
+Analysing mathematician
+Analysing mazing
+Analysing metamorphosis
+Analysing metamorphosis II
+Analysing Mickey Mouse
+Analysing mini pressure cooker
+Analysing mold
+Analysing monogram
+Analysing moose antlers
+Analysing multum in parvo
+Analysing muttering moat
+Analysing MW emulator
+Analysing MWSS
+Analysing MWSS out of the blue
+Analysing MW volcano
+Analysing negentropy
+Analysing new five
+Analysing new gun
+Analysing Noah's ark
+Analysing non-monotonic
+Analysing octagon II
+Analysing octagon IV
+Analysing octomino
+Analysing odd keys
+Analysing onion rings
+Analysing O-pentomino
+Analysing Orion
+Analysing p54 shuttle
+Analysing p6 shuttle
+Analysing paperclip
+Analysing pedestle
+Analysing penny lane
+Analysing pentadecathlon
+Analysing pentant
+Analysing pentapole
+Analysing pentoad
+Analysing phase change
+Analysing phi
+Analysing phoenix
+Analysing pi-heptomino
+Analysing pinwheel
+Analysing pi orbital
+Analysing pi portraitor
+Analysing pipsquirter
+Analysing pi ship
+Analysing piston
+Analysing pi wave
+Analysing pond
+Analysing pond on pond
+Analysing popover
+Analysing P-pentomino
+Analysing pre-beehive
+Analysing pre-block
+Analysing pre-pulsar
+Analysing pressure cooker
+Analysing protein
+Analysing pseudo-barberpole
+Analysing puffer
+Analysing puffer train
+Analysing puff suppressor
+Analysing pulsar
+Analysing pulsar quadrant
+Analysing pulse divider
+Analysing pulshuttle V
+Analysing pure glider generator
+Analysing pushalong
+Analysing pyrotechnecium
+Analysing Q-pentomino
+Analysing quad
+Analysing quadpole
+Analysing quarter
+Analysing quasar
+Analysing queen bee shuttle
+Analysing R2D2
+Analysing rabbits
+Analysing $rats
+Analysing reflector
+Analysing relay
+Analysing rephaser
+Analysing reverse fuse
+Analysing revolver
+Analysing ring of fire
+Analysing roteightor
+Analysing R-pentomino
+Analysing rumbling river
+Analysing sailboat
+Analysing Schick engine
+Analysing scorpion
+Analysing scrubber
+Analysing seal
+Analysing sesquihat
+Analysing shillelagh
+Analysing ship
+Analysing ship in a bottle
+Analysing ship-tie
+Analysing ship tie boat
+Analysing short keys
+Analysing side
+Analysing sidecar
+Analysing sidewalk
+Analysing siesta
+Analysing Silver's p5
+Analysing singular flip flop
+Analysing six Ls
+Analysing sixty-nine
+Analysing skewed quad
+Analysing skewed traffic light
+Analysing slide gun
+Analysing small lake
+Analysing smiley
+Analysing snacker
+Analysing snail
+Analysing snake
+Analysing snake bridge snake
+Analysing snake dance
+Analysing snake pit
+Analysing snake siamese snake
+Analysing sombreros
+Analysing spacefiller
+Analysing space rake
+Analysing spaceship
+Analysing spark coil
+Analysing sparky
+Analysing S-pentomino
+Analysing spider
+Analysing spiral
+Analysing squaredance
+Analysing stairstep hexomino
+Analysing star
+Analysing stillater
+Analysing still life
+Analysing still life tagalong
+Analysing superfountain
+Analysing superstring
+Analysing surprise
+Analysing swan
+Analysing switch engine
+Analysing table
+Analysing table on table
+Analysing teardrop
+Analysing technician
+Analysing test tube baby
+Analysing tetromino
+Analysing thumb
+Analysing thunderbird
+Analysing time bomb
+Analysing titanic toroidal traveler
+Analysing T-nosed p4
+Analysing T-nosed p6
+Analysing toad
+Analysing toad-flipper
+Analysing toad-sucker
+Analysing toaster
+Analysing total aperiodic
+Analysing T-pentomino
+Analysing tractor beam
+Analysing traffic circle
+Analysing traffic jam
+Analysing traffic light
+Analysing trans-beacon on table
+Analysing trans-boat with tail
+Analysing trans-loaf with tail
+Analysing transparent block reaction
+Analysing trice tongs
+Analysing triple caterer
+Analysing triplet
+Analysing tripole
+Analysing tritoad
+Analysing true
+Analysing T-tetromino
+Analysing tub
+Analysing tubber
+Analysing tubeater
+Analysing tubstretcher
+Analysing tub with tail
+Analysing tumbler
+Analysing tumbling T-tetson
+Analysing turning toads
+Analysing turtle
+Analysing twin bees shuttle
+Analysing twinhat
+Analysing twirling T-tetsons II
+Analysing two eaters
+Analysing two pulsar quadrants
+Analysing unix
+Analysing U-pentomino
+Analysing very long house
+Analysing V-pentomino
+Analysing washerwoman
+Analysing washing machine
+Analysing wasp
+Analysing wavefront
+Analysing weekender
+Analysing why not
+Analysing wickstretcher
+Analysing windmill
+Analysing wing
+Analysing worker bee
+Analysing W-pentomino
+Analysing x66
+Analysing X-pentomino
+Analysing Y-pentomino
+Analysing Z-hexomino
+Analysing Z-pentomino
+
+Longest start: gliderless (1304)
+Longest cycle: factory (287)
+Biggest growth rate: glider synthesis (1.2222222222222223)
+Biggest death rate: brain (1.0)
+Largest population: spacefiller (849)

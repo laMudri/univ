@@ -1,0 +1,127 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{tabularx}
+
+\renewcommand{\theenumi}{\Alph{enumi}}
+\renewcommand{\theenumii}{\roman{enumii}}
+
+\begin{document}
+\title{Computer Networking -- supervision 3}
+\author{James Wood}
+\maketitle
+
+\section*{Question 1}
+\begin{enumerate}
+  \item Network address translation is the practice of keeping a space of IP addresses separate from any other networks, then having a router rewrite the IP address on any package going in or out.
+  \item This allows the use of many different IP addresses on a local network without filling the IPv4 address space.
+  \item NAT requires replacement of the IP address in the IP header of each packet which pertains to the local network. It also requires recomputation of the IP header's checksum, as well as the whole-packet checksum of TCP and UDP packets.
+  \item If a server is behind a NAT mechanism, clients outside have no way to directly address the server to initiate communication. To fix this, we can statically configure the NAT box to forward packets sent to specific ports to specific machines. This approach can also be automated, leading to Universal Plug and Play. Here, the NAT box learns the port mappings from times when the server has sent messages, and keeps the mappings for use by any clients that may connect later. Finally, there is a different solution which makes the server act as a client for a non-NATted relay server. This is more suitable for peer-to-peer communication where the peers have to be connected in order to receive messages.
+\end{enumerate}
+
+\section*{Question 2}
+\begin{enumerate}
+  \item
+    Routing is the finding of a partial path over which to send packets. This is done between routers, and routers will typically share information about routes. The output of routing is the IP address for the next hop.
+
+    Forwarding is a process which takes the next hop address of the packet and sends it out through the relevant interface.
+  \item A routing state is valid iff it contains no dead ends or loops.
+  \item A router has buffers for sending and receiving, and keeps a routing table to decide where packets should be sent and inform other routers of routes it knows about. A router also does forwarding based on the outcome of its routing, and thus keeps a forwarding table to decide on which link to send data through.
+  \item
+    \begin{itemize}
+      \item Memory -- packets to be sent are copied into a shared memory, and are read out of the memory by the receiver. This is slower than other methods, because it requires additional communication between the sender and the receiver and relies on random accesses rather than a direct connection. It can scale better than the other two approaches.
+      \item Bus -- packets are put on a bus, and read by the node to which they are addressed. This may suffer from bus contention at a busy switch, but will usually be faster than memory-based switching.
+      \item Crossbar -- every node at one side of the switch is connected to every node at the other side. This is the fastest and least contentious method, but doesn't scale well because of the quadratic number of connections needed.
+    \end{itemize}
+  \item Buffers are needed because hosts run at different speeds. If a fast sender is sending to a slow receiver, packets will need to be buffered to avoid being dropped. In this case, a buffer which is too small will lead to many packets being dropped. A large buffer may not be feasible.
+
+    Buffers are also needed for sending packets. If the network is congested (according to the TCP congestion control algorithms), packets should be queued before being sent.
+\end{enumerate}
+
+\section*{Question 3}
+\begin{enumerate}
+  \item
+    \begin{tabular}{l | l | l}
+      Prefix & a.b.c.d/x & Link interface \\
+      \hline
+      11100001 00000000 & 225.0.0.0/16 & 1 \\
+      11100001 & 225.0.0.0/8 & 2 \\
+      1110000 & 224.0.0.0/7 & 0 \\
+      otherwise & & 3 \\
+    \end{tabular}
+  \item
+    \begin{enumerate}
+      \item 110\dots matches none of the prefixes, so is assigned to link 3.
+      \item 11100001 00000000 11000011 00111100 matches the first prefix in the table, so is assigned to link 1.
+      \item 11100001 10000000 00010001 01110111 fails to match the first prefix, but matches the second prefix, so is assigned to link 2.
+    \end{enumerate}
+\end{enumerate}
+
+\section*{Question 4}
+A prefix tree acts as a map from list-like key data to values. The values are stored in the nodes of a directed rooted tree, and a node may optionally have no value. The edges are labelled by items that constitute a key when read from the root to some value.
+
+\lstinputlisting[language=ml]{s3.sml}
+
+\section*{Question 5}
+\begin{itemize}
+  \item Version (4 bits) -- 4 for IPv4, 6 for IPv6
+  \item Header length (4 bits) -- almost always 5, for a 20-byte header
+  \item Total length (16 bits)
+  \item Source address \& destination address (32 bits each)
+  \item Protocol (8 bits) -- 6 for TCP, 17 for UDP
+  \item Identification (16 bits) -- for the packet; shared between fragments of the same packet
+  \item Fragmentation flags (5 bits)
+  \item Fragmentation offset (15 bits) -- the position of the fragment within the packet of which it was a fragment
+  \item Time to live (8 bits) -- decremented from 127 at each hop; packet dropped if this reaches 0
+  \item Header checksum (16 bits) -- recomputed at each hop to account for the change in time to live
+\end{itemize}
+
+IP deals with corruption in its header using the checksum. It doesn't deal with corruption in the data; this is typically handled in the transport protocol.
+
+Lost packets?
+
+Network loops are detected using the time to live field. If the packet gets stuck in a loop, its TTL will eventually reach 0, and will be dropped.
+
+Oversized packets are dealt with by fragmentation. Fragments get the same identification as each other, but different offsets. Also, all fragments have a flag set to signify that they should be re\"assembled at the end point.
+
+\section*{Question 6}
+\begin{enumerate}
+  \item The sender must ascertain the MTU of the link before sending packets, so that fragmentation is not needed. This was done to simplify the job of routers, which previously had to queue up fragments and re\"assemble the original packet when receiving.
+  \item Headers are all of the same size, so this field is dead weight.
+  \item There is already a whole-packet checksum at the transport layer (including for UDP), so this checksum is not particularly useful.
+  \item IPv6 splits up options relevant at each hop from options only relevant at the destination.
+  \item IPv4 allows for about 4.3 thousand million addresses, which is not enough for every device connected to the Internet. IPv6 expands this to about $3.4 \times 10^{38}$.
+  \item The sender can request for the packet to have special treatment from the receiving router. This is useful when the packet is being used for something with special requirements, like streaming or being used in a real-time system.
+\end{enumerate}
+
+\section*{Question 7}
+\begin{enumerate}
+  \item A spanning tree is a subgraph of a connected graph with nodes preserved but edges removed such that the subgraph is a tree.
+  \item Network switches create a spanning tree of part of the internet in order to decide where to send packets for their next hop. This spanning tree is the basis of the routing table.
+  \item We can use Dijkstra's algorithm to find the lowest cost spanning tree from a given node.
+\end{enumerate}
+
+\section*{Question 8}
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item Heirarchical -- earlier address lines are more specific than later lines, and earlier lines may be shared between geographically unrelated places, whereas later lines may not.
+      \item Heirarchical -- landline numbers have an area code followed by the number for that particular telephone within the area. Also, there are special prefixes reserved for mobile phones and non-standard lines.
+      \item Flat -- there is no particular connection between interfaces with similar MAC addresses. A MAC address is merely an identifier.
+      \item Heirarchical -- there are various prefixes designated for specific local networks.
+    \end{enumerate}
+  \item Class-based addresses are used in IPv4. The intent with these is that an organization reserves a whole class of addresses and uses that class for all of its machines. Class-based adresses are useful in that it is simple and beneficial for routing tables to target a particular class. Classless addresses are used in IPv6. Organizations are typically given a /48 block of IPv6 addresses, each of which contains $2^{80}$ addresses. This gives more flexibility in address allocation, should it be needed.
+  \item When IPv6 was introduced, it was predicted that the IPv4 address space would eventually be exhausted. Part of the problem was that some organizations owned large classes of adresses which they used inefficiently.
+  \item
+    \begin{enumerate}
+      \item The routing table contains a list of IP addresses each with a next hop address that can be used to reach the given IP address.
+      \item Longest prefix match is the matching of a pattern to one of several prefixes, where the longest prefix that is a prefix of the pattern should be chosen. This is used in forwarding tables, where long prefixes correspond to specific sets of addresses which need to be forwarded to a particular link.
+      \item The prefixes are ordered in the table such that the longest prefixes are first to be checked on lookup. Then, prefixes are tested on the given destination address in order until a matching prefix is found. By the ordering, this will be the longest matching prefix.
+    \end{enumerate}
+  \item With classless addressing, it becomes more difficult to recognize an organization based on the IP address. This affects routing tables, which for IPv4 use longest prefix match (which works well with class-based addresses) to choose which link to send data on.
+\end{enumerate}
+
+\end{document}

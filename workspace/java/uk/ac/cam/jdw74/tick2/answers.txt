@@ -1,0 +1,56 @@
+- 1
+row * 8 + col
+
+- 2
+i % 8
+
+- 3
+i / 8
+
+- 4
+1
+
+- 5
+0
+
+- 6
+world              |col|row|result
+-------------------|---|---|------
+0x20A0600000000000L| 0 | 0 | 0
+0x20A0600000000000L| 7 | 7 | 1
+0x20A0600000000000L| 6 | 4 | 2
+0x20A0600000000000L| 4 | 6 | 3
+0x20A0600000000000L| 6 | 6 | 5
+
+- 7
+public static void main(String[] args) {
+    System.out.println(countNeighbours(0x20A0600000000000L, 0, 0));
+    System.out.println(countNeighbours(0x20A0600000000000L, 7, 7));
+    System.out.println(countNeighbours(0x20A0600000000000L, 6, 4));
+    System.out.println(countNeighbours(0x20A0600000000000L, 4, 6));
+    System.out.println(countNeighbours(0x20A0600000000000L, 6, 6));
+}
+
+- 8
+world              |col|row|result
+-------------------|---|---|------
+0x20A0600000000000L| 0 | 0 | false
+0x20A0600000000000L| 7 | 7 | false
+0x20A0600000000000L| 6 | 4 | false
+0x20A0600000000000L| 4 | 6 | true
+0x20A0600000000000L| 6 | 6 | false
+0x20A0600000000000L| 7 | 6 | false
+0x20A0600000000000L| 6 | 5 | true
+0x20A0600000000000L| 5 | 5 | true
+
+- 9
+public static void main(String[] args) {
+    System.out.println(computeCell(0x20A0600000000000L, 0, 0));
+    System.out.println(computeCell(0x20A0600000000000L, 7, 7));
+    System.out.println(computeCell(0x20A0600000000000L, 6, 4));
+    System.out.println(computeCell(0x20A0600000000000L, 4, 6));
+    System.out.println(computeCell(0x20A0600000000000L, 6, 6));
+    System.out.println(computeCell(0x20A0600000000000L, 7, 6));
+    System.out.println(computeCell(0x20A0600000000000L, 6, 5));
+    System.out.println(computeCell(0x20A0600000000000L, 5, 5));
+}

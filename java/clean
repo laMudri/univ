@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+unzip -o test-suite.zip -d test-suite

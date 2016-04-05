@@ -1,0 +1,55 @@
+\documentclass{article}
+\begin{document}
+\title{Software Engineering -- supervision 1}
+
+\section{Question 1}
+\subsection{Plan}
+\begin{itemize}
+\item Staff skills
+\item Established practices
+\item Training
+\item Testing (load testing)
+\item Interface design
+\item Estimate time/cost
+\end{itemize}
+
+\subsection{Answer}
+The London Ambulance Service (LAS) disaster was an incident in 1992 in which ambulances in London ran at heavily reduced capacity for several days. It was triggered by the premature introduction of an automation system, and probably caused many unnecessary deaths. The incident was ended by re\"introduction of the existing manual system.
+
+Many problems with the new system were caused by inadequate planning by Systems Options Ltd (SO). It was first apparent that this may have been the case when SO's bid significantly undercut the bid of any of their competitors in both cost and time. SO were a relatively small company, and it is likely that there were many difficulties in the project that they hadn't considered. This could be put down to lack of ideas or lack of experience in project management.
+
+Part of this problem was that SO hadn't ascertained a decent set of specifications. The challenge was more difficult than they expected, and they didn't have anyone from the LAS working with them full-time. If they did have such a person, they would have known in advance far more of the problems they faced, and would have been able to plan out the system and its development accordingly.
+
+Lack of co\"operation with the LAS also lead to lack of knowledge of existing practices. SO tried to build a system assuming that staff would follow the necessary instructions exactly. In reality, ambulance drivers would not take the vehicle they were allocated to, assuming it unimportant as it had been before. However, the mismatch actually caused great problems, with the wrong teams being allocated to incidents based on the location of their assigned vehicle.
+
+Related to this was a lack of training when the system was rolled out. Call-taking staff were only briefly introduced to the system, which was very different to the previous system. The lack of training may have been due to the time pressure on SO to produce the system on the specified date. But also, it could have been because SO developers were familiar with the system, and had forgotten what it was like to learn it.
+
+As well as the lack of training, LAS staff suffered from the poor interfaces to the system. For instance, the terminals used by call takers didn't support scrolling, so when old messages were pushed off the top of the screen, they were effectively lost. This lead to the workaround of copying out messages that were likely to be lost, which caused a great reduction in productivity.
+
+Another problem possibly caused by time constraints is that insufficient testing was done. In particular, the load testing was not good enough, since the system soon became unable to manage the number of calls being taken. This was particularly bad, since it caused a feedback loop in which people who believed that their call hadn't been answered would ring again, increasing the load on the system further.
+
+\section{Question 2}
+\subsection{Plan}
+\begin{itemize}
+\item Original intention
+\item Specific failures
+\item Unreliable clients
+\item Iteration
+\item Alternatives
+\item Use as part of another development strategy
+\end{itemize}
+
+\subsection{Answer}
+The waterfall model of software development was first described in the 1950s. It consists of discrete stages, with some artifact -- be it a document or (partially completed) product -- being produced at the end of each stage. Winston Royce pointed out some of its flaws in 1970, but it went on to become standard in the US Department of Defense. There are many projects for which it is an appropriate model, though it usually isn't.
+
+One of the most important problems with using the waterfall method is that clients are often vague about, or even unsure of, their requirements. Bespoke software will very often be completely different from the software the client is used to using, so they are prone to make false assumptions about what the product will be able to do. It is often the job of people familiar with software architecture to explain what may not work, but this isn't guaranteed to make everything clear. In these cases, it is necessary to test parts of the system with the users to ascertain more requirements, but this is impossible when following the waterfall model.
+
+A particular group of requirements that can only be refined thoroughly using testing is those concerning human-computer interface. It is difficult to know in advance what a user will find easiest, and users normally can't completely specify an interface. Also, the interface may depend on implementation details, so can't be completed until the rest of the product is worked out.
+
+A case where a waterfall model is impossible is when developing more general-purpose software. When there is not a single client, there is no way to get all of the requirements, so the software has to have multiple versions, where new versions are improvements on old versions based on user feedback. This also holds for widely used software without formal releases, like web applications. Systems like this may also have to contend with changing operating systems and new workflows.
+
+However, there are cases in which the waterfall method is appropriate. Certain projects do have well-defined and non-moving targets. Usually bug fixing falls into this category: a user has a specific problem and the software should work exactly as it did before, except that the bug doesn't occur. Sometimes there may be considerable planning and testing involved, but the issuing of a patch will usually end the bug fixing project. Sometimes bug fixing can be an entire project, as seen by pre\"emptive reactions to the Y2K bug in legacy systems.
+
+Also, a waterfall-like method can be used within part of another development strategy, particularly as part of a single iteration in an incremental model. Often, a development strategy will take the waterfall model as a building block, but not use it as a model for the whole process. This works well because the waterfall model is possibly the simplest viable strategy, so for small projects works best.
+
+\end{document}

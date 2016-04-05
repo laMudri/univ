@@ -1,0 +1,72 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{tikz}
+
+\usetikzlibrary{automata,arrows}
+
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumii}{\roman{enumii}}
+
+\begin{document}
+\title{Computer Networking -- supervision 5}
+\author{James Wood}
+\maketitle
+
+\section*{Question 1}
+The network layer provides a way for hosts to communicate with each other. The transport layer refines this so that processes to communicate with each other, and processes on the same host can communicate concurrently. On the Internet, processes are identified by their host name combined with their \textit{port number}. Servers typically expose well-known port numbers for specific uses, so that clients know where to send their requests to.
+
+UDP offers no services other than the required multiplexing/demultiplexing and error checking. In contrast, TCP provides the abstraction of having a byte stream, interrupted only by an abnormal timeout. This involves making sure that all TCP packets arrive at the receiver exactly once, and the packets are in order. In addition, TCP also implements congestion control via a sliding window. This is more complex than the kind of sliding window used at the link layer, since we generally know less about the underlying hardware, making it difficult to gauge bandwidth, latency, and ability for a receiver to receive at a given rate.
+
+TCP works by having a connection initiated, then having applications send bytes along the connection. However, what is actually being sent on the network are \textit{segments}.
+
+To initiate a connection, the particpants carry out a three-way handshake. This involves the active participant (often a client) sending its starting sequence number, then the passive participant acknowledging this and sending its own starting sequence number, then the active participant acknowledging that sequence number. The TCP standard specifies that the initial sequence number must be picked randomly so as to avoid one incarnation of a connection interfering with another. Teardown is done by both participants sending a CLOSE signal, which signifies that they each have no more data to send. A connection may be partially closed if one side has finished sending, but the other may still be waiting to accept segments.
+
+Before the introduction of TCP congestion control, senders would send information as fast as possible and wait for a timeout if the receiver had to drop packets. This caused congestion, and also waiting for a timeout is slow. With congestion control, senders are able to gauge the capacity of the network, and send at a suitable (erring towards slow) rate. The congestion control algorith needs to take into account that the capacity of the network changes over time, and that we are likely to connect to many different machines with varying characteristics.
+
+TCP congestion control adds the notion of a \textit{congestion window} to the sender. This (combined with the \textit{advertised window} from flow control) governs how many packets the sender can have unacknowledged (and hence potentially in the network). Unlike the advertised window, the size of the congestion window is not easy to obtain, and in stable running is decided by \textit{AIMD} (additive increase; multiplicative decrease). In this scheme, the size of the congestion window halves at any timeout, and otherwise increases by one packet size for each window's worth of ACKs that arrives.
+
+When a new incarnation of a connection begins, the congestion window size is controlled by \textit{slow start}. As the sender receives a window's worth of ACKs, the congestion window doubles in size, causing an exponential increase in size with respect to time. Slow start is also used when a timeout occurs but no other packets are in transit. In this situation, there are no ACKs to prompt further transmission, so an alternative mechanism has to be used to start sending again. However, with this use of slow start, we still remember the old congestion window size, and use it as a target. When we reach half of the old congestion window size, we start using additive increase, rather than carrying on doubling. There are alternatives to slow start, including \textit{quick start}, which asks the receiver for an initial congestion window size rather than \SI{1}{MSS}. However, slow start is the default.
+
+The third (and theoretically optional) part of TCP congestion control is \textit{fast retransmit}. For this, we need the receiver to send cumulative ACKs. If the sender receives three \textit{duplicate ACKs}, it assumes that the first unreceived packet has been lost, and sends it again. This avoids waiting for a timeout. \textit{Fast recovery} is a replacement for slow start used when a fast retransmit occurs. Because there may still be ACKs waiting to be received, we can carry on without the threat of deadlock. The congestion window is halved, and we begin immediately with additive increase.
+
+\section*{Question 2}
+\begin{enumerate}
+  \item We assume a protocol in which the window size is increased at a constant rate of $\mathit{MSS} / \mathit{RTT}$, and the window size is halved at every packet loss. We also assume that every packet is of size $\mathit{MSS}$. About the network, we assume that a packet is dropped with probability $p$. To simplify things, we assume that every $1/p^{\mathrm{th}}$ packet is dropped, and the others are delivered. This makes the graph of window size against time trace out a perfect sawtooth with a maximum $W$ and minimum $W/2$. The period is such that the window size has increased by $W/2$, so is of length ${W \over 2} \cdot \mathit{MSS} \cdot {1 \over \mathit{MSS} / \mathit{RTT}}$, or simply $W/2 \cdot \mathit{RTT}$. By considering the area under the sawtooth, in a single period, ${W \over 2} \cdot {W/2 + W \over 2}$ packets are transmitted. This simplifies to $3 \cdot W^2 \over 8$ and is equal to $1/p$, as stated before.
+
+    Throughput can be calculated using the standard formula.
+    \[\textrm{throughput} = {\textrm{data transmitted} \over \textrm{time taken}} = {\mathit{MSS} \cdot 1/p \over W/2 \cdot \mathit{RTT}}\]
+    ${3 \cdot W^2 \over 8} = {1 \over p}$ re\"arranges to give ${W \over 2} = \sqrt{2 \over 3 \cdot p}$. Substituting this in gives
+    \[\textrm{throughput} = {\mathrm{MSS} \over p \cdot \sqrt{2 \over 3 \cdot p} \cdot \mathit{RTT}} = {\mathit{MSS} \over \sqrt{2 \cdot p \over 3} \cdot \mathit{RTT}} = {\sqrt{3/2} \cdot \mathit{MSS} \over \mathit{RTT} \cdot \sqrt p}\]
+  \item We re\"arrange the above equation to give
+    \[p = {3/2 \cdot \mathit{MSS}^2 \over \mathit{RTT}^2 \cdot \mathrm{throughput}^2}.\]
+    Substituting in gives $p = {3/2 \cdot 1000^2 \over 0.04^2 \cdot 10^9} = {15 \over 16} = 0.9375$.
+  \item $p = {3 \over 32} = 0.09375$.
+  \item The time taken for a single period is ${W \over 2} \cdot \mathit{RTT}$, which is $\sqrt{2 \cdot p \over 3} \cdot \mathit{RTT}$. $p = 0.09375$, so we get a time of \SI{0.01}{s}.
+  \item $W = \sqrt{8 \over 3 \cdot p} = {16 \over 3} \approx 5.33$. This rounds up to $6$.
+  \item An instantaneous data transfer rate of \SI{10}{GB/s} implies that we are half way through a period of fast retransmit. This means that the time to recover is ${1 \over 2} \cdot {W \over 2} \cdot \mathit{RTT}$, which is \SI{0.005}{s}.
+  \item This connection is very fast, and doesn't cause much congestion.
+  \item The ratio of throughputs is ${\mathit{MSS}_0 \cdot \mathit{RTT}_1 \cdot \sqrt{p_1} \over \mathit{MSS}_1 \cdot \mathit{RTT}_0 \cdot \sqrt{p_0}}$, which turns out to be $4$. This is largely caused by the drop rate.
+\end{enumerate}
+
+\section*{Question 3}
+\begin{enumerate}[label=\Alph{enumi}.]
+  \item Slow start
+  \item Congestion avoidance
+  \item Fast retransmit
+  \item Congestion avoidance
+  \item Fast retransmit
+  \item Timeout
+  \item Slow start
+\end{enumerate}
+Before $F$, the sender's window becomes as big as it can possibly handle, and thus it is impossible to keep up with the required increase in size.
+
+\section*{Question 4}
+The protocol should be implemented at the application layer, making use of TCP to deal with lost data and errors. TCP will also ensure that video data gets to the client in the correct order, so it is not necessary to tag every segment with time/space information. We assume that videos are encoded with audio and images interleaved, so that we can just send the bytes in order. Connections are initiated by the client, and the client has further controls -- for example, pausing and restarting buffering, and skipping to a different point in the video. While a video is playing, the server continues sending data without prompt. The initiation and skip message contains a URL for the video and the time to skip to. The server responds to these with some metadata (like total run time), then the video data. The server also keeps an identifier for the client, to be sent back to the server when pausing. For slow connections, videos should be stored in multiple different file sizes, and the client should be able to request a specific file size. This could be based on how frequently the client has to wait for buffering
+
+To improve performance for a school, it may be possible to add peer-to-peer communication. At the start of the streaming session, the client broadcasts the video request, and the first other machine to respond starts sending the video on. The aim is that the responder is near, and has at least part of the video cached. For the sake of security, the central server should still be involved, streaming small checksums to test whether what the client is being sent is valid.
+
+\end{document}
