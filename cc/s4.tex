@@ -1,0 +1,28 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\title{Compiler Construction -- supervision 4}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item DLL hell occurs when several applications refer to a single dynamically linked library, then one of those applications requests for a new version of the library. If the new version is incompatible with the old version in some way, the other applications may stop working. Types can help in solving this problem because we are likely to change the types of declarations when they become incompatible. However, if applications rely on properties of the declarations not specified in types anywhere (as happens a lot when parsing strings is involved), the problem will not go away.
+  \item For functions we can guarantee to be total, such as primitive operations, we can precompute any applications that have values which can be known at compile time. For example, if our code contains the expression \texttt{let x = \{\} \textbackslash n \{\} -> 2\#; in let y = \{\} \textbackslash n \{\} -> 3\#; in +\#\{x,y\}} with no other references to \texttt{x} and \texttt{y}, we can simplify it to \texttt{5\#}.
+  \item Closures store data with reference to code. They typically are stored on the heap. In this way, closures are much the same as objects. However, objects typically have an explicit notion of destructive update, which can only be achieved by an optimization with closures. Also, objects are exposed to and designed by the programmer, whereas closures are largely an artifact of the implementation of higher-order functions.
+  \item There may be points in running the program where no object holds access to some other object, but the runtime does. In this case, the garbage collector may find that an object is garbage when it actually isn't. Also, if the garbage collector moves objects in memory, it is difficult to communicate this movement to the runtime without blocking.
+  \item We already have a compiler from STG to C (and hence to various assembly languages), written in Haskell. We can use this to compile an STG program which compiles STG programs to C, and then we will have bootstrapped the STG compiler.
+  \item
+    The compiler compiles $\mathit{Val}~n$ to the program $[\mathit{PUSH}~n]$, which, when executed on stack $s$, produces $n : s$. This is correct.
+
+    For $\mathit{Plus}~e_0~e_1$, we assume that $e_0$ and $e_1$ compile correctly. Hence, when we execute the resultant program on stack $s$, executing the result of compiling $e_0$ on $s$ produces stack $\mathit{eval}~e_0 : s$, and executing the result of compiling $e_1$ on this stack produces $\mathit{eval}~e_1 : \mathit{eval}~e_0 : s$. Then, we reach the $\mathit{ADD}$ operation, reducing the stack to $(\mathit{eval}~e_0 + \mathit{eval}~e_1) : s$, as required.
+\end{enumerate}
+
+\section*{Practical exercises}
+I'll try to get this done before the supervision. See the commit history of \url{https://github.com/laMudri/compconstr-code} on the branch \texttt{exercise4}.
+
+\end{document}

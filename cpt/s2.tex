@@ -1,0 +1,213 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{tikz}
+
+\usetikzlibrary{automata,arrows,decorations.pathreplacing}
+
+\tikzset{->,>=stealth',shorten >=1pt,auto,node distance=1.5cm,baseline={([yshift={-\ht\strutbox}]a.north)}}
+
+\lstset
+{language=C
+,basicstyle=\footnotesize
+,frame=single
+}
+
+\newcommand{\parto}{\rightharpoonup}
+
+\begin{document}
+\title{Computation Theory -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}[label=\arabic*.]
+        \setcounter{enumii}{3}
+      \item Treat the argument as a pair of a register machine program and a list of register values. Then, interpret the data using universal register machine $U$, and discard its result in favour of the original argument. Formally,
+
+        \begin{tikzpicture}[node distance=2.5cm]
+          \node[initial] (a) {$T := R_1$};
+          \node (b) [right of=a] {$R_2 := \mathit{snd}~R_1$};
+          \node (c) [below of=b] {$R_1 := \mathit{fst}~R_1$};
+          \node (d) [right of=c] {Run $U$};
+          \node (e) [right of=d] {$R_0 \gets T$};
+          \node (halt) [right of=e] {halt};
+
+          \path
+          (a) edge (b)
+          (b) edge (c)
+          (c) edge (d)
+          (d) edge (e)
+          (e) edge (halt)
+          ;
+        \end{tikzpicture}
+
+        Deciding whether this halts for a give argument is exactly solving the halting problem, making the first set undecidable. Since $f(x) = y$ means that $y = x$, the second set is the same as the first set.
+      \item To decide $x \in S_1$ for some natural number $x$, we compute $f(x)$ and decide $f(x) \in S_2$.
+      \item With such a set, we can decide $\phi_e = \phi_{e'}$ for arbitrary $e$ and $e'$.
+
+        Lemma: if we can decide $\phi_e = \phi_{e'}$ for arbitrary $e$ and $e'$, we can decide the halting problem. Define
+        \begin{align*}
+          \mathit{zero}(x) & := 0
+          \\
+          F_{e, a}(x) & :=
+            \begin{cases}
+              0, & a = x
+              \\
+              (\mathit{zero} \circ \phi_e)(x), & \textrm{otherwise}
+            \end{cases}.
+          \end{align*}
+        Then, we can construct a machine that decides the halting problem as follows.
+        \begin{align*}
+          H(e, a) & := (\mathit{zero} \circ \phi_e) = F_{e, a}
+        \end{align*}
+        This relies on the fact that $F_{e,a} : \mathbb N \parto \mathbb N$ is a computable for all $e$ and $a$, and hence there is an $e'$ such that $F_{e,a} = \phi_{e'}$. To see that this is correct, note that for all $x$ not equal to $a$, either $(\mathit{zero} \circ \phi_e)(x) = F_{e, a}(x)$ or both functions are undefined at $x$. For all $a$, $F_{e, a}(a) = 0$. If $\phi_e(a)\downarrow$, we have that $(\mathit{zero} \circ \phi_e)(a) = 0$ and $(\mathit{zero} \circ \phi_e) = F_{e, a}$, as required. Conversely, if $(\mathit{zero} \circ \phi_e) = F_{e, a}$, we have in particular that $(\mathit{zero} \circ \phi_e)(a) = F_{e, a}(a)$, so $(\mathit{zero} \circ \phi_e)(a) = 0$ and thus $\phi_e(a)\downarrow$.
+
+        Given this lemma and the assumption that $\{ \langle e, e' \rangle | \phi_e = \phi_{e'} \}$ is decidable, we can construct $H$, deciding equivalence of partial functions by testing for membership in the set. The fact that we can construct $H$ is a contradiction, so the set cannot be decidable.
+      \item Interpret the various symbols of the Turing machine into $\mathbb N$ as follows.
+        \begin{align*}
+          0 & \mapsto 0 & \mathtt{acc} & \mapsto 0 & L \mapsto 0
+          \\
+          1 & \mapsto 1 & \mathtt{rej} & \mapsto 1 & R \mapsto 1
+          \\
+          \triangleright & \mapsto 2 & s & \mapsto 2 & S \mapsto 2
+          \\
+          \sqcup & \mapsto 3 & q & \mapsto 3 &
+          \\
+          & & q' & \mapsto 4 &
+        \end{align*}
+        For simplicity, assume that the input for $\delta$ is in registers $S$ and $T$, and the output is written to registers $S'$, $T'$, and $D$. The program is created with the following scheme.
+
+
+        $P_s$ is specified as follows.
+
+        \begin{tikzpicture}
+          \node[initial] (a) {$T^-$};
+          \node (b) [right of=a] {$T^-$};
+          \node (c) [right of=b] {$T^-$};
+          \node (d) [right of=c] {$T^-$};
+          \node (spin) [right of=d] {$T^+$};
+
+          \node (a0) [below of=a] {$S'^+$};
+          \node (b0) [below of=b] {$S'^+$};
+          \node (c0) [below of=c] {$S'^+$};
+          \node (d0) [below of=d] {$S'^+$};
+
+          \node (a1) [below of=a0] {$D^+$};
+          \node (b1) [below of=b0] {$T'^+$};
+          \node (c1) [below of=c0] {$S'^+$};
+          \node (d1) [below of=d0] {$S'^+$};
+
+          \node (a2) [below of=a1] {$D^+$};
+          \node (b2) [below of=b1] {$D^+$};
+          \node (c2) [below of=c1] {$T'^+$};
+          \node (d2) [below of=d1] {$S'^+$};
+
+          \node (a3) [below of=a2] {halt};
+          \node (b3) [below of=b2] {$D^+$};
+          \node (c3) [below of=c2] {$T'^+$};
+          \node (d3) [below of=d2] {$T'^+$};
+
+          \node (b4) [below of=b3] {halt};
+          \node (c4) [below of=c3] {$D^+$};
+          \node (d4) [below of=d3] {$T'^+$};
+
+          \node (c5) [below of=c4] {halt};
+          \node (d5) [below of=d4] {$T'^+$};
+
+          \node (d6) [below of=d5] {$D^+$};
+
+          \node (d7) [below of=d6] {halt};
+
+          \path
+          (a) edge (b)
+              edge [->>] (a0)
+          (a0) edge (a1)
+          (a1) edge (a2)
+          (a2) edge (a3)
+
+          (b) edge (c)
+              edge [->>] (b0)
+          (b0) edge (b1)
+          (b1) edge (b2)
+          (b2) edge (b3)
+          (b3) edge (b4)
+
+          (c) edge (d)
+              edge [->>] (c0)
+          (c0) edge (c1)
+          (c1) edge (c2)
+          (c2) edge (c3)
+          (c3) edge (c4)
+          (c4) edge (c5)
+
+          (d) edge (spin)
+              edge [->>] (d0)
+          (d0) edge (d1)
+          (d1) edge (d2)
+          (d2) edge (d3)
+          (d3) edge (d4)
+          (d4) edge (d5)
+          (d5) edge (d6)
+          (d6) edge (d7)
+
+          (spin) [loop right] edge (spin)
+          ;
+        \end{tikzpicture}
+
+        The parts for other states are specified similarly.
+      \item
+        \begin{enumerate}[label=(\alph*)]
+          \item We define an exponentiation function gradually.
+            \begin{align*}
+              \mathit{add} & := \rho^1(\mathtt{proj}_1^1, \mathtt{succ} \circ \mathtt{proj}_3^3)
+              \\
+              \mathit{mult} & := \rho^1(\mathtt{zero}^1, \mathit{add} \circ [\mathtt{proj}_1^3, \mathtt{proj}_3^3])
+              \\
+              \mathit{exp} & := \rho^1(\mathtt{succ} \circ \mathtt{zero}^1, \mathit{mult} \circ [\mathtt{proj}_1^3, \mathtt{proj}_3^3])
+            \end{align*}
+          \item
+            \begin{align*}
+              \mathit{pred} & := \rho^0(\mathtt{zero}^0, \mathtt{proj}_1^2)
+              \\
+              \mathit{minus} & := \rho^1(\mathtt{proj}_1^1, \mathit{pred} \circ \mathtt{proj}_3^3)
+            \end{align*}
+          \item
+            \begin{align*}
+              \mathit{ifzero} & := \rho^2(\mathtt{proj}_1^2, \mathtt{proj}_2^4) \circ [\mathtt{proj}_2^3, \mathtt{proj}_3^3, \mathtt{proj}_1^3]
+            \end{align*}
+          \item
+            \begin{align*}
+              g & := \rho^n(\mathtt{zero}^n, \mathit{add} \circ [f \circ [\mathtt{proj}_1^{n+2}, \ldots, \mathtt{proj}_n^{n+2}, \mathtt{proj}_{n+1}^{n+2}], \mathtt{proj}_{n+2}^{n+2}])
+            \end{align*}
+        \end{enumerate}
+    \end{enumerate}
+  \item
+    A Turing machine is specified by a finite set of states $Q$ with designated starting state $s$ in $Q$, a finite set of symbols $\Sigma$ (containing at least $\triangleright$ and $\sqcup$), and transition function $\delta : Q \times \Sigma \to (\{\mathtt{acc}, \mathtt{rej} \cup Q) \times \Sigma \times D$ (where $D = \{L, S, R\}$) such that, if $(q', t', d) = \delta(q, \triangleright)$, $t' = \triangleright$ and $d = R$. A configuration of a machine is specified by an element of $Q \times \Sigma^+ \times \Sigma^*$, where $\Sigma^+$ is the set of non-empty strings of symbols and $\Sigma^*$ is the set of all strings of symbols. The states act as the states in a finite state machine which, at each transition, takes as input the symbol of the cell pointed to on a half-infinite tape and produces at output a new symbol to write to the cell and a direction to move along the tape. $\triangleright$ has to occur at the end of the tape, and signals the fact that it is at the end. The constraint on $\delta$ ensures that the machine cannot move past the end of the tape. Beyond some finite distance along the tape, all of the symbols are $\sqcup$, which represents an empty cell. For a configuration $(q, ua, v)$, $q$ is the state of the underlying finite state machine and the entire tape is $uav$. $u$ is the string of symbols to the left of the focused cell (which has symbol $a$), and $v$ is the string of symbols to the right of the focused cell.
+
+    Non-determinism can be added by choosing a $\delta$ in $Q \times \Sigma \to \mathcal P((\{\mathtt{acc}, \mathtt{rej} \cup Q) \times \Sigma \times D)$ and having configurations be from $\mathcal P(Q \times \Sigma^+ \times \Sigma^8*)$. The machine now has a set of possible configurations, and at each step, for each possible configuration, all the possible next configurations are found and put into a new set of possible configurations.
+
+    For oracle computation, we can introduce a new tape which acts as input and output space for the oracle. The transition function can also specify zero or one oracle instructions to perform after the transition. Configurations are now drawn from $Q \times \Sigma^+ \times \Sigma^* \times \Sigma^+ \times \Sigma^*$, and the transition function is drawn from $Q \times \Sigma \times \Sigma \to (\{\mathtt{acc}, \mathtt{rej} \cup Q) \times \Sigma \times \Sigma \times D \times D \times (0 \uplus O)$, where a member of $O$ is an index into the list of possible oracle instructions.
+
+    To achieve probabalistic computation, we could have an oracle to generate random numbers. Alternatively, we do something similar to what was done to achieve non-determinism, but make sure that outputs from the transition function and configurations are tagged with a probability (ensuring that probabilities sum to 1 for any given result of $\delta$).
+  \item The primitive recursive functions are the functions which can be constructed using only the functions $\mathtt{proj}_i^n : \mathbb N^n \to \mathbb N$, which gives back its $i$th argument; $\mathtt{zero}^n : \mathbb N^n \to \mathbb N$, which always gives back $0$; $\mathtt{succ} : \mathbb N \to \mathbb N$, which gives back the successor of its argument; $\_\circ[\_, \ldots, \_] : (\mathbb N^n \to \mathbb N) \times (\mathbb N^m \to \mathbb N)^n \to \mathbb N^m \to \mathbb N$, which parameter-wise composes functions; and $\rho^n : (\mathbb N^n \to \mathbb N) \times (\mathbb N^{n+2} \to \mathbb N) \to \mathbb N^{n+1} \to \mathbb N$, which, given arguments $(f, g)$, computes the unique function $h$ satisfying
+    \begin{align*}
+      h(\vec x, 0) & = f(\vec x)
+      \\
+      h(\vec x, \mathit{suc}~x) & = g(\vec x, x, h(\vec x, x))
+    \end{align*}
+
+    The partial recursive functions are the functions that can be constructed using the functions allowed for primitive recursion (expanded to allow for partial functions) with the addition of minimization function $\mu^n : (\mathbb N^{n+1} \parto \mathbb N) \to \mathbb N^n \parto \mathbb N$, defined so that $\mu^n(f)(\vec x)$ is the smallest $x$ such that $f(\vec x, x) = 0$. Obviously, the partial recursive functions include the primitive recursive functions. Minimization allows us to define partial functions, so allows us to define strictly more functions than primitive recursion does.
+
+    The computable functions are those partial functions $f$ in $\mathbb N^n \parto \mathbb N$ such that we can construct a register machine starting with $R_i$ being loaded with the $i$th argument and all other registers zero, such that the machine halts exactly when $f(\vec x)$ is defined, and in those cases $R_0 = f(\vec x)$ when the machine halts. The computable functions are the same class as the partial recursive functions.
+  \item We can easily implement $\mathtt{proj}_i^n$, $\mathtt{zero}^n$, and $\mathtt{succ}$ as register machines. We can also compose register machines by giving each machine a set of registers disjoint from those being used by other machines, then copying the results of each of these machines into the relevant registers of the machine of the left function. The primitive recursion combinator can be implemented by first computing $h(\vec x, 0)$, then using the result for this to compute $h(\vec x, \mathit{suc}~x)$ for increasing $x$ until we get the desired result. Finally, the minimization combinator can be implemented in a similar way, keeping a register $R_0$ for $x$ and computing $f(\vec x, x)$ for increasing $x$ until the result $0$ is found. Thus, if a function is primitive recursive, it is register machine computable.
+
+    Conversely, we can interpret register machine programs using partial recursive functions. Pairs and lists can be coded as they are in the universal register machine. Then, there is a $\mathit{step}$ function which finds the current instructions in the list of instructions, and based on that updates the list in which register values are stored and the program counter, and pairs with the new state $0$ if the instruction is a (possibly erroneous) halt and $1$ otherwise. Using $\rho$, we can produce a function that runs a register machine for $x$ steps (where $x$ is the last parameter). Minimization on this function with the halt code projected gives the number of iterations that need to be performed. When this number is found, the interpreter needs to be run for that many steps, this time projecting the value in the simulated $R_0$. Hence, if a function is register machine computable, it is partial recursive.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,29 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{siunitx}
+
+\begin{document}
+\title{Computer Graphics and Image Processing -- supervision 1}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item The centre of the eye is dense in cone cells, so looking at something directly relies more on cones than looking at it off-centre would. Cones are specialized to detect colours in a bright environment, so are not useful for looking at stars. Rod cells are more evenly distributed across the eye, so looking at an object off-centre relies more on rods. These can detect light in a dark environment.
+  \item
+    \begin{enumerate}
+      \item The RGB colour model matches simply to the colours detectable to human eyes and digital cameras, and displayable by electronic displays.
+      \item The XYZ colour space contains all colours in the visible portion of the electromagnetic spectrum, expressed in terms of three values.
+      \item The HLS colour space is a cylindrical representation of the RGB colour space. The angle of a point is its hue, its height is its luminosity, and its radius is its saturation. HLS is supposed to match how we perceive colours, and is also supposed to be more intuitive for designers.
+      \item Luv is similar to HLS, but made to fit XYZ rather than RGB.
+    \end{enumerate}
+  \item Texture mapping is the use of 2D images (texture maps) to create patterns on the surfaces of a 3D model. This can be an improvement over dividing the surface into solid-colour polygons, since for fine details it typically requires much less processing.
+
+    Bump mapping is a similar technique, using a 2D height map or normal map to simulate unevenness in depth on a surface. Like texture mapping, the effect is applied when colouring the surface. Essentially, each point on the surface has its normal modified slightly, so light is reflected off it as if it were at an angle to the original surface.
+
+    Displacement mapping is used to achieve similar effects to bump mapping, but does so by modifying the underlying model before rendering anything. This is more computationally intensive than bump mapping because it introduces new polygons to the scene. However, it produces a more realistic image, particularly in that the shadows and outline of the object will be correctly perturbed, but they won't be perturbed at all by bump mapping.
+  \item Error diffusion is used when reducing the colour information in an image. By taking into account non-local parts of the image when calculating a pixel of the new image, it avoids the effect in which each pixel in a given area falls just to one side of a threshold, producing an exaggerated colour. Error diffusion attempts to give the same average colour to large areas as they had on the original image, so the difference between the images is only noticeable when one looks at small areas of the image.
+  \item Assuming a distance from the monitor of \SI{600}{mm} and resolution angle of \ang{;1;}, the minimum pixel size detectable on the monitor is $\SI{600}{mm} \cdot \tan \ang{;1;}$, which is approximately \SI{0.175}{mm}. This gives a resolution of \SI{5.73}{px/mm} or \SI{146}{px/in}.
+\end{enumerate}
+
+\end{document}

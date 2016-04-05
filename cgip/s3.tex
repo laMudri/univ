@@ -1,0 +1,49 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+%\usepackage{color}
+\usepackage[a4paper,margin=1in]{geometry}
+%\usepackage{graphicx}
+%\usepackage[utf8]{inputenc}
+\usepackage{qtree}
+
+%\lstset
+%{language=Haskell
+%,basicstyle=\footnotesize
+%,extendedchars=true
+%,literate={é}{{\'e}}1
+%,frame=single
+%}
+
+\begin{document}
+\title{Computer Graphics and Image Processing -- supervision 3}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+    \item The bounding box of a cylinder is the bounding box of the combination of its end circles. Let $\mathbf e_0 = \begin{pmatrix}1\\2\\3\end{pmatrix}$ and $\mathbf e_1 = \begin{pmatrix}2\\4\\5\end{pmatrix}$, and let $\mathbf a = \mathbf e_1 - \mathbf e_0$. Let $C_0$ and $C_1$ be sets of vectors corresponding to the points of the end circles. $C_i = \{\mathbf r \mid \mathbf r \cdot \mathbf a = \mathbf e_i \cdot \mathbf a \wedge \lvert \mathbf r - \mathbf e_i \rvert = 2\}$. Let $p_i$ be arbitrarily chosen points in $C_i$. I choose $p_0 = \begin{pmatrix}1\\2 - \sqrt 2\\3 + \sqrt 2\end{pmatrix}$ and $p_1 = \begin{pmatrix}2\\4 - \sqrt 2\\5 + \sqrt 2\end{pmatrix}$. I got stuck at this point.
+    \item Centre the sphere at the midpoint of the axis of the cylinder, that is $\mathbf m$ where $\mathbf m = \begin{pmatrix}3/2\\3\\4\end{pmatrix}$. The radius is the distance between $\mathbf m$ and any point on either of the end circles. This distance is $\sqrt{\lvert \mathbf e_0 - \mathbf m \rvert^2 + 2^2}$, which is $25 \over 4$.
+    \end{enumerate}
+  \item Assuming a camera at $(+\infty,0)$ (putting closer lines to the right of the diagram), taking the first line wherever there is a choice of root, we get:
+
+    \Tree[.$(0,0)-(2,2)$ [.$(3,4)-(1,3)$ [.$(0,3)-(1,3)$ ] [.$(1/3,1/3)-(-3,1)$ [ ] [.$(1,3)-(3,3)$ ] ] ] [.$(1,0)-(1/3,1/3)$ [ ] [.$(2,0)-(2,1)$ ] ] ]
+  \item
+    \begin{enumerate}
+      \item The geodesic grid method approximates the sphere by an enclosed icosahedron. Better approximations of the sphere can be had by dividing each face of the icosahedron into smaller tesselating triangles, then moving the corners of the new triangles to touch the surface of the sphere. For each face of the icosahedron, there are a square number of smaller triangles.
+      \item Another method is to start with a latitude-longitude-based division of the surface into trapezia, then split each trapezium into two triangles. This method makes it easy to get any particular level of detail, but can leave unwanted patterns if the shading isn't good enough to hide the edges.
+    \end{enumerate}
+  \item
+    Given a 3D model, we choose a point $O$ for the camera and a unit vector $\mathbf u$ representing the direction in which it is pointing. Projection of a point $A$ is done by evaluating $\overrightarrow{OA} - \left(\overrightarrow{OA} \cdot \mathbf u\right) \cdot \mathbf u$ and projecting out the ($0$) $z$ component.
+
+    We then produce a BSP tree containing all of the faces in the model. This has the effect of splitting up surfaces that intersect with each other, making them easier to handle. We start with the front-most polygon and check all further back lines for occlusion. This is done by checking whether any lines of the front polygon intersect with the line. If there are intersections, the line is clipped using 2D line clipping. Iterating back through the polygons gives us the wireframe image with occluded line segments removed.
+  \item
+    \begin{enumerate}
+    \item Quaternions can be used to describe 3D rotations about a unit axis $\mathbf u$ by an angle $\theta$. The resulting quaternion $q$ is $\exp\left({\theta \over 2} \cdot (u_x \cdot i + u_y \cdot j + u_z \cdot k)\right)$, where $i$, $j$, and $k$ are the imaginary basis elements of the quaternion system. By a variant of Euler's theorem, this is equal to $\cos{\theta \over 2} + (u_x \cdot i + u_y \cdot j + u_z \cdot k) \cdot \sin{\theta \over 2}$. The rotation is applied to vector $\begin{pmatrix}p_x\\p_y\\p_z\end{pmatrix}$ by evaluating $q \cdot (p_x \cdot i + p_y \cdot j + p_z \cdot k) \cdot q^{-1}$ and projecting away the real part. Composition of rotations is achieved by multiplying their quaternions in the same order as they would be for function composition.
+      \item Euler angles represent rotations about the origin as a sequence of three rotations. The first angle corresponds to a rotation about an original axis, the second angle corresponds to a rotation about an intermediate axis, and the third angle corresponds to a rotation about one of the resultant axes. This is similar to how a certain angle would be achieved using a gimball. Euler angles are difficult to compose, and applying them requires more effort than applying quaternion- or matrix-based rotations.
+    \end{enumerate}
+  \item The Cook-Torrance model takes diffuse and ambient illumination factors from the Phong model, but replaces the specular term to take roughness and transmittance into account. Roughness is imagined as breaking up of the surface into microfacets, where a rougher surface will have microfacets angled further away from the underlying surface. Microfacets affect the direction of reflected rays, and can also occlude other rays. The microfacets are not actually modelled, but rather their behaviour is approximated statistically.
+\end{enumerate}
+
+\end{document}

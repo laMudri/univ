@@ -1,0 +1,64 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+
+\newcommand{\parto}{\rightharpoonup}
+
+\begin{document}
+\title{An alternative answer to exercise 10.b}
+\author{James Wood}
+\maketitle
+
+In this piece, I aim to prove that the set answer to exercise 10.b of the Computation Theory exercise sheet, namely, defining $g_{n+1} := \rho^0(g_n \circ \mathtt{succ} \circ \mathtt{zero}^0, g_n \circ \mathtt{proj}_2^2)$, is in fact equivalent to the answer I gave in the supervision, using the definition $g_{n+1} := g_n \circ \rho^0(\mathtt{succ} \circ \mathtt{zero}^0, g_n \circ \mathtt{proj}_2^2)$. I do this by proving the following equality for all (primitive recursive) $f$, $c$, and $x$.
+\begin{align}
+  \rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(x) = (f \circ \rho^0(c, f \circ \mathtt{proj}_2^2))(x)
+\end{align}
+By associativity of composition and assumption of extensional equality on functions, it should be clear that the desired result is a corollary.
+
+To prove (1), we proceed by induction on $x$. The base case follows by calculation. Explicitly,
+\begin{align*}
+  \rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(0)
+  & = (f \circ c)()
+  \\
+  & = f(c())
+\end{align*}
+and
+\begin{align*}
+  (f \circ \rho^0(c, f \circ \mathtt{proj}_2^2))(0)
+  & = f(\rho^0(c, f \circ \mathtt{proj}_2^2)(0))
+  \\
+  & = f(c())
+\end{align*}
+
+Calculation also gets us a long way in the step case. Note:
+\begin{align*}
+  \rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(x+1)
+  & = (f \circ \mathtt{proj}_2^2)(x, \rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(x))
+  \\
+  & = f(\mathtt{proj}_2^2(x, \rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(x)))
+  \\
+  & = f(\rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(x))
+\end{align*}
+and
+\begin{align*}
+  (f \circ \rho^0(c, f \circ \mathtt{proj}_2^2))(x+1)
+  & = f(\rho^0(c, f \circ \mathtt{proj}_2^2)(x+1))
+  \\
+  & = f((f \circ \mathtt{proj}_2^2)(x, \rho^0(c, f \circ \mathtt{proj}_2^2)(x)))
+  \\
+  & = f(f(\mathtt{proj}_2^2(x, \rho^0(c, f \circ \mathtt{proj}_2^2)(x))))
+  \\
+  & = f(f(\rho^0(c, f \circ \mathtt{proj}_2^2)(x)))
+\end{align*}
+The inductive hypothesis then tells us
+\begin{align*}
+  \rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(x) = f(\rho^0(c, f \circ \mathtt{proj}_2^2)(x))
+\end{align*}
+and hence
+\begin{align*}
+  f(\rho^0(f \circ c, f \circ \mathtt{proj}_2^2)(x)) = f(f(\rho^0(c, f \circ \mathtt{proj}_2^2)(x))),
+\end{align*}
+as required.
+
+\end{document}

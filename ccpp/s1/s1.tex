@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+\begin{document}
+\title{C/C++ -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\section{Lecture 1}
+\begin{enumerate}
+  \item \texttt{'a'} represents the \texttt{char} value 97. \texttt{"a"} represents a pointer to an \texttt{'a'} followed by \texttt{NULL} in memory.
+
+  \item The program will terminate whenever the loop has run enough times for \texttt{j} to be greater than or equal to 5. Since the value of \texttt{j} is initially undefined, we don't know how many times the loop will be run. However, \texttt{j} is incremented every time, so it will eventually be greater than or equal to 5.
+  \item \lstinputlisting[language=C]{bubblesort.c}
+
+  \item \lstinputlisting[language=C]{bubblesort_char.c}
+\end{enumerate}
+
+\section{Lecture 2}
+\begin{enumerate}
+  \item \lstinputlisting[language=C]{cntlower.c}
+
+  \item \lstinputlisting[language=C]{mergesort.c}
+
+  \item \lstinputlisting[language=C]{swapt.h}
+
+  \item
+    This gets expanded to:
+    \begin{lstlisting}[language=C]
+    int tmp = v[i++];
+    v[i++] = w[f(x)];
+    w[f(x)] = tmp;
+    \end{lstlisting}
+    \texttt{i++} gets evaluated twice, so the element of \texttt{v} assigned to is \texttt{v[i + 1]}, and \texttt{i} is incremented twice. Also, \texttt{f} might not be pure, with impurity having similar effects as described for \texttt{i++}.
+
+  \item \lstinputlisting[language=C]{swap.h}
+\end{enumerate}
+
+\begin{enumerate}
+  \item \texttt{p[-2]} refers to the value two places (based on the declared size of elements of \texttt{p}) before \texttt{*p} in memory. It will always be compiled successfully, but will have undefined behaviour unless we know that there is something allocated at \texttt{p - 2}.
+
+  \item \lstinputlisting[language=C]{strfind.c}
+
+  \item \lstinputlisting[language=C]{l3q3.c}
+
+  \item \lstinputlisting[language=C]{calc.c}
+\end{enumerate}
+
+\end{document}

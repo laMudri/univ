@@ -1,0 +1,190 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\lstset{frame=single,language=c++,title=\lstname}
+
+\begin{document}
+\title{C/C++ -- supervision 3}
+\author{James Wood}
+\maketitle
+
+\section*{Lecture 6}
+\begin{enumerate}
+  \item The constructor will probably called at the start of the method if the variable is \texttt{NULL}. In practice, this often means that the constructor is called on the first time at which the function is run, and each time after that, the test for \texttt{NULL}ness fails.
+  \item \hfill
+    %\lstinputlisting{matrix.hpp}
+    \lstinputlisting{matrix.cpp}
+  \item \hfill
+    %\lstinputlisting{vector.hpp}
+    \lstinputlisting{vector.cpp}
+  \item The classes inheriting from the abstract class will sometimes allocate memory. The destructors for these will have to take account of this allocation, and can only do that if they can be redefined and called. Without the base class's destructor being virtual, any object for which the base class is its static type would have the base class's destructor called, wich is not what we wanted.
+\end{enumerate}
+
+\section*{Lecture 7}
+\begin{enumerate}
+  \item See next.
+  \item \hfill
+    \lstinputlisting{stack.cpp}
+  \item \hfill
+    \lstinputlisting{prime.cpp}
+  \item We can look at the generated assembly code of a test file using the \texttt{-S} option of common C++ compilers. Here is a simple example:
+    \lstinputlisting{testprime.cpp}
+    The generated assembly code contains no mention of the string \texttt{"not prime"}, showing that the whole branch that string resides in has been compiled away.
+\end{enumerate}
+
+\section*{y2013p3}
+\begin{enumerate}
+\setcounter{enumi}{2}
+  \item
+    \begin{enumerate}
+    \setcounter{enumii}{1}
+      \item
+        \begin{enumerate}
+          \item \begin{lstlisting}
+#include <iostream>
+
+using namespace std;
+
+class T {
+  const int n;
+
+public:
+  T(int _n=0): n(_n) { cout << n << endl; }
+  virtual ~T() { cout << n << endl; }
+}
+            \end{lstlisting}
+            The destructor is virtual because this allows derived classes to define their own destructors, which will be called whenever a run-time instance of the derived class is deleted.
+          \item If the instance is created using \texttt{new}, a pointer will be allocated on the stack, and space for \texttt{n} will be allocated on the heap and given the given value. Any extra constructor code will be run after this. The destructor will already have an entry in the vtable, which is in the static store. When the instance is de\"allocated, the destructor is called, then the space is cleared from the heap, then the stack.
+
+            Due to stack unwinding, destructors act like the code in a \texttt{finally} block. The code of the destructor is run whenever the value goes out of scope, which includes when a run-time error occurs.
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\section*{y2012p3}
+\begin{enumerate}
+\setcounter{enumi}{2}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{enumerate}
+          \item Local variables have their scope limited to the function in which they are defined. Global variables are accessible to any following code. Local variables are usually stored in the stack so that they can be allocated and deallocated quickly. Global variables are only allocated once, so get stored on the heap. In C, global variables are assigned 0 by default, whereas local variables are left undefined.
+          \item Static members are accessible without having an instance of the object. Static member variables are the only member variables accessible from static member functions, because non-static member variables need an instance to have a value. If class \texttt{T} has static member variable \texttt{v}, the member is accessed by \texttt{T::v}.
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item C treats the memory the program is allowed to use as a single linear address space, with pointers pointing into it. We can also refer to parts of that memory which are an integer offset away from existing pointers. An example of an inappropriate use of pointer arithmetic is as follows:
+            \begin{lstlisting}
+#include <stdio.h>
+int main() {
+  int[3] p = {0,2,4};
+  p -= 1;
+  printf("%d\n", p);
+  return 0;
+}
+            \end{lstlisting}
+            \texttt{p} is a pointer, and we modify it to point to the \texttt{int}-sized memory cell before the start of the array. We don't know what is there, so the program has undefined behaviour.
+          \item At run time, an array behaves as a pointer. We can also do pointer arithmetic on array variables. However, we can use \texttt{sizeof}, which gives different values based on whether the variable is declared as an array or a pointer. All pointers have a single, implementation-defined size. The size of an array is the size of a single element multiplied by the number of elements.
+        \end{enumerate}
+      \item Declaring a function virtual in a superclass allows subclasses to override the function at run time. This differs from the behaviour of non-virtual functions, where the function that gets invoked is decided at compile time, based on the type of the expression it is called on.
+      \item
+        \begin{enumerate}
+          \item A \texttt{void*} value can point to a value of any type. It carries no information about the size of the pointed-to value, so cannot be dereferenced or used in pointer arithmetic without being cast. We can use it for functions which are supposed to be parametric in type:
+            \begin{lstlisting}
+void *k(void *x, void *y) { return x; }
+            \end{lstlisting}
+          \item Use of \texttt{void*} values requires casting, which is not checked by the compiler in the way types usually are. In C++, we can get compiler-checked (at instantiations) parametric polymorphism by using templates. Here is a new version of the K combinator:
+            \begin{lstlisting}
+template<class X, class Y> X k(X x, Y y) { return x; }
+            \end{lstlisting}
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item Copy constructors allow the memory associated with a object to be copied, even if the object contains pointers. See the next example.
+          \item Overloading the assignment operator can be done so that the value being assigned is copied using the copy constructor, rather than doing the default fieldwise assignment. Here is the example:
+            \begin{lstlisting}
+struct Node {
+  int val;
+  Node *next;
+  Node(int v): val(v), next(NULL) { }
+}
+
+class List {
+public:
+  Node *head;
+  List(): head(NULL) { }
+  List(const List &l);
+  List &operator=(const List &s);
+}
+
+Node *copyNode(Node *n) {
+  if (n) {
+    Node *r = new Node(n->val);
+    r->next = copyNode(n->next);
+    return r;
+  }
+  else return NULL;
+}
+
+// Copy constructor
+List::List(const List &l) {
+  head = copyNode(l.head);
+}
+
+// Overloaded assignment
+List &List::operator=(const List &l) {
+  this = new List(l);
+  return *this;
+}
+            \end{lstlisting}
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\section*{y2011p3}
+\begin{enumerate}
+\setcounter{enumi}{2}
+  \item
+    \begin{enumerate}
+      \item A declaration generates a new name and associates with that name what sort of thing it is (value, class, \&c) and its type, if it is a value or function. A definition gives behaviour to the declaration. For a class, the definition lists the members; for a function, the definition gives the code run when that function is called.
+      \item Dynamic memory allocation occurs in the heap, which is in the data segment of the process. The heap is a linearly addressed random-access memory, usually at the start of the data segment. For static allocation, the stack is used. This is usually found at the end of (but still inside) the data segment. The top of the stack includes things currently in scope, and values there are most likely to be created and destroyed soon. The code segment is separate, but still addressible. It contains machine code instructions.
+      \item \textit{Stack unwinding} is the de\"allocation of class variables when a run-time exception occurs. The de\"allocation happens by calling the destructor of each stack variable that goes out of scope. Example:
+        \begin{lstlisting}
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+void foo() {
+  char *c = new char[16];
+  std::string s("bar");
+  throw std::runtime_error("quux");
+  cout << s << endl;
+  delete c;
+}
+
+int main() {
+  try {
+    foo();
+  }
+  catch (const exception &e) { }
+  return 0;
+}
+        \end{lstlisting}
+        In this example, \texttt{s} gets de\"allocated when the exception is thrown. However, \texttt{char*} has no destructor to take care of the allocated memory, so \texttt{c} isn't de\"allocated.
+      \item Templates can be indexed on values. Here is an example that calculates triangle numbers on demand at compile time:
+        \begin{lstlisting}
+template<int N> struct triangle {
+  static const int v = N + triangle<N - 1>::v;
+}
+template<> struct triangle<0> {
+  static const int v = 0;
+}
+        \end{lstlisting}
+        The $n$th triangle number can be referred to as \texttt{triangle<n>::v}.
+      \item Giving the empty class a size makes sure that there aren't difficulties caused when instances of the empty class are put into an array. Particularly, it is idiomatic to find the length of array \texttt{a} using the expression \texttt{sizeof(a) / sizeof(a[0])}. However, if each element had size 0, this would cause a division-by-zero error.
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}

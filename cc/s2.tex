@@ -1,0 +1,96 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+\lstset
+{language=Haskell
+,basicstyle=\footnotesize
+,extendedchars=true
+,frame=single
+}
+
+\begin{document}
+\title{Compiler Construction -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item \lstinputlisting{S2.hs}
+      \item \texttt{fib\_cps} is tail-recursive, whereas \texttt{fib} is not. \texttt{gcd\_cps} is also tail-recursive, but \texttt{gcd} was anyway. This means that CPS code can be optimized to avoid using the call stack for recursive calls.
+    \end{enumerate}
+  \item See practical exercise.
+  \item
+    \begin{enumerate}
+      \item Consider the following Haskell-like top-level declarations:
+        \begin{lstlisting}
+add x y = x + y
+add1 = add 1
+add2 = add 2
+three = add1 (add2 0)
+        \end{lstlisting}
+        \texttt{add 1} is a function equivalent to \texttt{\textbackslash y -> 1 + y}. If functions are implemented na\"ively, \texttt{add1} may either forget the \texttt{1} argument or have this overwritten by the \texttt{2} of the \texttt{add2} declaration. To solve this, we store the \texttt{1} in a continuation, along with a reference to the compiled body of \texttt{add}. Similar is done for \texttt{add2}, so both declarations keep their separate values.
+      \item No progress can be made if the expression to be evaluated is an elimination. For datatypes, the elimination form is a \texttt{case} statement, which requires the expression being tested to be evaluated until it matches one of the cases. For functions, the elimination form is application, which requires the function expression to be evaluated into a $\lambda$ expression.
+      \item 
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{align*}
+          & \langle \mathit{Eval}~(\mathtt{main \{\}})~\{\},\{\},\{\},\{\}, h_{\mathit{init}}, \sigma \rangle \\
+          & \begin{array}{llcl}
+            \mathbf{where} & \sigma & = &
+              \left[ \begin{array}{l}
+                \mathtt{succ} \mapsto (\mathit{Addr}~a_1) \\
+                \mathtt{list} \mapsto (\mathit{Addr}~a_2) \\
+                \mathtt{map} \mapsto (\mathit{Addr}~a_3) \\
+                \mathtt{main} \mapsto (\mathit{Addr}~a_4) \\
+              \end{array} \right] \\
+            \\
+            & h_{\mathit{init}} & = &
+              \left[ \begin{array}{ll}
+                  a_1 \mapsto \{\}~\backslash n~\{x\} \to +\#\{x, 1\#\} & \{\} \\
+                a_2 \mapsto \{\}~\backslash n~\{\} \to \mathbf{let}~\mathit{nil} = \{\}~\backslash n~\{\} \to \mathit{Nil}~\{\}~\mathbf{in}~\mathit{Cons}~\{5\#, \mathit{nil}\} & \{\} \\
+                a_3 \mapsto \{\}~\backslash n~\{f,xs\} \to \ldots & \{\} \\
+                a_4 \mapsto \{\}~\backslash n~\{\} \to \mathit{map}~\{\mathit{succ}, \mathit{list}\} & \{\} \\
+              \end{array} \right]
+            \end{array}
+        \end{align*}
+      \item
+        \begin{align*}
+          & \langle \mathit{ReturnCon}~\mathtt{Cons}~\{a_6,a_{7}\},\{\},\{\},\{\}, h, \sigma \rangle \\
+          & \begin{array}{llcl}
+            \mathbf{where} & \sigma & = &
+              \left[ \begin{array}{l}
+                \mathtt{succ} \mapsto (\mathit{Addr}~a_1) \\
+                \mathtt{list} \mapsto (\mathit{Addr}~a_2) \\
+                \mathtt{map} \mapsto (\mathit{Addr}~a_3) \\
+                \mathtt{main} \mapsto (\mathit{Addr}~a_4) \\
+              \end{array} \right] \\
+            \\
+            & h & = &
+              \left[ \begin{array}{ll}
+                a_1 \mapsto \{\}~\backslash n~\{x\} \to +\#\{x, 1\#\} & \{\} \\
+                a_2 \mapsto \{\}~\backslash n~\{\} \to \mathbf{let}~\mathit{nil} = \{\}~\backslash n~\{\} \to \mathit{Nil}~\{\}~\mathbf{in}~\mathit{Cons}~\{5\#, \mathit{nil}\} & \{\} \\
+                a_3 \mapsto \{\}~\backslash n~\{f,xs\} \to \ldots & \{\} \\
+                a_4 \mapsto \{\}~\backslash n~\{\} \to \mathit{map}~\{\mathit{succ}, \mathit{list}\} & \{\} \\
+                a_5 \mapsto \{\}~\backslash n~\{\} \to \mathit{Nil}~\{\} & \{\} \\
+                a_6 \mapsto \{f,y\}~\backslash u~\{\} \to f~\{y\} & \{a_1,5\} \\
+                a_7 \mapsto \{f,ys\}~\backslash u~\{\} \to \mathit{map}~\{f,ys\} & \{a_1,a_5\} \\
+              \end{array} \right]
+            \end{array}
+        \end{align*}
+
+        The language is lazily evaluated, so not a lot has been done.
+    \end{enumerate}
+\end{enumerate}
+
+\section*{Practical exercises}
+See the commit history of \url{https://github.com/laMudri/compconstr-code}.
+
+\end{document}

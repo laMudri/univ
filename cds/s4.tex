@@ -1,0 +1,76 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{siunitx}
+
+\begin{document}
+\title{Distributed systems -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\section{Non-exam questions}
+
+\begin{enumerate}
+  \item Each time a node performs an action (including sending and receiving messages), it increments its own entry in its vector clock. A node sends a copy of its updated vector clock with each message, and receivers, after updating their vector clock in response to the event, update all entries to be the maximum of the value in their vector clock and the value they were sent.
+
+    In the diagram, P2 updates its vector clock to 0100, and sends this to all other nodes. In particular, P3 receives this, so updates its vector clock to 0110, and soon sends this to the other nodes. A causality violation occurs when P4 receives the message from P3 before the message from P2. The P3 message causes P4's vector clock to become 0111, but it then receives 0100, which is strictly less. Hence we know that the messages should be re\"ordered to be interpreted correctly. By contrast, notice that P1's vector clock is 0000, then 1100, then 2110 -- a nondecreasing (and, in fact, strictly increasing) sequence.
+  \item
+    \begin{enumerate}
+      \item The \textit{DNS} is a system which is used on the Internet to retrieve information about domain names, including their associated IP address. The DNS is structured to have a few \textit{root name servers}, then further name servers for specific domains (such as \textit{com} and \textit{bbc.co.uk}). Any of these name servers can either respond to the request directly, giving the IP address required to reach the site, or give the IP address of another name server to respond to their request.
+
+        There are 13 root name servers, operated by 12 different organizations. However, most of these servers are located on multiple sites, giving 504 geographically distinct instances. When making a DNS query, a client will send the initial request to one of the 13 root name servers using anycast delivery. This delivers the request to at least one of the server instances, where any instance of a server should have the same information as any other instance. This redundancy brings fault tolerance and speed benefits.
+      \item I can't find any estimates for either number.
+      \item Queries are split between the 504 root name server instances, which goes some way towards reducing the load on any single server instance. Also, caching of lookup results by clients significantly reduces the work for the root name servers. For example, the vast majority of clients will not look to a root name server for a \textit{.com} name. They will instead go straight to a \textit{.com} name server.
+      \item DNS supports only weak consistency. The designers made the assumption that updates would be rare relative to the amount of queries. To demonstrate this, we can send the same request to different name servers for a name which has recently changed IP address. We may find that the servers give different results.
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item Assuming that, on average, a vehicle will be running for an hour each day, there will be $20 \times 10^6 \times 5 \times 365 \times 60^2$, which is approximately $1.3 \times 10^{14}$, samples.
+      \item Given the number of vehicle IDs, we can send roughly equally sized portions of the samples to each machine by splitting up the ID space into equally sized portions and sending samples in each of these portions to different machines.
+      \item
+        \begin{enumerate}
+          \item The map phase returns, for each sample, the vehicle ID as the key, and the rest of the fields as the value. The reduce phase sorts the data it is given based on timestamp, and calculates the distance travelled by considering pairs of samples with adjacent timestamps and assuming that the vehicle was travelling in a straight line between the given co\"ordinates. This produces a list of 20 million vehicle-distance pairs, which can be handled on a single machine.
+          \item The map phase returns, for each sample, an approximation of the location as the key, and 1 as the value. The reduce phase consists of summing the values for a given key. If the approximation of the location is coarse enough (as it should be to avoid the results being dominated by clusters of locations), the list of locations shouldn't be too long to sort on a single machine.
+          \item The map phase filters out locations not on motorways, and returns the stretch identifier (based on the location) and vehicle ID as the key, and timestamp and precise location as the value. The reduce phase is similar to that from part (i), but produces speeds rather than distances (done simply by dividing by the time quantum) and outputs the maximum, minimum, and average values. For the average values, we also need to remember how many times were used. The resulting lists of values (one list for each of the three statistics) have at most $20 \times 10^6 \times 3600$ (that is, $7.2 \times 10^{10}$) items each, and thus may be big enough to justify another MapReduce pass.
+
+            The second map phase projects away vehicle IDs, and returns stretch IDs as keys and speeds (and number of times used, when calculating average speeds) as values. The second reduce phase, we compute an iterated maximum or minimum or weighted average on the given speeds. This produces the requested lists.
+        \end{enumerate}
+      \item Each sample has \SI{16}{B} of data, giving about \SI{2e15}{B} for the dataset. If we allow each machine to process \SI{1}{TB} of the data in the map phase, we need about 100 machines.
+    \end{enumerate}
+  \item Role-based access control is a policy system specifying what users of a system are allowed to do based on their role. It typically refers to higher level permissions than file system access control, such as being able to perform a specific type of update to a database.
+
+    For example, in a bank, only a few, trusted, employees should have the ability to transfer money between accounts. There should be a role designated for them which allows for such action. On the other hand, it may be the case that more employees are allowed to view some of the details of accounts, in order to help customers.
+\end{enumerate}
+
+\section{2014p5}
+
+\begin{enumerate}
+    \setcounter{enumi}{7}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{enumerate}
+          \item A \textit{capability} is a token of authority owned by a user which allows them to perform some specific action upon the system.
+          \item They must always contain the permission being granted and the role to which the permission is being granted.
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item A user with $k$ can spoof the hash required to perform any action upon the block servers, since they have everything required to compute $f(k,\mathit{ObjId},\mathit{rights})$.
+          \item The block server will have invalidated the capability Alice holds, and when Alice tries to read $O_i$, the block server will respond in a way which signals this.
+          \item The timeout allows capabilities to be invalidated in a predictable manner. It also makes it more difficult to find out the private key, since the function producing the hashes is changing with time, making it more difficult to invert the function experimentally.
+          \item The block servers may disagree on whether a timeout has occurred, hence disagreeing on whether the hash they were provided with is still valid.
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item User \textit{rnw} could start using the system as an anonymous user, giving them the read access they are not supposed to have.
+          \item The root user has the power to allocate any permissions to users, so the malicious user could give themself any permission. The root user also has control over who is allowed to be root, so they could block everyone else out of fixing their changes.
+          \item Mallory can respond to a time request with a time which is in the future. Then, there may be a situation where the client has a cached copy of a file which it believes to be newer than the one on the server, despite the reverse being true.
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}

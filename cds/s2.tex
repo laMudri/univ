@@ -1,0 +1,92 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+\begin{document}
+\title{Concurrent and Distributed Systems -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+\item
+  \begin{enumerate}
+  \item This approach achieves isolation, consistency, and durability. More work is needed to achieve atomicity, which would require storing a history log allowing undoing.
+  \item
+    We give operations a label of the form $nX$, where $n$ is $1$ or $2$ (corresponding to \texttt{T1} and \texttt{T2}), and $X$ is $A$ or $B$ (corresponding to which object is involved in the operation). Also, assume that \texttt{A} has an initial balance $b_A$, and \texttt{B} has an initial balance $b_B$.
+
+    The sequence $[1A,1B,2A,2B]$ will result in \texttt{T1} returning $b_A+b_B$. The sequence $[2A,2B,1A,1B]$ will result in \texttt{T1} returning $(b_A-100)+(b_B+100)$, which is also just the expected $b_A+b_B$. $[1A,2A,1B,2B]$ and $[2A,1A,2B,1B]$ work the same as the previous two, respectively, by commutativity between the middle two operations of each.
+
+    The sequence $[1A,2A,2B,1B]$ will result in \texttt{T1} returning $b_A+(b_B+100)$, so this order is not serializable. Similarly, $[2A,1A,1B,2B]$ will produce $(b_A-100)+b_B$, so this order is also not serializable.
+  \item OCC relies on storing multiple versions of data, so if something goes wrong within a transaction, it should be possible to pick the version from before the problem, thus leaving the database as if the transaction never started. In 2PL, on the other hand, only one copy of the data is available, so fault recovery requires the keeping of an extra log of commands required to undo the current transaction.
+  \item An abortion of $2B$ in the sequence $[2A,1A,2B,1B]$ will cause a cascading abort. \texttt{T1} is trying to read from \texttt{B} after \texttt{T2} tried to write to it. Therefore, if $2B$ fails, \texttt{T1} must also fail. In S2PL, this sequence could not have happened because \texttt{T2} would hold all the locks by virtue of being first. The order would become $[2A,2B,1A,1A]$, which doesn't have the risk of cascading abort.
+  \item If there are multiple object updates in a transaction, the commit will not be atomic if those objects are in different disk sectors. If, for example, there is a power loss between the updating of two objects, one will be correct only after the transaction and the other will be correct only before the transaction. In this, we lose record of the fact that the first object is correct after the transaction, despite having reported the failure.
+  \item
+    \begin{enumerate}
+    \item The logs must be stored in persistent storage, so a smaller log will be more space-efficient.
+    \item A smaller maximum log size means that persists have to be made more regularly over time. This disallows larger bulk writes, possibly losing the chance to combine some of these writes before touching other parts of the persistent storage.
+    \item Recovery time shouldn't be affected, since a recovery consists of maybe one write to persistent storage and maybe changing a transaction's worth of the log file.
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+    \item We get a version of the original problem, that is, in a single commit, some entries are written, then there is a failure leaving the rest unwritten.
+    \item Two writes may occur in an order opposite to the order they occurred in in the log. If the second write happens, but not the first, we will lose the fact that the first write was supposed to happen.
+    \end{enumerate}
+  \end{enumerate}
+
+\item
+  \begin{enumerate}
+  \item We will get the order \texttt{T1.L1, T2.L1, T3.L1}, then be stuck with all three locks being held. The system is in deadlock.
+  \item The transactions go into deadlock and are aborted, only to produce the same situation again. The system is in livelock.
+  \item When deadlock is detected, make all running transactions abort, then run one of them to completion. This will remove any cyclic dependencies, thus allowing for progress.
+  \end{enumerate}
+
+\item
+  \begin{enumerate}
+  \item Using the example from the first question, assume that \texttt{A} and \texttt{B} are at version 0, and start \texttt{T1} at 1 and \texttt{T2} at 2. In the sequence $[2A,1A,2B,1B]$, $2A$ gives \texttt{A} timestamp 2, then $1A$ requires writing to it. The write fails because of \texttt{A}'s new version, and \texttt{T1} has to be aborted and restarted.
+  \item Two transactions could conflict with each other, causing one of them to be aborted. Then, the symmetric case may happen, causing the other to be aborted.
+  \item Both threads try to run this code:
+    \begin{lstlisting}[language=C]
+transaction {
+  a = 0;
+}
+    \end{lstlisting}
+    T0 gets the timestamp 0 and T1 gets the timestamp 1. Then, T1 writes to \texttt{a}, giving \texttt{a} the timestamp 1. When T0 tries to write to \texttt{a}, it fails. With OCC, we can see that any order is serializable, so the transaction succeeds.
+  \item Object validation is complicated because the choice of serialization could affect which objects are accessed. Consider the following:
+    \begin{lstlisting}[language=C]
+transaction T0 {
+  i++;
+}
+
+transaction T1 {
+  return a[i];
+}
+    \end{lstlisting}
+    If each element of \texttt{a} is validated separately, the element to be validated will be different depending on which of \texttt{T0} and \texttt{T1} is hypothetically run in serial first.
+  \item (I don't know. They seem the same to me.)
+  \item
+  \end{enumerate}
+\end{enumerate}
+
+\begin{enumerate}
+  \item Mutual exclusion is provided implicitly.
+  \item
+    \begin{itemize}
+      \item Conditional critical regions can have interacting code anywhere, but with monitors, interacting code must be grouped together with the monitor's definition.
+      \item Monitors have explicit condition variables, whereas CCRs can rely on arbitrary conditions.
+    \end{itemize}
+  \item
+    \begin{enumerate}
+      \item This may cause contention over the monitor.
+      \item
+      \item
+    \end{enumerate}
+  \item Signal-and-wait ensures that the condition required holds when control is transferred by switching directly to a new thread on signal. In contrast, signal-and-continue uses the OS scheduler, so there may be actions performed between the signal and the resumption of execution, possibly causing the condition to not hold. Signal-and-continue is easier to implement because it is mostly handled by the existing scheduler.
+  \item
+    \begin{enumerate}
+      \item Lines 11 and 20 should appear above their respective \texttt{if} blocks so that they are correct (with respect to the state of the buffer) when \texttt{signal} is called. This will also require modifying the \texttt{if} conditions (giving \texttt{in - out == 1} and \texttt{in - out == N - 1}, respectively).
+      \item The \texttt{if} blocks at lines 6 and 15 should be made into \texttt{while} blocks. This is because the required condition may not hold when the program resumes from the \texttt{wait} calls, because of the semantics of signal-and-continue.
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}

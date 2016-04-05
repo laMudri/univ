@@ -1,0 +1,77 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+\begin{document}
+\title{Computer Design -- supervision 4}
+\author{James Wood}
+\maketitle
+
+\section{Lecture 13}
+\begin{enumerate}
+  \item A modern SoC will contain processors, memory, busses (or network components), and interfaces to peripherals.
+  \item For commercially viable processors, there is an approximately inverse relation between programmability and efficiency. It saves time and power to use specific-purpose processors where possible.
+\setcounter{enumi}{4}
+  \item If the processors still share work equally, there is no speed up, since we have to wait for the slow processors. If work can be distributed ideally, we get a speed up of ${1 \over 4} + {1 \over 4} + {10 \over 4} + {10 \over 4}$, which is $5+{1 \over 2}$.
+  \item
+    \begin{enumerate}
+      \item $1.25 \times 0.5 + 0.3 + 0.2 = 1.125$
+      \item $0.5 + 0.3 + 2.5 \times 0.2 = 1.3$
+      \item $0.5 + 1.2 \times 0.3 + 1.33 \times 0.2 = 1.126$
+    \end{enumerate}
+    Option (b) gives the greatest speed up.
+\end{enumerate}
+
+\section{Lecture 14}
+\begin{enumerate}
+  \item Program threads should be able to communicate, and having shared memory is the conceptually simplest way to give this ability. This allows for a global state, rather than each thread having to reconstruct what state it needs.
+  \item Having a single-level shared cache is good when there are few cores. It allows all of the cores to communicate changes to state at good speed, whilst still preferring not to share immediately. Multiple shared caches are good when there are many cores, but specific groups of cores may communicate between the members more than with non-members. Multiple private caches are useful when cores aren't likely to be sharing much state, and it makes sense to optimize the performance of single cores.
+  \item \texttt{BusRdX} is used when the value being read is soon to be modified, so cached values of it should be invalidated in advance.
+  \item
+    \begin{enumerate}
+      \item Send a \texttt{Flush} message, setting the cached value of \texttt{X} in shared memory. Mark \texttt{X} as shared.
+      \item Give the value of \texttt{X} cached.
+      \item Remove \texttt{X} from the local cache.
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item $100 + 10 + 1 + 10 = 121$
+      \item $100 + 1 + 10 + 1 = 112$
+      \item $100 + 1 + 10 + 1 = 112$
+    \end{enumerate}
+    Reads after writes on a different core are relatively expensive, so this is not a good way to implement message passing.
+\end{enumerate}
+
+\section{Lecture 15}
+\begin{enumerate}
+\setcounter{enumi}{1}
+  \item The source register is used to record whether the store happened.
+  \item With a lock with address \texttt{r1} and free register \texttt{r3}:
+    \begin{lstlisting}
+lock:
+  mov r3, #1
+  xchg r3, 0(r1)
+  bnez r3, lock
+  membar
+  ret
+
+unlock:
+  membar
+  mov r3, #0
+  st r3, 0(r1)
+    \end{lstlisting}
+\setcounter{enumi}{5}
+  \item A memory barrier ensures that all memory accesses requested by the CPU occur before memory accesses requested after it. This is required because details like caching may cause a later-requested memory access to occur before an earlier-requested operation.
+  \item If the memory barriers didn't occur immediately within the locked phase, some memory transactions could occur without the lock being in place. This is what having a lock was meant to avoid.
+\end{enumerate}
+
+\section{Lecture 16}
+\begin{enumerate}
+  \item With SIMD execution, each instruction fetched is applied in multiple cores to multiple data. This saves on power, since only one fetch and decode is needed, whereas with SISD execution, there would need to be a fetch for each datum processed.
+  \item New processors need only handle execution, memory access, and branching (if branching is allowed). All processors share fetch and decode stages. There should also be new local caches for the processors, possibly with shared caches.
+  \item 
+  \item Many branching situations are instead handled by conditional execution. Typically, when a processor tries to execute a command for which the associated condition fails, it will wait idle for a cycle. This means that GPU code should have no complex branching (like loops), and limited simple branching. For example, if items at even indices are to be treated differently to items at odd indices, the two groups of items should have completely separate loops. Any instructions not executed in a particular iteration still have to be waited for in that iteration, so there should be as few such instructions as possible.
+\end{enumerate}
+
+\end{document}

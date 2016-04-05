@@ -1,0 +1,60 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+\begin{document}
+\title{C/C++ -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\section{Lecture 4}
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item \texttt{i = 1}.
+      \item \texttt{i} is compiler-defined. Usually, a value of 4 or 8 is used.
+      \item As before, 4 or 8.
+      \item \texttt{i = 5} because b is declared as an array containing 5 items of size 1.
+      \item \texttt{i} is the size of pointers, as defined by the compiler (usually based on the size of addresses on the machine). This is 4 for a 32-bit compiler and 8 for a 64-bit compiler.
+      \item \texttt{i >= sizeof(int) + sizeof(char)}, but ultimately determined by the compiler. Often, structs are padded out so that they align well when put in an array.
+      \item \texttt{i} is the size of a pointer, since the size of array parameters is ignored and they are just considered to be pointers.
+      \item Similarly, \texttt{i} is the size of a pointer.
+    \end{enumerate}
+  \item \lstinputlisting[language=C]{heap.c}
+  \item A complete heap can be implemented as an array, with the head being at position $0$ and node $n$'s immediate children being at positions $2 \cdot n + 1$ and $2 \cdot n + 2$. Then, we can use an algorithm that re\"arranges the given array into a heap in $O~(n)$ time.
+\end{enumerate}
+
+\section{Lecture 5}
+\begin{enumerate}
+  \item \lstinputlisting[language=C++]{linkList.cpp}
+\end{enumerate}
+
+\section{2013 -- Paper 3 -- Question 3}
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item On the legacy processor, the struct is being stored packed, meaning that it only takes up the mininum of 5 bytes (4 for \texttt{val}, 1 for \texttt{flags}). On the other systems, the struct gets padded. The first system has 32-bit longs, and 4-byte alignment. The second system has 64-bit longs with the same padding. The third system has 64-bit longs with 8-byte alignment. \texttt{sizeof(struct Elem)} is 5, 8, 12, and 16, respectively.
+      \item Firstly, we have to assume that the legacy processor stores signed longs in big-endian order. Then, we can do the following:
+        \begin{lstlisting}[language=C]
+char u[5 * NITEMS];
+fread(file, 1, sizeof(u), u);
+size_t i;
+struct Elem v[NITEMS];
+for (i = 0; i < NITEMS; i++) {
+  v[i].val = (signed long)u[0] << 24 + (signed long)u[1] << 16 +
+             (signed long)u[2] <<  8 + (signed long)u[3];
+  v[i].flags = u[4];
+  u += 5;
+}
+        \end{lstlisting}
+    \end{enumerate}
+\end{enumerate}
+
+\section{2010 -- Paper 3 -- Question 6}
+\begin{enumerate}
+  \item \lstinputlisting[language=C]{dll.c}
+  \item
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,97 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{siunitx}
+
+\begin{document}
+\title{Distributed systems -- supervision 1}
+\author{James Wood}
+\maketitle
+
+\section{Non-exam questions}
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{enumerate}
+          \item Data being transmitted must be in big-endian order.
+          \item Most modern computers store numbers in little-endian byte order. This means that they must convert between big-endian and little-endian order whenever providing or receiving arguments or results. The problem can be partially avoided by converting numbers only when it becomes necessary (e.g, when they are added together).
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item A stateless server stores no information about its clients unless they are performing a transaction. For a distributed file server, this means that files aren't locked between transactions, and there is no notion for the clients of a file being open. In practice, this means that clients make a local copy of the file they want to work with, then push it back to the server when finished (possibly checking for conflicting edits).
+          \item An RPC is idempotent if calling the procedure multiple times has the same effect on the state of the system as calling it just once. This is useful, because it allows us to use at-least-once semantics for message passing.
+          \item \texttt{READDIRPLUS} gets all the attributes and handles of files in a given directory. This helps the performance of \texttt{ls}, since without \texttt{READDIRPLUS} it had to get information about each file with one transaction per file.
+          \item Implementing only close-to-open consistency, rather than ensuring that every \texttt{write} has a globally visible effect, means that there are less synchronous RPCs happening. This means that the system can operate more concurrently. Also, close-to-open consistency allows for caching on client machines (without fear of writing back after some other \texttt{write} has occurred), which reduces the time taken waiting for data transmitted over the network.
+          \item I guess it's something to do with changing the permissions of the file while it's open.
+        \end{enumerate}
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{enumerate}
+          \item
+            \begin{itemize}
+              \item Remote procedure call is unidirectional, because it is based around one machine invoking a procedure on another machine, and is thus controlled by the calling machine.
+              \item Object-oriented middleware is based on one machine having references to objects on other machines, so is unidirectional.
+              \item Message-oriented middleware is bidirectional, because it requires machines at both ends to send messages between each other.
+              \item Event-based middleware is unidirectional, being controlled by the machines on which events are fired.
+            \end{itemize}
+          \item From the perspective of the machine making RMIs, RPC can express any program expressable on that machine. Similar holds for OOM, where programs are expressed for the machine which holds references to objects. MOM is different, in that the whole system must be programmed to perform the required algorithm, and this means that the algorithm will be expressed very differently from what it could be on a single machine. EBM does not have sufficient expressive power for programming, and has more specialized uses.
+          \item I don't think I understand what the question is asking.
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item With totally ordered message delivery, we can decide for each pair of events which happened first. This is not possible in general for distributed systems. With causally ordered message passing, we get a partial ordering on events, which is the transitive closure of what orderings we can deduce because the events happened on the same machine or the events are the sending and receiving of a message.
+          \item Vector clocks provide causal ordering.
+          \item If a message is lost, the sender will update its clock assuming that the receiver has an updated time. However, the receiver will not have an updated time, so the system will be in an inconsistent state.
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item Stateful storage servers can provide facilities for locking, which avoids one client overwriting the work of another due to concurrent writes. A stateless storage server is more tolerant to its own failure and the failure of any clients it could have been connected to, since, clearly, it will never enter an invalid state.
+          \item The server would be unlikely to fail, given its relatively small size, but write conflicts would be a major issue. Hence, it would be better to have a stateful server implementing locking.
+        \end{enumerate}
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item Physical clocks always have some inaccuracy, and this inaccuracy will be different for every clock. Also, relativistic effects may be noticeable -- for example, when dealing with satellites. A clock syncronization algorithm should reduce the discrepancy (skew) between the clocks in the system without introducing large jumps. This generally means speeding up or slowing down a clock until it is close enough to the reference clock.
+      \item If the clock is immediately set to 10:27:50, things relying on the clock's readings to decide order of events may get anomalous information. To correct the problem in 8 seconds, the clock should be run at half speed for those 8 seconds. This makes sure that the clock is still progressing, but it reaches the correct time again.
+      \item
+        \begin{enumerate}
+          \item The message can be ignored if $T - T' \leq \SI{50}{ms}$.
+          \item Fitting with the last answer, the message timestamp need only be kept until it is possible for another message to be received such that their timestamps are \SI{50}{ms} apart. Taking clock skew into account (which may have altered between messages by adjustments to clocks), the timestamp should be kept until the local clock reads a time \SI{250}{ms} greater than the timestamp in question. That is, when the local clock reads $175 250$.
+          \item If the clocks are internally synchronized, the previous answer can be reduced to $175 150$, since the difference between clock readings is at most \SI{100}{ms}, rather than \SI{200}{ms}.
+        \end{enumerate}
+      \item The last time received should be the basis of the client's clock time, since this comes from a message that has just been received. Then, we assume that the server recorded that time \SI{10}{ms} ago (half of the round-trip time), and set the clock to 10:54:28.352. This is accurate to within \SI{\pm 10}{ms}. If the time between sending and receiving a message is known to be at least \SI{8}{ms}, the accuracy becomes \SI{\pm 2}{ms}.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2014p5}
+
+\begin{enumerate}
+    \setcounter{enumi}{6}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{enumerate}
+          \item \textit{Clock skew} is the difference between the readings of two clocks. \textit{Clock drift} is the rate at which the skew is changing.
+          \item There is approximately no clock skew, because the time yielded by the server is at the midpoint of the client send and receive times. There is \SI{\pm 0.05}{s} error in this estimate.
+          \item We can use Cristian's algorithm at multiple different times, recording the clock skew and reported time each time. We can get an estimate of the drift using linear regression, and correct this by correcting for the last measured skew and then changing the rate of the clock to compensate for the drift.
+        \end{enumerate}
+      \item
+        \begin{enumerate}
+          \item If the client time is earlier than the server time, object files may have to be rebuilt unnecessarily. If the client time is later than the server time, the object files may have a later timestamp than the source files, despite the source files having been modified. This would lead to them not being built when they needed to be.
+          \item If there is drift between the clocks, the synchronization needs to be done frequently, and there could be times with high skew. If the network connection is sometimes slow, the synchronization will be inaccurate.
+          \item With Lamport clocks, we cannot deduce a happens-before relation from comparing timestamps. $s < o$ gives us only the fact that the object file was not written strictly before the source file. The previous writes could have happened concurrently, in which case the object file should be overwritten, because it must have been built from an old version of the source file.
+          \item Vector clocks give us the strong clock consistency condition, so we can deduce that the write to the source file happened before the write to the object file, and thus the object file need not be rebuilt.
+          \item In this case, the last writes to the source and object files happened concurrently. If an object file is built from a source file and then nothing else happens, we'll be able to deduce that the write to the source file happened before the write to the object file. This means that the object file we are considering was built from an older version of the source file, so should be rebuilt.
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}

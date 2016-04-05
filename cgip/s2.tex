@@ -1,0 +1,111 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+\lstset
+{language=Haskell
+,basicstyle=\footnotesize
+,extendedchars=true
+,literate={é}{{\'e}}1
+,frame=single
+}
+
+\begin{document}
+\title{Computer Graphics and Image Processing -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item Using matrices allows us to compose transformations quickly, via matrix multiplication. This can be used to optimize the application of a set sequence of transformations.
+    Homogeneous co\"ordinates are used to allow for more transformations than can be achieved with a simple Cartesian co\"ordinate system. Notably, translation can be encoded as an $n+1$-dimensional shear.
+  \item See scanned page.
+  \item
+    Suppose that the B\'ezier curves to be joined have functions $P$ and $Q$. Furthermore, \[
+      P(t) = (1-t)^3 \cdot P_0 + 3 \cdot t \cdot (1-t)^2 \cdot P_1 + 3 \cdot t^2 \cdot (1-t) \cdot P_2 + t^3 \cdot P_3
+    \], and $Q$ is defined similarly. We are trying to achieve continuity between $P$ at $1$ and $Q$ at $0$.
+    \begin{enumerate}
+      \item $C_0$ continuity requires only that the curves join to one-another, i.e, $P(1) = Q(0)$. $P(1) = P_3$ and $Q(0) = Q_0$, so we require only
+        \begin{equation}
+          P_3 = Q_0. \tag{PQ0}
+        \end{equation}
+      \item
+        $C_1$ continuity further requires that the derivatives of $P$ and $Q$ are equal where they are supposed to meet, i.e, $P'(1) = Q'(0)$. We have
+        \begin{align*}
+          P'(t) =& {} - 3 \cdot (1-t)^2 \cdot P_0
+          \\
+          & {} + 3 \cdot ((1-t)^2 - 2 \cdot t \cdot (1-t)) \cdot P_1
+          \\
+          & {} + 3 \cdot (2 \cdot t \cdot (1-t) - t^2) \cdot P_2
+          \\
+          & {} + 3 \cdot t^2 \cdot P_3
+        \end{align*}
+        or equivalently
+        \begin{align*}
+          P'(t) = 3 \cdot (& {} - (1-t)^2 \cdot P_0
+          \\
+          & {} + ((1-t)^2 - 2 \cdot t \cdot (1-t)) \cdot P_1
+          \\
+          & {} + (2 \cdot t \cdot (1-t) - t^2) \cdot P_2
+          \\
+          & {} + t^2 \cdot P_3).
+        \end{align*}
+        Similar holds for $Q$. The new requirement simplifies as follows:
+        \begin{align*}
+          P'(1) &= Q'(0)
+          \\
+          3 \cdot (-P_2 + P_3) &= 3 \cdot (-Q_0 + Q_1)
+          \\
+          P_3 - P_2 &= Q_1 - Q_0 \tag{PQ1}
+        \end{align*}
+      \item
+        $C_2$ continuity requires also that $P''(1) = Q''(0)$. Building upon the previous working, we have
+        \begin{align*}
+          P'(t) = 3 \cdot (& \phantom{{}+{}} 2 \cdot (1-t) \cdot P_0
+          \\
+          & {} + (-2 \cdot (1-t) - 2 \cdot ((1-t) - t)) \cdot P_1
+          \\
+          & {} + (2 \cdot ((1-t) - t) - 2 \cdot t) \cdot P_2
+          \\
+          & {} + 2 \cdot t \cdot P_3)
+        \end{align*}
+        or equivalently
+        \begin{align*}
+          P'(t) = 6 \cdot (& \phantom{{}+{}} (1-t) \cdot P_0
+          \\
+          & {} + (-2 \cdot (1-t) + t) \cdot P_1
+          \\
+          & {} + ((1-t) - 2 \cdot t) \cdot P_2
+          \\
+          & {} + t \cdot P_3).
+        \end{align*}
+        Again, we simplify the new requirement:
+        \begin{align*}
+          P''(1) &= Q''(0)
+          \\
+          6 \cdot (P_1 - 2 \cdot P_2 + P_3) &= 6 \cdot (Q_0 - 2 \cdot Q_1 + Q_2)
+          \\
+          P_1 - 2 \cdot P_2 + P_3 &= Q_0 - 2 \cdot Q_1 + Q_2 \tag{PQ2}
+        \end{align*}
+        If we introduce a third curve, $R$, we will get the following requirements for it to have $C_2$ continuity where it meets $Q$:
+        \begin{align*}
+          Q_3 &= R_0 \tag{QR0}
+          \\
+          Q_3 - Q_2 &= R_1 - R_0 \tag{QR1}
+          \\
+          Q_1 - 2 \cdot Q_2 + Q_3 &= R_0 - 2 \cdot R_1 + R_2 \tag{QR2}
+        \end{align*}
+        Both PQ2 and QR2 put restrictions on $Q_1$ and $Q_2$. This means that fixing the join between $P$ and $Q$ requires us to consider the join between $Q$ and $R$.
+    \end{enumerate}
+    \par
+  \item
+    \lstinputlisting{S2.hs}
+    \includegraphics{S2.png}
+    \centering
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,157 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{mathpartir}
+\usepackage{txfonts}
+
+\newcommand{\parto}{\rightharpoonup}
+
+\begin{document}
+\title{Computation Theory -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}[label=\arabic*.]
+        \setcounter{enumii}{8}
+      \item
+        A triple $(x, y, z)$ can be coded as $\langle x, \langle y, z \rangle \rangle$, using the pairing function $\langle \_, \_ \rangle$ from the notes. Lists of these can be made in the standard way for making lists of natural numbers. In checking whether such a list $L$ is suitable, we check all of the conditions of suitability on each element of $L$. (i) is trivial to check, and (ii) just requires a lookup into $L$. For (iii), we search $L$ for suitable $(x + 1, y, u)$ triples, then use any $u$ obtained in searching for $(x, u, z)$.
+
+        Instead of this just being a binary decision procedure, we can get from it an explanation of any failure. If (i) fails, we can never have a suitable list by adding to this list, so abort the process. If (ii) fails, we report that $(x, 1, z)$ is missing. If the first part of (iii) fails, we report that $(x + 1, y)$ is missing, and if the second part fails, we have a $u$ value and report that $(x, u, z)$ is missing.
+
+        To drive the process of finding $\mathit{ack}(x, y)$, we first check whether $x = 0$, in which case the answer is obvious, and we add the relevant triple to our working list. Otherwise, if we are trying to find $\mathit{ack}(x + 1, 0)$, we instead compute $\mathit{ack}(x, 1)$, and add $(x + 1, 0, \mathit{ack}(x, 1))$ to the working list used in computing $\mathit{ack}(x, 1)$. Finally, in trying to compute $\mathit{ack}(x + 1, y + 1)$, we compute $\mathit{ack}(x + 1, y)$, taking back its working list and adding in the new triple $(x + 1, y, \mathit{ack}(x + 1, y))$. This is the starting list, in which we search for a member of the form $(x, \mathit{ack}(x + 1, y), z)$, for some $z$. We do this by iterating through possible $z$ values (starting at $0$) and trying to prove that there is a suitable list containing $(x, \mathit{ack}(x + 1, y), z)$. If there is, $z$ is the result. Otherwise, we try the next $z$. The proving process involves adding into the working list any triples we deem missing, and failing at a failure of condition (i).
+      \item
+        \begin{enumerate}
+          \item We proceed by induction on $y$. First, note
+            \begin{align*}
+              g_{n+1}(0)
+              & = g_n(1) && \text{by }\mathit{ack}(n+1, 0) := \mathit{ack}(n, 1)
+              \\
+              & = g_n^{(0+1)}(1) && \text{because }f^{(1)} = f,
+            \end{align*}
+            so the base case is true. For the step case, we have the following.
+            \begin{align*}
+              g_{n+1}(y+1)
+              & = g_n(g_{n+1}(y)) && \text{by }\mathit{ack}(n+1, y+1) := \mathit{ack}(n, \mathit{ack}(n+1, y))
+              \\
+              & = g_n(g_n^{(y+1)}(1)) && \text{by the inductive hypothesis}
+              \\
+              & = g_n^{((y+1)+1)}(1) && \text{because }f(f^a(x)) = f^{a+1}(x)
+            \end{align*}
+          \item We have that $g_0(y) = y+1$, so $g_0$ is clearly primitive recursive. Then, given that $g_n$ is primitive recursive for some $n$, we see that $g_{n+1}(y) = g_n(g_n^y(1))$. We can then write $g_{n+1} = g_n \circ \rho^1(\mathtt{succ} \circ \mathtt{zero}^1, g_n \circ \mathtt{proj}_3^3)$. Thus, for each $n$, $g_n$ is primitive recursive.
+          \item For each $n$, $g_n$ is total. Furthermore, the definition of $g_{n+1}$ relies only on the definition of $g_n$, and thus is finite. By the fact that $\mathit{ack}(n, y) = g_n(y)$, $\mathit{ack}$ must also be totally defined.
+        \end{enumerate}
+      \item First, note that $\mathrm{ack}~0 \twoheadrightarrow \mathrm{Succ}$, so this function satisfies $\mathit{ack}(0, y) := y + 1$.
+
+        Then, assume that $\mathrm{ack}~\underline m$ is correct and consider $\mathrm{ack}~\underline{m+1}~\underline 0$. We have that \[\mathrm{ack}~\underline{m+1}~\underline 0 \twoheadrightarrow \underline m~(\lambda f~y.y~f~(f~\underline 1))~\mathrm{Succ}~\underline 1\] by computation, and also $\mathrm{ack}~\underline m \twoheadrightarrow m~(\lambda f~y.y~f~(f~\underline 1))$. These give us that $\mathrm{ack}~\underline{m+1}~\underline 0 =_\beta \mathrm{ack}~\underline m~\underline 1$, satisfying $\mathit{ack}(x + 1, 0) := \mathit{ack}(x, 1)$.
+
+        From the previous two sections, we can take as correct $\mathrm{ack}~\underline 0$ and $\lambda x.\mathrm{ack}~x~\underline 0$. For inductive hypotheses, we can take as correct $\mathrm{ack}~\underline m$ and $\lambda x.\mathrm{ack}~x~\underline n$, and prove correct $\mathrm{ack}~\underline{m+1}~\underline{n+1}$. Evaluating this gives us \[\underline m~(\lambda f~y.y~f~(f~\underline 1))~\mathrm{Succ}~(\underline n~(\underline m~(\lambda f~y.y~f~(f~\underline 1))~\mathrm{Succ})~(\underline m~(\lambda f~y.y~f~(f~\underline 1))~\mathrm{Succ}~\underline 1)).\] $\mathrm{ack}~\underline m~(\mathrm{ack}~(\mathrm{Succ}~\underline m)~\underline n)$ also reduces to this. From the inductive hypotheses, we know in particular that $\mathrm{ack}~(\mathrm{Succ}~\underline m)~\underline n$ and $\mathrm{ack}~\underline m~r$, where $r$ is the Church numeral for $\mathit{ack}(m + 1, n)$, are correct, so $\mathrm{ack}$ does indeed satisfy $\mathit{ack}(m + 1, n + 1) := \mathit{ack}(m, \mathit{ack}(m + 1, n))$.
+      \item
+        For the base case, $\underline 0~\mathrm I = (\lambda f~x.x)~\mathrm I \to \lambda x.x = \mathrm I$. Then, assuming that $\underline n~\mathrm I \twoheadrightarrow \mathrm I$, we consider $\mathrm{Succ}~\underline n~\mathrm I$.
+        \begin{align*}
+          \mathrm{Succ}~\underline n~\mathrm I & = (\lambda n~f~x.f~(n~f~x))~\underline n~\mathrm I
+          \\
+          & \twoheadrightarrow \lambda x.\mathrm I~(\underline n~\mathrm I~x)
+          \\
+          & \rightarrow \lambda x.\underline n~\mathrm I~x
+          \\
+          & \twoheadrightarrow \lambda x.\mathrm I~x && \text{by the induction hypothesis}
+          \\
+          & \rightarrow \lambda x.x
+          \\
+          & = \mathrm I
+        \end{align*}
+        Thus, for all $n$, $\underline n~\mathrm I \twoheadrightarrow \mathrm I$, as required.
+
+        By the assumption that $g \in \mathbb N \rightharpoonup \mathbb N$, $g~x$ reduces to some Church numeral $\underline n$. As shown before, $\underline n~\mathrm I \twoheadrightarrow \mathrm I$, so $\lambda f~g~x.g~x~\mathrm I~(f~(g~x)) \twoheadrightarrow \lambda f~g~x.\mathrm I~(f~(g~x)) \rightarrow \lambda f~g~x.f~(g~x)$. Therefore, $\mathrm B~F~G~x \twoheadrightarrow F~(G~x)$, as required.
+    \end{enumerate}
+  \item
+    We can deduce that $\lambda$ calculus terms are $\alpha$ convertible using the following rules.
+    \begin{mathpar}
+      \inferrule*[right=$\alpha$-var]{ }{x =_\alpha x}
+      \and
+      \inferrule*[right=$\alpha$-app]{M =_\alpha M' \\ N =_\alpha N'}{M~N =_\alpha M'~N'}
+      \and
+      \inferrule*[right=$\alpha$-lam]{M[y/x] =_\alpha N}{\lambda x.M =_\alpha \lambda y.N}
+    \end{mathpar}
+    The substitution operator is defined as follows (assuming that $y \neq x$ throughout).
+    \begin{align*}
+      x[L/x] & := L
+      \\
+      y[L/x] & := y
+      \\
+      (M~N)[L/x] & := M[L/x]~N[L/x]
+      \\
+      (\lambda x.M)[L/x] & := \lambda x.M
+      \\
+      (\lambda y.M)[L/x] & := \lambda y.M[L/x]
+    \end{align*}
+    $\alpha$ equivalence allows us to ignore what specific names we give to bound variables. For example, $\lambda x.x =_\alpha \lambda y.y$. We usually work up to $\alpha$ equivalence, and necessarily do so when working with de Bruijn indices or similar.
+
+    $\beta$ equivalence is defined via the $\beta$ reduction relation.
+    \begin{mathpar}
+      \inferrule*[right=$\beta$-app]{ }{(\lambda x.M)~N \rightsquigarrow M[N/x]}
+      \and
+      \inferrule*[right=$\beta$-app-l]{M \rightsquigarrow M'}{M~N \rightsquigarrow M'~N}
+      \and
+      \inferrule*[right=$\beta$-app-r]{N \rightsquigarrow N'}{M~N \rightsquigarrow M~N'}
+      \and
+      \inferrule*[right=$\beta$-lam]{M \rightsquigarrow M'}{\lambda x.M \rightsquigarrow \lambda x.M'}
+      \and
+      \inferrule*[right=$\beta$-lam]{N =_\alpha M \\ M \rightsquigarrow M' \\ M' =_\alpha N'}{N \rightsquigarrow N'}
+    \end{mathpar}
+    We then define $\beta$ equivalence to be the reflexive-symmetric-transitive closure of $\beta$ reduction.
+
+    $\beta$ reduction is a formalization of evaluation. Two terms are $\beta$ equivalent if they evaluate to the same term.
+  \item Reflexivity of $=_\alpha$ comes about by recursing over the structure of the given $\lambda$ term and inserting trivial substitutions (of the form $[x/x]$) where necessary.
+
+    For symmetry, we note that $\alpha$-\textsc{var} and $\alpha$-\textsc{app} are symmetric. For $\alpha$-\textsc{lam}, if we have $M[y/x] =_\alpha N$, by inductive hypothesis we have $N =_\alpha M[y/x]$. Also, we can infer $N[x/y] =_\alpha M[y/x][x/y]$. $M[y/x][x/y] = M[x/x] = M$, so we have $N[x/y] = M$ and $\lambda y.N =_\alpha \lambda x.M$, as required.
+
+    For transitivity, we need only consider the cases where the same inference rule is used in each hypothesis, since the sets of terms in their conclusions are disjoint from one another. For $\alpha$-\textsc{var}, transitivity is obvious. For $\alpha$-\textsc{app}, we rely on induction. For $\alpha$-\textsc{lam}, supose that we have $\lambda x.M =_\alpha \lambda y.N$ and $\lambda y.N =_\alpha \lambda z.O$. Therefore, we must have that $M[y/x] =_\alpha N$ and $N[z/y] =_\alpha O$. From the first part we can infer $M[y/x][z/y] =_\alpha N[z/y]$, which is the same as $M[z/x] =_\alpha N[z/y]$. By induction and use of the second part, we have $M[z/x] =_\alpha O$, allowing us to conclude $\lambda x.M =_\alpha \lambda z.O$.
+  \item
+    \begin{mathpar}
+      \inferrule*[right=$\alpha$-lam]
+        {\inferrule*[right=$\alpha$-app]
+          {\inferrule*[right=$\alpha$-lam]
+            {\inferrule*[right=$\alpha$-lam]
+              {\inferrule*[right=$\alpha$-var]
+                { }
+              {x =_\alpha x}}
+            {(\lambda x'.z)[x/z] =_\alpha \lambda x'.x}}
+          {\lambda z~x'.z =_\alpha \lambda x~x'.x}
+          \\
+          \inferrule*[right=$\alpha$-var]
+            { }
+          {x' =_\alpha x'}}
+        {(\lambda z~x'.z)~x' =_\alpha (\lambda x~x'.x)~x'}}
+      {\lambda x.(\lambda x~x'.x)~x' =_\alpha \lambda y.(\lambda x~x'.x)~x'}
+    \end{mathpar}
+  \item Since the substitution operation recurses structurally, it is total. To prove that it is well defined, suppose $N =_\alpha N'$. If this equivalence comes about by $\alpha$-\textsc{var}, either $N = x = N'$, meaning that $N[M/x] = M = N'[M/x]$, or $N[M/x] = N$ and $N'[M/x] = N'$, so $N[M/x] =_\alpha N'[M/x]$. If instead the equivalence comes about by $\alpha$-\textsc{app}, we know by induction that $N[M/x] =_\alpha N'[M/x]$. Finally, in the $\alpha$-\textsc{lam} case, let $N = \lambda y.L$ and $N' = \lambda y'.L'$. We get that $L[y'/y] =_\alpha L'$, and inductively have $L[y'/y][M/x] =_\alpha L'[M/x]$. If $y = x$ and $y' = x$, $N[M/x] = N =_\alpha N' = N'[M/x]$, and we are done. If $y \neq x$, $N[M/x] = \lambda y.L[M/x]$, and similar for $y'$. If $y \neq x$ and $y' \neq x$, we are trying to prove that $L[M/x][y'/y] =_\alpha L'[M/x]$, and are given that $L[y'/y] =_\alpha L'$. We have that $y \# M$, so $L[M/x][y'/y] = L[y'/y][M/x]$ and we can reach the conclusion using the induction hypothesis. If $y = x$ and $y' \neq x$, we are trying to prove $L[y'/x] =_\alpha L'[M/x]$ given $L[y'/x] =_\alpha L'$. Because $x$ is bound throughout $N$, it cannot occur free in $N'$, so $L'[M/x] = L'$. This reduces our required conclusion to what we already have. We can get the final case by symmetry.
+  \item $\underline n$ is the $\lambda$ term representing natural number $n$. $\underline n~f~x$ is the result of iteratively applying $f$ to $x$ $n$ times.
+  \item Curry's fixed point combinator is $\lambda f.(\lambda x.f~(x~x))~(\lambda x.f~(x~x))$. Note:
+    \begin{align*}
+      (\lambda f.(\lambda x.f~(x~x))~(\lambda x.f~(x~x)))~F
+      & \rightsquigarrow (\lambda x.F~(x~x))~(\lambda x.F~(x~x))
+      \\
+      & \rightsquigarrow F~((\lambda x.F~(x~x))~(\lambda x.F~(x~x)))
+      \\
+      & \leftsquigarrow F~((\lambda f.(\lambda x.f~(x~x))~(\lambda x.f~(x~x)))~F)
+    \end{align*}
+    Thus, if we define $Y := \lambda f.(\lambda x.f~(x~x))~(\lambda x.f~(x~x))$, we have that $Y~F =_\beta F~(Y~F)$. This is useful in defining recursive functions, using the pattern that the function is defined by first defining function $F$ taking another function $f$ as its first argument. Wherever we would expect a recursive call in the body of $F$, we instead call $f$. Then, $Y~F$ is our desired function.
+
+    The existence of fixed point combinators makes $\lambda$ calculus unsuitable as a logic. We can have meaningless terms, like $Y~\mathrm{not}$. In a typed $\lambda$ calculus, self application is impossible, so Curry's fixed point combinator cannot be defined. There are type systems which allow the construction of a fixed point combinator $y : \forall A.(A \to A) \to A$, but once this has been constructed, the system is obviously inconsistent.
+  \item
+    Using some of the Church encoding notation introduced in the notes, we can define the following combinator.
+    \[R := \lambda z~g~n.n~(\lambda r.\mathrm{Pair}~(\mathrm{Succ}~(\mathrm{Fst}~r))~(g~r))~(\mathrm{Pair}~\underline 0~z)\]
+
+    The intention of this is that $z$ is the value of the primitive recursive function at $0$, and function $f$ takes a pair comprising the iteration number and the result of the recursive call. Our expected combinator $\rho$, matching up with the conventions from partial recursive functions and taking curried functions, is defined as follows.
+    \[\rho := \lambda f~g~a~n.R~(f~a)~(\lambda r.g~a~(\mathrm{Fst}~r)~(\mathrm{Snd}~r))~n,\]
+    where $a$ is taken to stand for all of the constant arguments.
+\end{enumerate}
+
+\end{document}
