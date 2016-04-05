@@ -1,0 +1,7 @@
+1. Probably wanted `always @(posedge clk)`.
+   `reset` has not been used.
+   Has blocking assignment in always_ff block.
+   output logic [7:0] out_a
+   out_a not assigned to before use
+2. With separate address spaces for data and instructions, it becomes impossible (or at least requires special instructions) to run a program on the computer without it being compiled on another computer. Amongst other things, this disallows JIT compilation.
+3. 10 + Σ i ∈ [0..31]. (9 + 2 * a1[i])

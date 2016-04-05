@@ -1,0 +1,31 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+\title{ECAD ticks}
+\author{James Wood}
+\maketitle
+
+\section*{Tick 1}
+\begin{enumerate}
+  \item
+    \begin{itemize}
+      \item Probably wanted \texttt{always \@(posedge clk)}.
+      \item \texttt{reset} has not been used.
+      \item Has blocking assignment in \texttt{always\_ff} block.
+      \item \texttt{output logic [7:0] out\_a}
+      \item \texttt{out\_a} not assigned to before use.
+    \end{itemize}
+  \item With separate address spaces for data and instructions, it becomes impossible (or at least requires special instructions) to run a program on the computer without it being compiled on another computer. Amongst other things, this disallows JIT compilation.
+  \item $10 + \sum_{i \in [0..31]} \left(9 + 2 \cdot \mathit{a1}_i\right)$
+\end{enumerate}
+
+\section*{Tick 2}
+\begin{enumerate}
+  \item Pin assignments give physical components names accessible to the HDL. This also codifies certain properties of the pins, like endianness.
+  \item The timing analyzer shows that some parts of the circuit can only operate at about 300 MHz. Having a 500 MHz clock would cause timing problems because we are trying to update the state of the system more quickly than it can change.
+  \item The new system wouldn't necessarily have a single shared memory, so the cores would communtcate primarily by passing messages to one another. Also, a multi-core CPU is likely to have several levels of caches, shared amongst various subsets of the available cores. Yarvi has no provision for caches, so we only have one level of memory, which is essentially shared by all the cores (but which is more quickly accessible by different cores for different areas). Sharing amongst 100 cores is difficult, and if an MSI-like protocol is used to share memory, it is likely to be inefficient due to the frequency at which a core invalidates a value. Yarvi also has no cache coherency protocol, making it difficult to keep the local memory as a cache.
+\end{enumerate}
+
+\end{document}
