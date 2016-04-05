@@ -1,0 +1,13 @@
+*.out
+*.log
+*.pdf
+*.o
+*.hi
+workspace/.*
+*scratch*
+*.class
+*.aux
+*.vbox-extpack
+*.ova
+*.agdai
+bin/
