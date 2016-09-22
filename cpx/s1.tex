@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+
+\begin{document}
+\title{Complexity Theory -- supervision 1}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}[label=\arabic{enumii}.]
+      \item Suppose that we are given a graph in which all pairs of vertices have an edge between them. This means that there are $n!$ valid routes through the graph (where $n$ is the number of vertices). By symmetry, any one of these routes could be the optimal route, so the algorithm has to distinguish between $n!$ possible outputs, meaning that there are $n!$ possible paths down the evaluation tree. Hence, the evaluation tree has a height in $\Omega(\log n!)$, or $\Omega(n \cdot \log n)$, and the algorithm takes this long in the worst case.
+      \item We can use the following recursive equations for $T_{S,i}$.
+        \begin{align*}
+          T_{S,i} & =
+          \min_{j \in S}\left(T_{S \setminus \{j\},j} + c(i,j)\right)
+          \\
+          T_{\{j\},i} & = c(v_1,j) + c(j,i)
+        \end{align*}
+        To use this, we aim to compute $T_{V \setminus \{v_1\},v_1}$.
+
+        There are $2^n$ different values of $S$ (by non-deterministic choice on $V$), and $n$ values of $i$. The calculation of each item in the table takes $O(n)$ time, because of the $O(n)$ possible different $j$ values. The product of all of these gives the worst-case time complexity bound $O(n^2 \cdot 2^n)$.
+      \item We can build a Turing machine to run the trial division algorithm. Each iteration requires squaring of the index, comparison of the squared index to the candidate word, trial division, and a test for zero. All of these, plus the necessary walking of the tape, take time polynomial in the input or iteration number. Since the iteration number is always less than the input, the running time of a single iteration is polynomial in the input. Iteration multiplies the time requirements by a polynomial amount, giving a polynomial total run time.
+      \item
+        \begin{enumerate}[label=(\alph{enumiii})]
+          \item $G_\phi$ has at most $2 \cdot n$ vertices (one for each variable, and another for each negated variable), and at most $m$ edges (one for each clause, with each clause distinct in the worst case).
+          \item
+            Implication is transitive, so a path from $x$ to $y$ in $G_\phi$ means that, in any variable assignment satisfying $\phi$, if $x$ holds, $y$ must also hold. However, $x$ and $\neg x$ cannot both hold in the same assignment due to the law of non-contradiction, and they cannot both not hold due to the law of the excluded middle. With both implications holding, these are the only two cases.
+
+            In the other direction, it is easier to prove the contrapositive. After some formal manipulation, this can be expressed as follows, noting decidability of all propositions involved.
+            \[
+              (\forall x. \neg(x \to^* \neg x) \vee \neg(\neg x \to^* x)) \implies \phi\textrm{ is satisfiable,}
+            \]
+            where $x \to^* y$ means that there is a path from $x$ to $y$ in $G_\phi$. Assuming the hypothesis of this implication, for an arbitrary literal $x$, we know that either $x \to^* \neg x$ only, $\neg x \to^* x$ only, or there is no path between $x$ and $\neg x$. Then I got stuck.
+          \item For each variable $x$, start non-deterministically walking the graph from both $x$ and $\neg x$, keeping a set of visited variables for each in order to avoid cycles. I got stuck at this point.
+
+            Each walk has at most $n$ steps. Each of these steps takes $O(\log n)$ to do the set lookup and set insertion. This procedure is done for all $O(n)$ vertices, giving a worst-case time complexity of $n^2 \cdot \log n$.
+          \item 2CNF can be reduced in polynomial time to the graph problem, and the graph problem can be decided in polynomial time, so these compose to give a polynomial time algorithm for deciding 2CNF.
+          \item With three literals in a clause, there is no similar way of connecting them with a single edge.
+        \end{enumerate}
+      \setcounter{enumii}{5}
+      \item
+        \begin{enumerate}[label=(\alph{enumiii})]
+          \item 2-colourability can be decided using a non-backtracking search. Choose a starting vertex, and colour it 1. Then, when at a vertex coloured $i$, follow an edge to an uncoloured vertex, colour it $2 - i$, and check that all connected vertices are coloured $i$. If this process is successful, a 2-colouring has been given; otherwise, it is impossible. This runs in polynomial time because the number of vertices to be checked at each step is bounded by the number of vertices, and so is the number of steps to do.
+          \item To convert a candidate for $k$-colourability into an equivalent candidate for $k+1$-colourability, connect to each vertex to a single new vertex. This new vertex, in any $k+1$-colouring, must have a colour (without loss of generality, $k+1$), and all other vertices must have a different colour (i.e, in $[1 .. k]$). The $k$-colouring of the original graph is the $k+1$-colouring of the new graph, but with the new vertex removed. If there is a $k$-colouring of the original graph, the $k+1$-colouring of the new graph is the $k$-colouring, but with the new vertex having colour $k+1$.
+        \end{enumerate}
+    \end{enumerate}
+  \item A valid input list is assumed to have elements of fixed finite size, so the cost of comparison between elements is constant and atomic. Then, it doesn't matter whether $n$ stands for the number of elements in the list or the length of the low-level (Turing machine tape) representation of the list, because the difference is a constant factor, and has no effect on which complexity class the algorithm is in.
+
+    A Turing machine implementing insertion sort takes, for each element in the list, $O(n)$ time to find the correct place of the element in the list (doing $O(1)$ comparisons at each step), $O(1)$ time writing the new value in, and $O(n)$ time getting back to the start of the list (doing $O(1)$ rewrites at each step). These sum to $O(n)$, and are done $n$ times, giving a worst case time complexity of $O(n^2)$.
+  \item A problem $L$ is NP-hard iff for every problem $A$ in $\mathrm{NP}$, $A \leq_P L$. A problem if NP-complete iff it is NP-hard and in $\mathrm{NP}$.
+  \item Suppose that $f$ is a polynomial-time reduction from $L_1$ to $L_2$, and $g$ is a polynomial-time reduction from $L_2$ to $L_3$. Then, $g \circ f$ is a polynomial-time reduction from $L_1$ to $L_3$. To see this, note that $f$ runs in polynomial time, so its output (a candidate for a word in $L_2$) can only be polynomially larger than its input. $g$ is then run in polynomial time with respect to this new candidate word. Because a composition of polynomials is a polynomial, $g$ runs in polynomial time with respect to the candidate word for $L_1$. These are run sequentially to give us a polynomial-time reduction from $L_1$ to $L_3$, as required.
+
+    The blow-up factor is $q(p(n))$, where $n$ is the length of the candidate word for $L_1$.
+  \item The reduction takes negligible time compared to the exponential time cost of running the SAT solver. Because the instance size is $n^3$, this will take $\Omega(c^{n^3})$ time.
+
+    We know that SAT can indeed be solved in exponential time. This means that $L$ can be decided in $O(d^{n^3})$ time, for some constant $d$.
+\end{enumerate}
+
+\end{document}

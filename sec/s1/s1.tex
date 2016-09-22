@@ -1,0 +1,56 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\begin{document}
+\title{Security I -- supervision 1}
+\author{James Wood -- jdw74}
+\maketitle
+
+\begin{enumerate}
+  \item FORXTHOUGHXIXDOXNOTXASKXFORXAIDXWEXNEEDXIT
+  \item
+    Let $\Sigma$ be the alphabet (with $\lvert \Sigma \rvert = a$) and assume $n = a^m$ for some $m$. To break the cipher, we want to feed it plaintexts indexed by $i \in [0 \mathbin{..} m - 1]$ of the form $\left[x^{a^i} \mid s \in \Sigma\right]^{a^{m-i-1}}$. For example, if $\Sigma = \{0,1\}$ and $m = 3$, the plaintexts are $01010101$, $00110011$, and $00001111$. For each of these, we can list the possible keys which would encipher it to the resultant ciphertext. There should be one key present in all of the lists, and this is the actual key.
+
+    When $n$ is not an exact power of $a$, we take $m = \lceil \log_a n \rceil$ and then truncate the plaintexts accordingly.
+  \item
+    Notice that $\lvert \mathcal M \rvert = \lvert \mathcal K \rvert = \lvert \mathcal C \rvert = 26$. This means that Shannon's theorem is applicable. We were given that each key has a $1/26$ chance of being chosen, and given $M$ and $C$, we have $C = \mathrm{Enc}_{C-M}(M)$, with $C-M$ being unique modulo 26. Hence, the system is unconditionally secure.
+  \item
+    \begin{enumerate}
+      \item By the definition of perfect secrecy, we have that $\mathbb P(M \mid C) = \mathbb P(M)$. We can manipulate this as follows to get the required result.
+        \begin{align*}
+          \mathbb P(M \mid C) & = \mathbb P(M)
+          \\
+          %\mathbb P(M \mid C) \cdot \mathbb P(C)
+          %  & = \mathbb P(M) \cdot \mathbb P(C)
+          \frac{\mathbb P(C \mid M) \cdot \mathbb P(M)}{\mathbb P(C)}
+            & = \mathbb P(M)
+          \\
+          \mathbb P(C \mid M) \cdot \mathbb P(M)
+            & = \mathbb P(M) \cdot \mathbb P(C)
+          \\
+          \mathbb P(C \mid M) & = \mathbb P(C)
+        \end{align*}
+      \item The previous result holds for every message and ciphertext. In particular, we have $\mathbb P(C \mid M_0) = \mathbb P(C)$ and $\mathbb P(C \mid M_1) = \mathbb P(C)$. By symmetry and transitivity of equality, we get the required result.
+    \end{enumerate}
+    \setcounter{enumi}{6}
+  \item
+    To define $P$, take parameter $M$ and split it evenly into $A_0, B_0, C_0 : \{0,1\}^{100}$. We then expand these into sequences as follows.
+    \begin{align*}
+      A_{i+1} := A_i \oplus F(B_i) \quad \textrm{if }i \equiv 0 \pmod 3
+      \\
+      B_{i+1} := B_i \oplus F(C_i) \quad \textrm{if }i \equiv 1 \pmod 3
+      \\
+      C_{i+1} := C_i \oplus F(A_i) \quad \textrm{if }i \equiv 2 \pmod 3
+    \end{align*}
+    The result is $A_r \mathbin{++} B_r \mathbin{++} C_r$ for some $r$ chosen beforehand. The inverse of this permutation is calculated in a similar way to as in the regular Feistel structure, reversing the vertical (between terms in the same sequence) flow of data.
+  \item The notes don't give sufficient detail, but I would expect the ciphertext to be the same because of how XOR behaves.
+  \item Reverse all of the XOR gates, swapping the output for the input which didn't come directly from the logic used to compute the round function.
+\end{enumerate}
+
+I relied on the Enigmail extension for Thunderbird, coupled with putting \texttt{gpg2} in my \texttt{PATH}. That allows encrypting messages, signing messages, and attaching the generated public key to messages. Presumably, that worked.
+
+\end{document}

@@ -1,0 +1,12 @@
+data Nat = Z | S Nat
+
+data U = MkU
+data Pair (A : Type) (B : Type) = MkPair A B
+
+Vec : Type -> Nat -> Type
+Vec A Z = U
+Vec A (S n) = Pair A (Vec A n)
+
+zip : {A B : Type} {n : Nat} -> Vec A n -> Vec B n -> Vec (Pair A B) n
+zip _ _ Z MkU MkU = MkU
+zip _ _ (S n) (MkPair x xs) (MkPair y ys) = MkPair (MkPair x y) (zip xs ys)

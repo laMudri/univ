@@ -1,0 +1,53 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\begin{document}
+\title{Security I -- supervision 3}
+\author{James Wood -- jdw74}
+\maketitle
+
+\section*{Exercise sheet}
+\begin{enumerate}
+    \setcounter{enumi}{15}
+  \item I wanted to answer this, but I can't think of an attack.
+    \setcounter{enumi}{19}
+  \item The code of the trusted computing base of any contemporary operating system is likely to be written in C. This means that the C compiler also has to be part of the TCB, since we trust it to produce other programs in the TCB. For any program in the TCB written in C, what we see in the source code may not match up to the binary files that actually get run due to bugs and Trojan horses that may be placed in the C compiler. Since C compilers are typically written in C, to trust our C compiler we have to verify its source code and trust the compiler which compiled it. A backdoor planted in the old C compiler targeting the new (innocent-looking) C compiler could produce a backdoor in the new C compiler. By induction, we have to trust all compilers which transitively compiled our compiler, right back to the C compiler written in an assembly language (which can be verified against the resultant binary). Doing this whole process is probably infeasible.
+  \item Compromising hardware random number generators so that they become slightly more predictable may cause problems in secure key generation. We may add a condition based on time, so that at some point, the random number generator outputs a number we know (or have a decent probability of guessing) in advance.
+  \item Re\"implement hardware features like encryption algorithms in software, so as to avoid using possibly tampered hardware.
+    \setcounter{enumi}{31}
+  \item
+    The attacker is assuming that if the server receives a request in the \texttt{scripts/} directory, it will be handled by running the file with that path. They also assume that \texttt{scripts/../../winnt/system32/cmd.exe} points to a known command interpreter. In that interpreter, \texttt{/c} is used to run a command, and \texttt{dir C:\textbackslash} lists the contents of the \texttt{C:\textbackslash} directory.
+
+    \texttt{\%255c} encodes an escape sequence (\texttt{\%25}) followed by the ASCII code for the backslash (\texttt{5c}). \texttt{\%u002f} is the Unicode value for the forward slash. I'm not sure what's going on in the last request.
+\end{enumerate}
+
+\section*{Other questions}
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item Secret keys are generated using pseudorandom number generators, so as to ensure that the key being used cannot be predicted by an attacker. A PRNG has a seed parameter, which may be populated by some aspects of the system's state, including current time and memory contents. The latter has the advantage of being very difficult for an attacker to predict, hence ensuring that the key can't be predicted, even with knowledge of the algorithm.
+      \item
+        \begin{itemize}
+          \item Users of an operating system should be allocated completely separate areas of memory, so that one user cannot read information about a (possibly finished) process that a different user was running.
+          \item A hard disk can be encrypted using a key stored on it, and when we want to erase the data on the hard disk, we instead can erase just the key. This can help when a hard disk is to be sold on, because otherwise the buyer may still be able to read the data left on the hard disk.
+        \end{itemize}
+      \item
+        \begin{enumerate}
+          \item The user has write permissions on the parent directory.
+          \item If the sticky bit is set on a directory, any entry within that directory can only be moved or deleted by the owner of the directory, the owner of the entry, or root.
+          \item Make a group containing just the directory owner and the entry owner, and assign this group to the directory with write (and probably read and execute) access.
+        \end{enumerate}
+      \item Without any other information, an adversary to the VS100 needs to check through $10^6$ possible codes. An adversary to the VS110, on the other hand, can find a 5-digit block by checking all $10^5$ values of that block. There are 8 such blocks in a 40-digit code, so $8 \cdot 10^5$ different codes need to be tried in the worst case. In the average case, the $10^6$ and $10^5$ are halved. This means that the VS100 (civilian model) is more secure than the VS110 (government model).
+    \end{enumerate}
+  \item
+    When a security vulnerability is found in some software, an update to it is necessary to protect users. Hence, in the short term, software updates decrease the risk of a successful attack. However, at this point, a successful attack may have already taken place, and the update is just a response to this. It would have been better for the vulnerability to have never existed (and have been verified to not exist). Also, the presence of an update alerts potential crackers that there are still machines around with that particular vulnerability. However, this is more likely to work in reverse, because crackers would get to know anyway and users wouldn't.
+  \item
+    Generate a random string $R$ with the same length as the message $M$, and take $S = R \oplus M$. Then send $\mathrm{Enc}_1(R) \mathbin{||} \mathrm{Enc}_2(S)$. To recover the plaintext, the receiver computes $\mathrm{Dec}_1(C_1) \oplus \mathrm{Dec}_2(C_2)$, where $C_1 \mathbin{||} C_2 = C$. It is easy to check that this is correct.
+    In a chosen plaintext attack, the attacker can reliably guess one half of any ciphertext message, but not the other. However, because the other half is essentially like a secret one-time pad, the half the attacker knows is not helpful in letting the attacker recover the original message.
+\end{enumerate}
+
+\end{document}

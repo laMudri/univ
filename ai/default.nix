@@ -1,12 +1,13 @@
 let
   pkgs = import <nixpkgs> {};
-  inherit (pkgs) stdenv texlive haskellPackages;
+  inherit (pkgs) stdenv texlive;
 
   tex-env = texlive.combine {
-    inherit (texlive) scheme-small geometry bussproofs qtree pict2e;
+    inherit (texlive) scheme-small geometry enumitem;
   };
+
 in stdenv.mkDerivation {
-  name = "cc";
+  name = "ai";
   src = ./.;
   buildInputs = [ tex-env ];
   buildPhase = ''

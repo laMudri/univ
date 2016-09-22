@@ -1,0 +1,71 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+
+\begin{document}
+\title{Complexity Theory -- supervision 3}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}[label=\arabic{enumii}.]
+      \item
+        Suppose that $L$ is in $\textrm{co-NP}$, meaning that there is some non-deterministic machine $N$ that accepts exactly those strings not in $L$. This means that a string $x$ is in $L$ iff all computations of $N$ on $x$ end in a rejecting state. If we modify $N$ by switching accepting and rejecting states, we get a machine with the desired properties.
+
+        Similarly, given $M$ as described in the question, we can swap its accepting and rejecting states to achieve a machine like $N$ as described above.
+      \item
+        Suppose we have strong non-deterministic machine $M$ which decides $L$. To produce a normal non-deterministic machine deciding $L$, change all maybe states to rejecting states. This works because if $x \in L$, there is at least one computation path leading to an accepting state in $M$, and this is mapped to an accepting state in the new machine. If $x \notin L$, all computation paths in $M$ lead to either maybe or reject, and these get mapped to reject in the new machine.
+
+        The non-deterministic machine for deciding $L^c$ is similar. We make the mappings $\textrm{accept} \mapsto \textrm{reject}$, $\textrm{maybe} \mapsto \textrm{reject}$, and $\textrm{reject} \mapsto \textrm{accept}$. This is correct by similar reasoning to the other case.
+      \item We can use the construction given in question 2 below to derive a $\textrm{UP} \setminus \textrm P$ language from a one-way function. Specifically, inputs to the RSA function $f$ are coded as binary numbers all padded to the same length. We can then read these as a single binary number, as required to compare against another number $x$. We can encode other tuples as we usually would, with delimiters, and form the language $\{ (x, y) \mid \exists \langle z, e, p, q \rangle \leq x. f(z, e, p, q) = y \}$.
+        \setcounter{enumii}{7}
+      \item
+        We know that there exists a non-deterministic machine $N$ deciding $L$ in time $f(n)$. To make all computation paths finish in $O(f(n))$, we compute $f(\lvert x \rvert)$ and write the value somewhere on our tape. Then, at each step of simulating $M$ on $x$, we decrement this number. If the number reaches 0, we reject. This is still guaranteed to be correct, since for any string accepted, there will be an accepting computation which finishes before this limit.
+
+        I guess we need a special case for sub-linear $f$ (for example, $f = \log$), as we then cannot compute $f(n)$ in $f(n)$ time. For this to be the case, we would have a machine that can decide membership without looking at the whole input. There are such languages, but I can't think of an argument to cover them.
+      \item
+        Define a language $H_f$ as follows.
+        \begin{align*}
+          H_f = \{ ([M], x) \mid M\textrm{ accepts }x\textrm{ using at most }f(\lvert x \rvert)\textrm{ tape cells} \}
+        \end{align*}
+        Then, we consider $H_f$. Simulating a Turing machine only takes as much space as its tape, except for a constant amount of space for the current state. This means that $H_f \in \textrm{SPACE}(f(n) \cdot \log(f(n)))$, because we try simulating $M$ on $x$, and reject if more than the allotted space is used. However, $H_f \notin \textrm{SPACE}(f(n))$, because if $M$ takes exactly $f(\lvert x \rvert)$ space, it will not fit in the space allotted to the machine due to the constant overhead.
+    \end{enumerate}
+  \item A one-way function is a bijective function which is computable with reasonable resources, but whose inverse is not. ``reasonable resources'' is usually taken to mean ``polynomial time''. In this case, we also require that there is some $k$ such that for any input $x$ of one-way function $f$, $\lvert x \rvert^{1/k} \leq \lvert f(x) \rvert \leq \lvert x \rvert^k$, so that the function and its inverse have any chance of being in $\textrm{FP}$. The existence of one-way functions is equivalent to $\textrm P \neq \textrm{UP}$, where $\textrm{UP}$ is the class of languages accepted by an unambiguous non-deterministic machine in polynomial time. This statement implies $\textrm P \neq \textrm{NP}$, since all deterministic machines can be treated as unambiguous machines and all unambiguous machines can be treated as non-deterministic machines.
+
+    To prove that the existence of a one-way function $f$ implies the existence of a language in $\textrm{UP} \setminus \textrm{P}$, we define language $L$ as follows, taking $x$, $y$, and $z$ to be natural numbers represented in binary, and $f$ a function between binary strings.
+    \begin{align*}
+      L = \{ (x,y) \mid \exists z \leq x. f(z) = y \}
+    \end{align*}
+    This is in $\textrm{UP}$ because we can non-deterministically choose to explore each $z$ less or equal to $x$, compute $f(z)$, and accept iff $f(z) = y$. There will only be at most one such $z$, because $f$ is injective. If it were in $\textrm P$, we could do binary search with fixed $y$ and varying $x$ to find $f^{-1}(y)$. Binary search takes linear time in the maximum possible length of $x$, so the whole procedure can be done in polynomal time. However, this contradicts the fact that $f$ is one-way.
+
+    In the other direction, given a language $L$ in $\textrm{UP} \setminus \textrm{P}$ with machine $M$, we want to create a one-way function $f$. To do this, we define $f(x) = 1y$ if $x$ encodes an accepting computation of $M$ on input string $y$, and $f(x) = 0x$ otherwise. $f(x)$ is easy to compute for any $x$: we can model one path of an unambiguous machine in polynomial time, and $y$ must be encoded somewhere in $x$. Also note that $\lvert x \rvert$ is only polynomially larger than $\lvert y \rvert$, because a computation in $M$ is only polynomially long with respect to the input. We then consider $f^{-1}(1y)$, for which we need to find the accepting computation $x$ in polynomial time. This is as good as checking whether $y \in L$, which we cannot do in polynomial time, so we cannot compute the inverse in polynomial time, as required.
+  \item
+    \begin{enumerate}
+      \item We know that $\log$ is non-decreasing on the real numbers, so $n \mapsto \lceil \log n \rceil$ is non-decreasing on the natural numbers. The machine for computing this function does so by keeping a binary counter in the work space (of size $O(\lceil \log n \rceil)$) and incrementing it by 1 each time a symbol is read from the input. When the counter is of the form $1^k$ and there is still input to be read, the input is consumed and the counter is set to $0^{k+1}$. When the end of the input is reached, for each digit except the first in the counter, write a $0$ to the output.
+
+        The total cost of doing a single binary increment is proportional to the number of bits changed in the process. There are $2^k$ increments to do in incrementing through all binary numbers of length $k$. The least significant bit is affected every time. The second least significant bit is affected half of the time, and the third least significant bit is affected a quarter of the time. This gives us the expression $\sum_{i=0}^{2^k}\frac{2^k}{2^i}$.
+        \begin{align*}
+          \sum_{i=0}^{2^k}\frac{2^k}{2^i} & = 2^k \cdot \sum_{i=0}^{2^k}{2^i}
+          \\
+          & \leq 2^k \cdot \sum_{i=0}^\infty{2^i}
+          \\
+          & = 2 \cdot 2^k
+        \end{align*}
+        So, binary increment takes amortized constant time. From this, we can see that the whole algorithm runs in time $O(n)$, as required.
+      \item $n \mapsto n^2$ is indeed non-decreasing on the natural numbers. $(n+1)^2 = n^2 + 2 \cdot n + 1 \geq n^2$. The machine for computing it starts by copying the input into the work space. Since $n \leq n^2$, this fits in the work space. Then, repeat copying the input to the output (but as 0s), decrementing the unary number in the work space each time. When the work space is empty, we are done. The whole thing takes $O(n^2)$ time, this essentially being the time to write the output.
+      \item The identity function is non-decreasing fairly trivially. To compute it, for each symbol in the input, write a 0 to the output. This takes no space and $O(n)$ time.
+      \item $2^{n+1} = 2 \cdot 2^n \geq 2^n$, so the function is non-decreasing. To compute it, for each symbol in the input, write 0 to the work space. $n \leq 2^n$, so this fits. Then, write 0s to the output whilst incrementing the work space as a binary number. After the work space becomes $1^n$, we are done. Binary increment takes amortized constant time, so the whole thing runs in $O(2^n)$ time.
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item Let $A \leq_P' B$ stand for the proposition that $A$ is polynomially reducible to $B$ according to the new definition. It is clear that $A \leq_P B$ impiles $A \leq_P' B$. Given reduction (in the notes' sense) $f$, the algorithm is to run $f$, then copy its output (which is at most polynomially larger than $n$) into the input of the oracle, and return whatever the oracle returns.
+
+        The converse implication probably does not hold. For all $L$, $L^c \leq_P' L$, because we can run the oracle, then output the opposite thing. This means, for example, that $\textrm{NP}$-complete languages are $\textrm{co-NP}$-hard, and vice-versa, which we don't think is true for the usual definition of reductions.
+      \item This new definition makes it not the case that for all languages $L$, $L \leq_P' \mathit{SAT}$ and $\mathit{SAT} \leq_P' L$ implies that $L$ is $\textrm{NP}$-complete, which we did have previously. Specifically, $L \leq_P' \mathit{SAT}$ does not imply that $L$ is in $\textrm{NP}$ (at least, not according to current knowledge).
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}

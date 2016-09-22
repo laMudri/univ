@@ -67,15 +67,15 @@ deterministic E-PLUS E-PLUS = refl
 deterministic E-PLUS (E-PLUS-LEFT ())
 deterministic E-PLUS (E-PLUS-RIGHT ())
 deterministic (E-PLUS-LEFT ()) E-PLUS
-deterministic (E-PLUS-LEFT x') (E-PLUS-LEFT x'')
-  rewrite deterministic x' x'' = refl
+deterministic (E-PLUS-LEFT {e1 = e1} x') (E-PLUS-LEFT x'') =
+  cong (λ e0 → e0 +s e1) (deterministic x' x'')
 deterministic (E-PLUS-LEFT ()) (E-PLUS-RIGHT x'')
 deterministic (E-PLUS-RIGHT ()) E-PLUS
 deterministic (E-PLUS-RIGHT x') (E-PLUS-LEFT ())
-deterministic (E-PLUS-RIGHT x') (E-PLUS-RIGHT x'')
-  rewrite deterministic x' x'' = refl
-deterministic (E-IF x') (E-IF x'')
-  rewrite deterministic x' x'' = refl
+deterministic (E-PLUS-RIGHT {n0 = n0} x') (E-PLUS-RIGHT x'') =
+  cong (λ e1 → nats n0 +s e1) (deterministic x' x'')
+deterministic (E-IF {e1 = e1} {e2 = e2} x') (E-IF x'') =
+  cong (λ e0 → ifs e0 then e1 else e2) (deterministic x' x'')
 deterministic (E-IF ()) E-IF-TRUE
 deterministic (E-IF ()) E-IF-FALSE
 deterministic E-IF-TRUE (E-IF ())

@@ -1,0 +1,68 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+\lstset
+{language=java
+,basicstyle=\footnotesize
+,frame=single
+}
+
+\begin{document}
+\title{Personal report}
+\author{James Wood -- Team Mike}
+\maketitle
+
+\section{Personal contribution}
+I focused on the service part of the application, which runs in the background polling the server and doing the work it sends. As an example, I wrote code like this to initiate a connection with the server, asking for a job to do:
+
+\begin{lstlisting}
+        //Send GET /available
+        HttpURLConnection con = null;
+        for (int i = 0; i < retries; i++) {
+            try {
+                WifiManager manager =
+                    (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                WifiInfo info = manager.getConnectionInfo();
+                String mac = info.getMacAddress();
+
+                JSONObject req = new JSONObject();
+                req.accumulate("message", "available");
+                req.accumulate("phone-id", mac);
+                URL availableURL = new URL(hostURL + "available");
+                con = (HttpURLConnection) availableURL.openConnection();
+                con.connect();
+                Log.i(TAG, "Available response: " + con.getResponseCode());
+                break;
+            }
+            catch (JSONException e) {
+                Log.e(TAG, "init exception", e);
+                return;
+            }
+            catch (IOException e) {
+                Log.e(TAG, "init exception", e);
+                Thread.sleep(timeout);
+            }
+        }
+
+        if (con == null) {
+            Log.e(TAG, "failed to establish connection");
+            return;
+        }
+\end{lstlisting}
+
+I had various pieces of code that didn't get included in the final product. This includes my own job-fetching infrastructure and a \texttt{DexClassLoader}-based way to support arbitrary computations. The former is still in the code, but not used. The latter exists in its own Git branch, and wasn't included because of lack of testing time required for both the service and the server. I generally worked on my own branch, but I felt that this gave my work lack of visibility by others. Part of the problem was that we didn't agree on a collaboration workflow, with Razvan and I relying on pull requests and others committing to master.
+
+\section{Contribution of other group members}
+\textbf{Ben Ramchandani} volunteered to be the point of contact, and seemed to take on a leading role in the project. He was focused on the server, but also helped with the messaging details of the service. A lot of his code was indented with tab characters, which was slightly annoying to work with.
+
+\textbf{Razvan Kusztos} was also working on the server. He was notable for having made most, if not all, of the customer-facing website and setting up hosting for it. He didn't know much about using Git at the start of the project, but learnt quickly and seemed generally better than others at using it.
+
+\textbf{Dima Szamozvancev} worked on the user-facing portion of the Android application. He did a mock-up of this UI before the first client meeting, which helped everyone get an idea of what it would be like to use.
+
+\textbf{Laura Nechita} also worked on the user-facing portion of the Android application. In particular, she worked on features allowing users to track how much work they do.
+
+\textbf{Jack Needham} was supposed to be working with me on the service, but didn't seem to do anything. Near the end of the project, he promised to implement Facebook integration (to go alongside the tracking features Laura was working on), but there is no evidence that he has done any of this.
+
+\end{document}

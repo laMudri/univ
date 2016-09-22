@@ -3,12 +3,15 @@ let
   inherit (pkgs) stdenv texlive haskellPackages;
 
   tex-env = texlive.combine {
-    inherit (texlive) scheme-small geometry bussproofs qtree pict2e;
+    inherit (texlive) scheme-small geometry enumitem;
   };
+
+  hask-env = haskellPackages.ghcWithPackages (pkgs: [ ]);
+
 in stdenv.mkDerivation {
-  name = "cc";
+  name = "sec";
   src = ./.;
-  buildInputs = [ tex-env ];
+  buildInputs = [ tex-env hask-env ];
   buildPhase = ''
     make
   '';

@@ -11,3 +11,4 @@ workspace/.*
 *.ova
 *.agdai
 bin/
+java/test-suite

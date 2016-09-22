@@ -1,0 +1,49 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\begin{document}
+\title{Security I -- supervision 2}
+\author{James Wood -- jdw74}
+\maketitle
+
+\begin{enumerate}
+    \setcounter{enumi}{9}
+  \item If the initial vector $I$ is known, we can feed in a plaintext block which is equal to $I$. This will feed $\langle 0 \rangle$ to the encryption function, and give $\mathrm{Enc}_K(\langle 0 \rangle)$ as the result. Doing similar, but making it feed in the binary representations of successive numbers (and XORing the input with $\mathrm{Enc}_K(\langle n \rangle))$ rather than $I$), will allow the adversary to deduce $K$.
+    \setcounter{enumi}{11}
+  \item
+    \begin{itemize}
+      \item In ECB, the error in $C_3$ only affects $M'_3$. DES decryption will propagate the effect of the erroneous bit, meaning that all bits in $M'_3$ will be affected.
+      \item In CBC, $C_3$ was received incorrectly, so $M'_3$ will be wrong, as before. Also, $M'_3$ is used in the decryption of $M'_4$, so that will be wrong, too. By the same reasoning, all further blocks will be wrong.
+      \item In CFB, $M'_3 = C_3 \oplus E_K(C_2)$, so only one bit of $M'_3$ (the one at the same position as the error in $C_3$) will be wrong. Then, $E_K(C_3)$ is used for calculating $M'_4$, so it will be completely wrong. $M'_5 = C_5 \oplus E_K(C_4)$, which contains no errors. So all further blocks will be unaffected.
+      \item The OFB pad $R_{i+1}$ is dependent only on $R_i$, and not the message or ciphertext. Then, given that $M'_3 = C_3 \oplus R_3$, only the single bit of $M'_3$ will be wrong, with no other decrypted messages affected.
+      \item CTR gives a similar effect to OFB, so again only one bit is affected.
+    \end{itemize}
+  \item This scheme is worse because it misses out the obfuscation provided by AES. What we essentially get is a $K'$, which is $K$ after processing by the mix column, but just before the XORing with the AES key ($R_i$). Then, $R_{i+1} = R_i \oplus K'$. This means that $R_{i+2} = R_i \oplus K' \oplus K' = R_i$, defeating the point of OFB.
+    \setcounter{enumi}{14}
+  \item We can choose the plaintexts to always be $\langle 0 \rangle$. This means that the ciphertexts we get back are always $E_K(T_i)$. Since we can invert $E_K$, we can find a series of $T_i$ values, allowing us to deduce offset $O$. This gives us everything we need to decrypt any further messages.
+    \setcounter{enumi}{17}
+  \item
+    If password checking is done between the input password and actual password with no hashing, the time taken in checking can be used to gauge the length of the correct prefix of an input relative to other inputs. By changing the first character after the established prefix, we can find the character that minimizes the checking time. This becomes part of the prefix we know, and then we can try the next character. For an alphabet of size $k$ and password of size $n$, this reduces the complexity of guessing the password from $O(k^n)$ to $O(k \cdot n)$.
+
+    Even in the presence of a known hashing algorithm, a similar strategy may be used. We can find the inverse of the hash function (which only has to be done once per hash function), then input words that change the hash in the desired way.
+  \item
+    \begin{enumerate}
+      \item To test whether the card is valid, the phone sends it a pseudorandom message $M$ and expects back $\mathrm{MAC}_K(M)$. By the assumption that $\mathrm{MAC}$ is a good message authentication function, only a valid card will be able to produce the correct output.
+
+        I can't work out how to handle the value counter.
+      \item Having the same key means that a device eavesdropping on communications between cards and phones could relatively quickly get sufficient information to tabulate enough of the $\mathrm{MAC}_K$ function to pretend to be a valid card. The situation could be improved by making $M$ very long, so that every verification process picks a unique $M$.
+    \end{enumerate}
+    \setcounter{enumi}{23}
+  \item \texttt{su} and \texttt{sudo} are setuid root commands, allowing a valid user to perform any action as root, usually after giving a password. Also, \texttt{passwd} needs to be a setuid root command because it involves editing files which only root has access to, but even non-sudoers should be able to change their own password.
+  \item Groups can be used as a way of partially simulating access control lists. Instead of a file having a map from users to permissions, a file has a specific group, the members of which all have the same permissions. If the desired grouping doesn't exist, it can be made. To achieve more generality, we could have multiple copies of the file, each assigned to different groups, possibly with different permissions. Then, a daemon runs as root to keep them all up to date.
+
+    To turn this into a capabilities system, we can frame all capabilities as accesses to files, which Unix, to an extent, already does. For example, if we want to restrict access to a printer-scanner, we have an interface so that commands to it are put in a file which acts as a queue, and only specific users are allowed to write to this file. Arguments, such as files to be printed, and results, such as scanned documents can also be put in files and given relevant permissions.
+    \setcounter{enumi}{26}
+  \item CDIs are stored in files only accessible to some special user. TPs are implemented as commands which change the UID to the special user's ID, modifies the CDIs, then change the UID back. The source code of the commands contain a message authentication code from the author. TPs are executed using a command like \texttt{sudo} which checks the MAC and the current user's permissions, and handles the change of UID.
+\end{enumerate}
+
+\end{document}

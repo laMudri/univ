@@ -1,0 +1,186 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{prftree}
+
+\lstset{basicstyle=\footnotesize,frame=single}
+
+\begin{document}
+\title{Concepts in Programming Languages -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{itemize}
+          \item In Haskell, inexhaustive pattern matching can be considered a weakness of the type system. For example, we may have a function that expects an infinite stream of pseudorandom values encoded as a standard list, and only matches against the \texttt{r : rs} case, and not the \texttt{[]} case. If it is called with a finite list, it may reach the \texttt{[]} case, causing a runtime error.
+          \item Kotlin specifically provides the \texttt{!!} suffix operator to cast a nullable value to a non-null value. If the value it is applied to is actually null, a null pointer exception will occur.
+          \item Python's type system only has one type, meaning that nearly every elimination form is inexhaustive. Funny expressions like \texttt{"hello"([6, [0]], True)} cause a runtime error.
+        \end{itemize}
+      \item
+        The typing derivation is as follows,
+        \begin{displaymath}
+          \prftree[r]{$\alpha = \beta \to \gamma$}{
+            \prftree[r]{$\gamma = \delta \to \epsilon$}{
+              \prftree[r]{$\epsilon = \zeta \to \eta$}{
+                \prftree[r]{$\theta = \iota \to \eta$}{
+                  \prftree[r]{$\theta = \beta$}{
+                    f : \beta, g : \delta, x : \zeta \vdash f : \theta
+                  }
+                }{
+                  \prfsummarystyle=4
+                  \prfsummary{
+                    f : \beta, g : \delta, x : \zeta \vdash g~(f~x) : \iota
+                  }
+                }{f : \beta, g : \delta \vdash f~(g~(f~x)) : \eta}
+              }{f : \beta, g : \delta \vdash \lambda x. f~(g~(f~x)) : \epsilon}
+            }{f : \beta \vdash \lambda g. \lambda x. f~(g~(f~x)) : \gamma}
+          }{\vdash \lambda f. \lambda g. \lambda x. f~(g~(f~x)) : \alpha}
+        \end{displaymath}
+        with the missing proof tree being
+        \begin{displaymath}
+          \prftree[r]{$\kappa = \lambda \to \iota$}{
+            \prftree[r]{$\kappa = \delta$}{
+              f : \beta, g : \delta, x : \zeta \vdash g : \kappa
+            }
+          }{
+            \prftree[r]{$\mu = \nu \to \lambda$}{
+              \prftree[r]{$\mu = \beta$}{
+                f : \beta, g : \delta, x : \zeta \vdash f : \mu
+              }
+            }{
+              \prftree[r]{$\nu = \zeta$}{
+                f : \beta, g : \delta, x : \zeta \vdash x : \nu
+              }
+            }{
+              f : \beta, g : \delta, x : \zeta \vdash f~x : \lambda
+            }
+          }{
+            f : \beta, g : \delta, x : \zeta \vdash g~(f~x) : \iota
+          }
+        \end{displaymath}
+        %Chaining the unifications together, we get the following.
+        %\begin{align*}
+        %  \alpha & = \beta \to \gamma
+        %  \\
+        %  & = \beta \to \delta \to \epsilon
+        %  \\
+        %  & = \beta \to \delta \to \zeta \to \eta
+        %  \\
+        %  & = \theta \to \delta \to \zeta \to \eta
+        %  \\
+        %  & = (\iota \to \eta) \to \delta \to \zeta \to \eta
+        %  \\
+        %  & = (\iota \to \eta) \to \kappa \to \zeta \to \eta
+        %  \\
+        %  & = (\iota \to \eta) \to (\lambda \to \iota) \to \zeta \to \eta
+        %  \\
+        %  & = (\iota \to \eta) \to (\lambda \to \iota) \to \nu \to \eta
+        %  \\
+        %  & = (\iota \to \eta) \to (\lambda \to \iota) \to \nu \to \eta
+        %\end{align*}
+        Propagating the information down the tree, we get the following.
+        \begin{displaymath}
+          \prfinterspace=1.5em
+          \prftree[r]{$\alpha = \beta \to \gamma$}{
+            \prftree[r]{$\gamma = \delta \to \epsilon$}{
+              \prftree[r]{$\epsilon = \zeta \to \eta$}{
+                \prftree[r]{$\theta = \iota \to \eta$}{
+                  \theta = \beta
+                }{
+                  \prftree[r]{$\kappa = \lambda \to \iota$}{
+                    \kappa = \delta
+                  }{
+                    \prftree[r]{$\mu = \nu \to \lambda$}{
+                      \mu = \beta
+                    }{
+                      \nu = \zeta
+                    }{
+                      \beta = \zeta \to \lambda
+                    }
+                  }{
+                    \delta = \lambda \to \iota
+                  }
+                }{
+                  \beta = \iota \to \eta
+                }
+              }{
+                \epsilon = \zeta \to \eta
+              }
+            }{
+              \gamma = \delta \to \zeta \to \eta
+            }
+          }{
+            \alpha = \beta \to \delta \to \zeta \to \eta
+          }
+        \end{displaymath}
+        We also can do some further unifications.
+        \begin{displaymath}
+          \prfinterspace=1.5em
+          \prftree{
+            \beta = \zeta \to \lambda
+          }{
+            \beta = \iota \to \eta
+          }{
+            \zeta = \iota
+          }
+        \end{displaymath}
+        \begin{displaymath}
+          \prfinterspace=1.5em
+          \prftree{
+            \beta = \zeta \to \lambda
+          }{
+            \beta = \zeta \to \eta
+          }{
+            \lambda = \eta
+          }
+        \end{displaymath}
+        These give us that $\beta = \zeta \to \eta$ and $\delta = \eta \to \zeta$, giving resultant type $(\zeta \to \eta) \to (\eta \to \zeta) \to \zeta \to \eta$.
+      \item For $\lambda f. (f~3, f~\mathbf{true})$ to check, there must be some $\alpha$ and $\beta$ such that $f : \alpha \vdash (f~3, f~\mathbf{true}) : \beta$ can be derived. By the application rule, we can assume that $\alpha = \gamma \to \beta$. However, there is no $\gamma$ such that $3 : \gamma$ and $\mathbf{true} : \gamma$, so type inference fails.
+      \item
+        \begin{enumerate}
+          \item Not having the value restriction makes ML's type system unsound. If \texttt{x} could have type \texttt{(forall 'a)('a list ref)}, the given code would end up producing a heterogeneous list, with no way of accessing the values in the list (because each has unknown type). As well as being logically difficult, it would be difficult to implement such a data structure at run time.
+          \item $\lambda~xs \to 3 : xs$ has type $[Int] \to [Int]$, and similarly $\lambda~xs \to \mathit{True} : xs$ has type $[Bool] \to [Bool]$. This means that the first application of $\mathit{modifyIORef}$ has its type specialized to $\mathit{IORef}~[Int] \to ([Int] \to [Int]) \to \mathit{IO}~()$, and similar for the second application. Thus, the first application gives $x$ type $\mathit{IORef}~[Int]$, whereas the second gives it type $\mathit{IORef}~[Bool]$. These are contradicting, so no type can be inferred.
+        \end{enumerate}
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        All of these terms are used when talking about subtyping with polymorphic types. Given a type family $G : \mathit{Type} \to \mathit{Type}$ and arbitrary types $S$ and $T$ with $S <: T$, $G$ is said to be \textit{covariant} if $G~S <: G~T$, \textit{contravariant} if $G~T <: G~S$, and \textit{invariant} otherwise.
+
+        Plausible covariant type families include those data structures which use the parameter only to store values of that type. This covers lists and trees, with an actual example being Java's arrays. These can be covariant because each $S$ item of the $G~S$ structure can be turned into a $T$ item, thus giving a $G~T$ structure.
+
+        Contravariant type families tend to come about when they are being parameterized on some input. For example, the type of predicates on a parameter type. A predicate on values of $T$ also works as a predicate of values on $S$ (since the values of $S$ are a subset of the values of $T$), and thus we can get from a $G~T$ to a $G~S$.
+
+        When mutation is involved, invariance tends to be the only non-problematic choice. Considering just a reference cell, it can't be covariant because that would allow us to write to it values in $T$ but not in $S$, and it can't be contravariant because that would allow us to read $S$ values which we only know are $T$ values. Java's generic type families are all invariant for this reason.
+      \item Given $S <: T$, we know that all inhabitants of $S$ are valid inhabitants of $T$. Hence, casting from $S$ to $T$ is easy. However, casting the other way does not always work, since there may be inhabitants $t$ of $T$ which are not inhabitants of $S$. When we try to cast $t$ to $S$, it will fail. We can only know whether $t$ is actually an inhabitant of $S$ by checking at run time.
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        The $\mathit{insert}~p$ function's implementation will probably assume that all elements that are already in the set were added via $\mathit{insert}~p$, and not via, say $\mathit{insert}~p'$ for some $p'$ not equal to $p$. With the current design, it is possible for different comparison functions to be used when inserting into the same set. Similar holds for $\mathit{delete}$ also.
+
+        It is also somewhat inconvenient to specify the comparison function every time. If we want to change which comparison function is used, we may have to edit each call to a set function.
+      \item We could use the following, using structures with specific signatures to achieve ad-hoc polymorphism.
+        \lstinputlisting[language=ml]{functor.sml}
+      \item The typeclass approach involves less explicitness by tying instances to types, putting them in a partial one-to-one relationship. This increases brevity, and allows the typechecker to check whether instances are being used coherently. However, it makes having multiple different instances more difficult to handle, as a new type is needed (and values on the old type won't work on the new type without interspersing conversion functions).
+    \end{enumerate}
+  \item The answer depends on what one wants from object oriented programming. Many useful aspects of inheritance and polymorphism can be modelled in Haskell using typeclasses. The following gives an example where the typeclass \texttt{Expr} acts much like an interface of an OOP language.
+    \lstinputlisting[language=haskell]{Expr.hs}
+    However, this does not capture inheritance or true subtyping. To an extent, inheritance can be simulated using a module system (like that found in Agda), where inheritance roughly corresponds to opening a module (Agda \texttt{open M public}). Subtyping tends to cause problems in type inference, even if top-level types are declared, so tends not to occur.
+  \item The claim that pure functional programming languages are ``embarrassingly parallel'' is used to mean that there are too many opportunities to parallelize a typical program. Any function or data constructor called with more than one arguments presents an opportunity to parallelize the evaluation of those arguments, and this situation happens often. However, if all of these were to be parallelized, the overhead involved in managing all of the threads and having them all communicate with each other would most likely outweigh the benefits. Picking the right parts of the program to parallelize is a difficult problem, involving making estimates about how long an expression will take to evaluate and how many times that expression (with different parameter values) will be evaluated. In general, it is unsolvable.
+  \item Conceptually, GADTs and dependent types are orthogonal language features, with different consequences. There are languages (like OCaml and Haskell with just the right compiler flags) which support GADTs but not dependent types, and languages (like Hoq and cubicaltt) which support dependent types but not GADTs. However, to an extent, the former can emulate dependent types, as shown in the following Haskell snippet.
+    \lstinputlisting[language=haskell]{Vec.hs}
+    Instead of using values to construct types, this uses phantom types that look like values ($\mathit Z$ for zero, $\mathit S$ for successor). The compiler successfully checks some simple applications of $\mathit{zipV}$. However, there is no way to do computations (at compile time or run time) on types made up of $\mathit Z$ and $\mathit S$ without a whole bunch more compiler flags, so an append function is difficult to write.
+
+    Similarly, languages from the second category can usually emulate GADTs. They do this by computing the required types, rather than declaring them. Here is an example from Hoq.
+    \lstinputlisting[language=haskell]{Vec.hoq}
+    This captures the generality of GADTs, but the lack of dedicated constructors makes it difficult to handle for the typechecker (and humans). I couldn't get the typechecker to check a simple application of $\mathit{zip}$.
+\end{enumerate}
+
+\end{document}

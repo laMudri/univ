@@ -1,0 +1,56 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+
+\begin{document}
+\title{Complexity Theory -- supervision 2}
+\author{James Wood}
+\maketitle
+
+\begin{enumerate}
+  \item
+    \begin{enumerate}[label=\arabic{enumii}.]
+      \item
+        \begin{enumerate}[label=(\alph{enumiii})]
+          \item The complement of an independent set is a vertex cover, and vice-versa. Therefore, to solve $\textrm{IND}$ for $V$, $E$, and $K$, solve $\textrm{V-COVER}$ for $V$, $E$, and $\lvert V \rvert - K$.
+          \item
+            $\textrm{IND}$ is $\textrm{NP}$-hard and $\textrm{IND} \leq_P \textrm{V-COVER}$, so $\textrm{V-COVER}$ is $\textrm{NP}$-hard. $\textrm{V-COVER}$ is in $\textrm{NP}$ because it is polynomially verifiable -- the certificate of membership is the covering set of vertices, and it can be verified by checking each edge against this set.
+        \end{enumerate}
+        \setcounter{enumii}{6}
+      \item
+        \begin{enumerate}[label=(\alph{enumiii})]
+          \item
+            If the graph contains 0 or 1 vertices, it is trivially Hamiltonian. If it contains 2 vertices, it is Hamiltonian iff there is an edge between them, with the path made of traversing this edge then traversing the other way. For graphs with 3 or more vertices, choose a starting vertex. If it is connected to fewer than 2 vertices, the graph cannot be Hamiltonian, so we fail. Otherwise, choose one connected vertex to be the next vertex, and a different connected vertex to be the penultimate vertex. Construct a new graph made of the old graph but with the start vertex (and its edges) removed, and the next and penultimate vertices merged into one. On this new graph, decide whether it is Hamiltonian. If it is, run this algorithm recursively on the new graph to get the path. Where this path reaches the new merged vertex, expand it to go to the penultimate vertex, then the start vertex, then the next vertex, then carry on. If it is not Hamiltonian, another pair of next/penultimate vertices, and then another start vertex.
+            At each step, there are $O(n)$ possible start vertices, and for each of these $O(n^2)$ possible next/penultimate pairs. The size of the problem reduces in a linear fashion, so the whole algorithm runs in polynomial time.
+          \item I couldn't get this, but I'll try some more before the supervision.
+        \end{enumerate}
+    \end{enumerate}
+  \item
+    \begin{enumerate}
+      \item
+        \begin{itemize}
+          \item A language $L$ is in $\textrm{NP}$ iff it can be decided whether a given string is in $L$ in polynomial time by a non-deterministic Turing machine.
+          \item A language $L$ is in $\textrm{NP}$ iff, for any word $w$ in $L$, there is a certificate $c$ of $w$'s membership in $L$ such that $(w,c)$ can be verified by a deterministic Turing machine in polynomial time.
+        \end{itemize}
+      \item
+        \begin{enumerate}
+          \item $\textrm{CLIQUE}$ is $\textrm{NP}$-hard and $\textrm{3SAT}$ is in $\textrm{NP}$, so this is true.
+          \item The best known lower bound on the time complexity of $\textrm{TSP}$ is polynomial, so we cannot rule out the possibility of it being in $\textrm P$. However, $\textrm{TSP}$ is $\textrm{NP}$-hard, so $\textrm{TSP} \in \textrm P$ would give us $\textrm P = \textrm{NP}$.
+          \item 
+          \item 
+        \end{enumerate}
+      \item For any other language $L$ in $\textrm P$, we can find $r,a \in \Sigma^*$ such that $r \notin L$ and $a \in L$. Given a language $A$ in $\textrm P$, we have an algorithm which decides membership of $A$ in polynomial time. To reduce this to $L$, use the algorithm to solve $A$, but where it rejects, change it to write $r$ to the tape, and where it accepts, write $a$ to the tape. Solving $A$ takes polynomial time and the writing takes constant time (ignoring the time taken to clear the tape and get back to the start, which is all polynomial), so the reduction is valid. This shows that $L$ is $\textrm P$-hard, and hence $\textrm P$-complete.
+    \end{enumerate}
+  \item
+    $L$ is a $\textrm{co-NP}$ language.
+
+    If $L$ is $\textrm{NP}$-complete, it is $\textrm{NP}$-hard and in $\textrm{NP}$. We know already that the complement of $L$ is in $\textrm{co-NP}$, so it remains to show that it is $\textrm{co-NP}$-hard. We have that, for all languages $A$ in $\textrm{NP}$, $A \leq_P L$. Then, taking an arbitrary $B$ in $\textrm{co-NP}$, the complement of $B$ is in $\textrm{NP}$, so $B^c \leq_P L$. A reduction from a language to its complement is always available (don't modify the instance, but switch the outputs), so we have the chain of reductions $B \leq_P B^c \leq_P L \leq_P L^c$. Since $B$ was arbitrary, the complement of $L$ is $\textrm{co-NP}$-hard, and thus is $\textrm{co-NP}$-complete.
+
+    All of $\textrm P$ is in both $\textrm{NP}$ and $\textrm{co-NP}$, so there are plenty of problems in $\textrm{NP}$ and $\textrm{co-NP}$.
+  \item $\textrm{SAT}$ is $\textrm{NP}$-hard. By similar reasoning to the above, it is also $\textrm{co-NP}$-hard. Given the assumption in the question, this means that it is $\textrm{co-NP}$-complete. This means that each $\textrm{NP}$ problem can be reduced to a $\textrm{co-NP}$ problem, and each $\textrm{co-NP}$ problem can be reduced to an $\textrm{NP}$ problem. So $\textrm{NP} = \textrm{co-NP}$.
+  \item Suppose that language $L$ is in $\textrm{co-NP}$ but not in $\textrm P$. Then, the complement of $L$ is in $\textrm{NP}$ but not in $\textrm P$. We can see the latter by supposing that the complement of $L$ is in $\textrm P$. From this, we get that the complement of  the complement of $L$ -- i.e, $L$ itself -- is in $\textrm P$ also. But we know by assumption that this is false. So, $\textrm{NP}$ differs from $\textrm P$.
+\end{enumerate}
+
+\end{document}
